@@ -7,6 +7,29 @@ export const MENU: MenuItem[] = [
     link: '/dashboard'
   },
   {
+    label: 'Bandeja de entrada',
+    icon: 'mail',
+    subMenus: [
+      {
+        subMenuItems: [
+          {
+            label: 'Solicitudes',
+            isTitle: true,
+          },
+          {
+            label: 'En tramite',
+            link: '/solicitudes/tramite'
+          },
+          {
+            label: 'Finalizadas',
+            link: '/solicitudes'
+          },
+        ]
+      },
+      
+    ]
+  },
+  {
     label: 'Apps',
     icon: 'mail',
     subMenus: [

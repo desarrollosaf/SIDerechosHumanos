@@ -10,7 +10,7 @@ import { ColumnMode, DatatableComponent, NgxDatatableModule } from '@siemens/ngx
   ],
   templateUrl: './solicitudes.component.html',
   styleUrl: './solicitudes.component.scss'
-})
+}) 
 export class SolicitudesComponent {
 
   

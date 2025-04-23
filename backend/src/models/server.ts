@@ -1,5 +1,6 @@
 import express, {Application} from 'express'
 import cors from 'cors'
+import {User} from './user'
 
 class Server {
 
@@ -38,7 +39,7 @@ class Server {
     async DBconnetc(){
         try {
 
-            //await User.sync(); 
+            await User.sync(); 
             //await Servidor.sync(); 
             console.log("Conexion de DB exitoso");
 

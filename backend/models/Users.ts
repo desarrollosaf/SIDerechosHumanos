@@ -28,7 +28,7 @@ export class Users extends Model<UsersAttributes, UsersCreationAttributes> imple
   updatedAt!: Date;
 
 
-  /*static initModel(sequelize: Sequelize.Sequelize): typeof Users {
+  static initModel(sequelize: Sequelize.Sequelize): typeof Users {
     return Users.init({
       id: {
         autoIncrement: true,
@@ -71,5 +71,5 @@ export class Users extends Model<UsersAttributes, UsersCreationAttributes> imple
         },
       ]
     });
-  }*/
+  }
 }

@@ -24,7 +24,8 @@ export class LoginComponent implements OnInit {
 
   onLoggedin(e: Event) {
     e.preventDefault();
-    localStorage.setItem('isLoggedin', 'true');
+    console.log('false')
+    localStorage.setItem('isLoggedin', 'false');
     if (localStorage.getItem('isLoggedin') === 'true') {
       this.router.navigate([this.returnUrl]);
     }

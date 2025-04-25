@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const user_1 = require("./user");
+const user_2 = __importDefault(require("../routes/user"));
 class Server {
     constructor() {
         this.app = (0, express_1.default)();
@@ -30,6 +31,7 @@ class Server {
         });
     }
     router() {
+        this.app.use(user_2.default);
     }
     midlewares() {
         //Parseo BOdy

@@ -12,14 +12,15 @@
             <div class="auth-form-wrapper px-4 py-5">
               <a routerLink="." class="nobleui-logo d-block mb-2">Noble<span>UI</span></a>
               <h5 class="text-secondary fw-normal mb-4">Welcome back! Log in to your account.</h5>
-              <form class="forms-sample">
+              <form  #f="ngForm" (ngSubmit)="onLoggedin(f)"  class="forms-sample">
                 <div class="mb-3">
                   <label for="exampleInputEmail1" class="form-label">Email address</label>
-                  <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email" value="admin@demo.com">
+                  
+                  <input class="form-control" type="email" placeholder="email"   name="Uemail" ngModel required #Uemail="ngModel" />
                 </div>
                 <div class="mb-3">
                   <label for="exampleInputPassword1" class="form-label">Password</label>
-                  <input type="password" class="form-control" id="exampleInputPassword1" autocomplete="current-password" placeholder="Password" value="12345678">
+                  <input class="form-control" type="password" placeholder="password"  name="Upassword" ngModel required #Upassword="ngModel" />
                 </div>
                 <div class="form-check mb-3">
                   <input type="checkbox" class="form-check-input" id="authCheck">
@@ -28,7 +29,7 @@
                   </label>
                 </div>
                 <div>
-                  <button type="submit" class="btn btn-primary me-2 mb-2 mb-md-0" (click)="onLoggedin($event)">Login</button>
+                  <button type="submit" class="btn btn-primary me-2 mb-2 mb-md-0" >Login</button>
                   <button type="button" class="btn btn-outline-primary btn-icon-text mb-2 mb-md-0">
                     <i class="feather icon-twitter btn-icon-prepend"></i>
                     Login with twitter

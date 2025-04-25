@@ -1,6 +1,7 @@
 import express, {Application} from 'express'
 import cors from 'cors'
 import {User} from './user'
+import routesUser from '../routes/user'
 
 class Server {
 
@@ -25,7 +26,7 @@ class Server {
     }
 
     router(){
-        
+        this.app.use(routesUser);
     }
 
     

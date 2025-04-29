@@ -66,24 +66,24 @@ const CreateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.CreateUser = CreateUser;
 const LoginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { Uemail, Upassword } = req.body;
+    const { email, password } = req.body;
     console.log(req.body);
-    const user = yield user_1.User.findOne({ where: { email: Uemail } });
+    const user = yield user_1.User.findOne({ where: { email: email } });
     if (!user) {
-        return next(JSON.stringify({ msg: `Usuario no existe con el email ${Uemail}` }));
-        /*return res.status(400).json({
-            msg: `Usuario no existe con el email ${Uemail}`
-        })*/
+        //return next(JSON.stringify({ msg: `Usuario no existe con el email ${email}`}));
+        return res.status(400).json({
+            msg: `Usuario no existe con el email ${email}`
+        });
     }
-    const passwordValid = yield bcrypt_1.default.compare(Upassword, user.password);
+    const passwordValid = yield bcrypt_1.default.compare(password, user.password);
     if (!passwordValid) {
-        return next(JSON.stringify({ msg: `Password Incorrecto => ${Upassword}` }));
-        /* return res.status(400).json({
-             msg: `Password Incorrecto => ${Upassword}`
-         })*/
+        //return next(JSON.stringify({ msg: `Password Incorrecto => ${password}`}));
+        return res.status(400).json({
+            msg: `Password Incorrecto => ${password}`
+        });
     }
     const token = jsonwebtoken_1.default.sign({
-        Uemail: Uemail
+        email: email
     }, process.env.SECRET_KEY || 'TSE-Poder-legislativo', { expiresIn: '10000' });
     res.json({ token });
 });

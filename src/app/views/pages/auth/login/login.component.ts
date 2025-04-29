@@ -44,20 +44,27 @@ export class LoginComponent implements OnInit {
 
     const user: User = {
       email: form.value.Uemail,
-      password: form.value.Uemail
+      password: form.value.Upassword
     }
 
     this._userService.login(user).subscribe({
       next: (response: any) => {
         const token = response.token
         console.log(token);     
-
-        localStorage.setItem('myToken',token) 
-        this.router.navigate(['/admin/product/listProduct'])
+        
+        localStorage.setItem('myToken',token)
+        localStorage.setItem('isLoggedin', 'true')
+        this.router.navigate([this.returnUrl]);  
+        //this.router.navigate(['/dashboard'])
         // this.router.navigate(['/dashboard/product/listProduct']) 
       },
       error: (e: HttpErrorResponse) => {
-        
+        if (e.error && e.error.msg) {
+          console.error('Error del servidor:', e.error.msg);
+          // Aquí podrías usar un alert o mostrar en pantalla
+        } else {
+          console.error('Error desconocido:', e);
+        }
       },
     })   
     /*localStorage.setItem('isLoggedin', 'false');

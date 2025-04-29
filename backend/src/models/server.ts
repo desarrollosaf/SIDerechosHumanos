@@ -26,6 +26,7 @@ class Server {
     }
 
     router(){
+        
         this.app.use(routesUser);
     }
 

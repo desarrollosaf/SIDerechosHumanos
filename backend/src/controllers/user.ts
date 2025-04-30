@@ -87,7 +87,7 @@ export const LoginUser = async (req: Request, res: Response, next: NextFunction)
     const token = jwt.sign({
         email: email
     }, process.env.SECRET_KEY || 'TSE-Poder-legislativo',
-    { expiresIn: '10000' }
+    { expiresIn: 10000 }
     );
     
     res.json({ token })

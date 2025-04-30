@@ -93,6 +93,7 @@ export class NavbarComponent implements OnInit {
     e.preventDefault();
 
     localStorage.setItem('isLoggedin', 'false');
+    localStorage.removeItem('myToken')
     if (localStorage.getItem('isLoggedin') === 'false') {
       this.router.navigate(['/auth/login']);
     }

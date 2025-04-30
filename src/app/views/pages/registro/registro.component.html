@@ -5,71 +5,72 @@
           <div class="card">
             <div class="card-body">
               <h6 class="card-title">REGISTRO</h6>
-                <form>
+                <form #f="ngForm" (ngSubmit)="registro(f)"  class="forms-sample">
                   <div class="row">
                     <div class="col-sm-6">
                       <div class="mb-3">
-                        <label class="form-label">First Name</label>
-                        <input type="text" class="form-control" placeholder="Enter first name">
+                        <label class="form-label">Apellido Paterno:*</label>
+                        <input name="Uappaterno" ngModel required #Uappaterno="ngModel" type="text" class="form-control" placeholder="Apellido Paterno">
                       </div>
                     </div><!-- Col -->
                     <div class="col-sm-6">
                       <div class="mb-3">
-                        <label class="form-label">Last Name</label>
-                        <input type="text" class="form-control" placeholder="Enter last name">
+                        <label class="form-label">Apellido Materno:*</label>
+                        <input type="text" name="Uapmaterno" ngModel required #Uappaterno="ngModel" class="form-control" placeholder="Apellido Materno">
                       </div>
                     </div><!-- Col -->
                   </div><!-- Row -->
                   <div class="row">
                     <div class="col-sm-6">
                       <div class="mb-3">
-                        <label class="form-label">First Name</label>
-                        <input type="text" class="form-control" placeholder="Enter first name">
+                        <label class="form-label">Nombres:*</label>
+                        <input type="text" name="Unombres" ngModel required #Unombres="ngModel" class="form-control" placeholder="Nombres">
                       </div>
                     </div><!-- Col -->
                     <div class="col-sm-6">
                       <div class="mb-3">
-                        <label class="form-label">Last Name</label>
-                        <input type="text" class="form-control" placeholder="Enter last name">
-                      </div>
-                    </div><!-- Col -->
-                  </div><!-- Row --> <div class="row">
-                    <div class="col-sm-6">
-                      <div class="mb-3">
-                        <label class="form-label">First Name</label>
-                        <input type="text" class="form-control" placeholder="Enter first name">
-                      </div>
-                    </div><!-- Col -->
-                    <div class="col-sm-6">
-                      <div class="mb-3">
-                        <label class="form-label">Last Name</label>
-                        <input type="text" class="form-control" placeholder="Enter last name">
+                        <label class="form-label">Correo Electrónico:*</label>
+                        <input type="email" name="Ucorreo" ngModel required #Ucorreo="ngModel" class="form-control" placeholder="Correo Electrónico">
                       </div>
                     </div><!-- Col -->
                   </div><!-- Row --> <div class="row">
                     <div class="col-sm-6">
                       <div class="mb-3">
-                        <label class="form-label">First Name</label>
-                        <input type="text" class="form-control" placeholder="Enter first name">
+                        <label class="form-label">Confirmar correo electrónico:*</label>
+                        <input type="email" class="form-control" name="Uemail" ngModel required #Uemail="ngModel" placeholder="Confirmar correo electrónico">
                       </div>
                     </div><!-- Col -->
                     <div class="col-sm-6">
                       <div class="mb-3">
-                        <label class="form-label">Last Name</label>
-                        <input type="text" class="form-control" placeholder="Enter last name">
+                        <label class="form-label">Teléfono celular:*</label>
+                        <input type="text" name="Ucelular" ngModel required #Ucelular="ngModel" class="form-control" placeholder="Teléfono celular">
                       </div>
                     </div><!-- Col -->
                   </div><!-- Row --> <div class="row">
                     <div class="col-sm-6">
                       <div class="mb-3">
-                        <label class="form-label">First Name</label>
-                        <input type="text" class="form-control" placeholder="Enter first name">
+                        <label class="form-label">Confirmar teléfono celular:*</label>
+                        <input type="text" class="form-control" name="Uccelular" ngModel required #Uccelular="ngModel" placeholder="Confirmar teléfono celular">
+                      </div>
+                    </div><!-- Col -->
+                    <div class="col-sm-6">
+                      <div class="mb-3">
+                        <label class="form-label">CURP:*</label>
+                        <input type="text" name="Ucurp" ngModel required #Ucurp="ngModel" class="form-control" placeholder="CURP">
+                      </div>
+                    </div><!-- Col -->
+                  </div><!-- Row --> <div class="row">
+                    <div class="col-sm-6">
+                      <div class="mb-3">
+                        <label class="form-label">Cédula Profesional:*</label>
+                        <input type="text"  name="Ucedula" ngModel required #Ucedula="ngModel" class="form-control" placeholder="Cédula Profesional">
                       </div>
                     </div><!-- Col -->
                     
                   </div><!-- Row --> 
+                  <button type="submit" class="btn btn-primary submit">Registrarse</button>
                 </form>
-                <button type="button" class="btn btn-primary submit">Registrarse</button>
+               
             </div>
           </div>
         </div>

@@ -16,14 +16,15 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const user_1 = require("./user");
 const user_2 = __importDefault(require("../routes/user"));
+const solicitud_1 = __importDefault(require("../routes/solicitud"));
 class Server {
     constructor() {
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '3001';
-        this.listen();
         this.midlewares();
         this.router();
         this.DBconnetc();
+        this.listen();
     }
     listen() {
         this.app.listen(this.port, () => {
@@ -32,6 +33,7 @@ class Server {
     }
     router() {
         this.app.use(user_2.default);
+        this.app.use(solicitud_1.default);
     }
     midlewares() {
         //Parseo BOdy

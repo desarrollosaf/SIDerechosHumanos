@@ -2,6 +2,7 @@ import express, {Application} from 'express'
 import cors from 'cors'
 import {User} from './user'
 import routesUser from '../routes/user'
+import routesSolicitud from '../routes/solicitud'
 
 class Server {
 
@@ -9,14 +10,13 @@ class Server {
     private port: string
     
 
-    constructor(){
-        this.app = express()
-        this.port = process.env.PORT || '3001'
-        this.listen();
-        this.midlewares();
+    constructor() {
+        this.app = express();
+        this.port = process.env.PORT || '3001';
+        this.midlewares();  
         this.router();
         this.DBconnetc();
-        
+        this.listen();
     }
 
     listen(){
@@ -28,6 +28,7 @@ class Server {
     router(){
         
         this.app.use(routesUser);
+        this.app.use(routesSolicitud);
     }
 
     

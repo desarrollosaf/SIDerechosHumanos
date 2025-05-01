@@ -6,5 +6,5 @@ export interface Registro {
       celular: string;
       curp: string;
       cedula_profesional: string;
-      aviso_privacidad: boolean;
+      // aviso_privacidad: boolean;
 }

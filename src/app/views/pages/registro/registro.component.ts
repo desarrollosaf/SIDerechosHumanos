@@ -3,7 +3,8 @@ import { Router, RouterLink } from '@angular/router';
 import { NgStyle } from '@angular/common';
 import {FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms'
 import { CommonModule } from '@angular/common';
-
+import {Registro} from '../../../interfaces/registro'
+import {RegistroService} from '../../../service/registro'
 @Component({
   selector: 'app-registro',
   imports: [CommonModule,FormsModule,ReactiveFormsModule
@@ -13,6 +14,7 @@ import { CommonModule } from '@angular/common';
 })
 export class RegistroComponent {
   formReg: FormGroup;
+  private _registroService: RegistroService;
 
   constructor(private fb: FormBuilder){
     this.formReg = this.fb.group({
@@ -23,23 +25,21 @@ export class RegistroComponent {
       confirmEmail: ['', [Validators.required, Validators.email]],
       celular:['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       confirmtel: ['',[Validators.required, Validators.pattern(/^\d{10}$/)]],
-      curp:['', Validators.required],
+      curp:['', [
+        Validators.required,
+        Validators.pattern(/^[A-Z]{1}[AEIOU]{1}[A-Z]{2}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[HM]{1}(AS|BC|BS|CC|CL|CM|CS|CH|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}\d{1}$/)
+      ]],
       cedula_profesional:['', Validators.required],
-      // aviso_privacidad:['', Validators.required],
+      aviso_privacidad:[false, Validators.requiredTrue],
     },
     { validators: [this.validadorTelefono, this.validadorCorreo]
-      
+
 
      });
   }
 
-
-
   ngOnInit(): void {
-
   }
-
-
 
   validadorTelefono(formGroup: FormGroup): { [key: string]: boolean } | null {
     const phoneNumber = formGroup.get('celular')?.value;
@@ -49,32 +49,40 @@ export class RegistroComponent {
     }else{
       return null;
     }
-    
   }
 
   validadorCorreo(formGroup: FormGroup): { [key: string]: boolean } | null {
     const email = formGroup.get('correo')?.value;
     const confirmEmail = formGroup.get('confirmEmail')?.value;
     if (email !== confirmEmail) {
-      console.log('NOestachido');
       return { 'emailsDoNotMatch': true };
     }else{
-      console.log('estachido');
       return null;
     }
-   
   }
 
-
-  
   sendReg(){
-    console.log(this.formReg);
-    if (this.formReg.valid) {
-      console.log('Formulario enviado:', this.formReg.value);
-    } else {
-      console.log('Formulario no válido');
+    const registroval: Registro = {
+      ap_paterno: this.formReg.value.ap_paterno,
+      ap_materno: this.formReg.value.ap_materno,
+      nombres: this.formReg.value.nombres,
+      correo: this.formReg.value.correo,
+      celular: this.formReg.value.celular,
+      curp: this.formReg.value.curp,
+      cedula_profesional: this.formReg.value.cedula_profesional,
+      aviso_privacidad: this.formReg.value.aviso_privacidad,
     }
-   
+
+    this._registroService.saveRegistro(registroval).subscribe(() => {
+    })
+
+    console.log(registroval);
+    // if (this.formReg.valid) {
+    //   console.log('Formulario enviado:', this.formReg.value);
+    // } else {
+    //   console.log('Formulario no válido');
+    // }
+
   }
 
 

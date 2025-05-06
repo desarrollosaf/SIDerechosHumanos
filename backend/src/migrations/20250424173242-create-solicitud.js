@@ -9,6 +9,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      userId: {
+        type: Sequelize.DataTypes.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id'
+        },
+        allowNull: false,
+      },
       ap_paterno: {
         type: Sequelize.STRING
       },

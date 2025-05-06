@@ -13,19 +13,18 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
       const now = Math.floor(Date.now() / 1000);
 
       if (decoded.exp && decoded.exp > now) {
-        // Token válido y no expirado
         return true;
+
       } else {
-        // Token expirado
         localStorage.removeItem('myToken');
+
       }
+
     } catch (error) {
-      // Token inválido (formato incorrecto o manipulado)
       localStorage.removeItem('myToken');
     }
   }
 
-  // If the user is not logged in, redirect to the login page with the return URL
   router.navigate(['/auth/login'], { queryParams: { returnUrl: state.url.split('?')[0] } });
   return false;
   

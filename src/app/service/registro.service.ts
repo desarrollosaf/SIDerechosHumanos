@@ -7,6 +7,7 @@ import { Injectable, signal, inject, computed } from '@angular/core';
   providedIn: 'root'
 })
 export class RegistroService {
+
   private myAppUrl: string;
   private myAPIUrl: string;
   private http = inject( HttpClient );
@@ -17,9 +18,8 @@ export class RegistroService {
 
   }
 
-  saveRegistro(registro: Registro): Observable<void> {
-    return this.http.post<void>(`${this.myAppUrl}${this.myAPIUrl}`,registro)
+  saveRegistro(registro: Registro): Observable<string> {
+    return this.http.post<string>(`${this.myAppUrl}${this.myAPIUrl}/create`,registro)
   }
-
 
 }

@@ -19,7 +19,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const ReadUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const listUser = yield user_1.User.findAll();
     res.json({
-        msg: `List de categoría encontrada exitosamente`,
+        msg: `List de categoría encontrada exitosamenteeeee`,
         data: listUser
     });
 });

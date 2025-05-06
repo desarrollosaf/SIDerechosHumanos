@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Solicitudes = void 0;
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../database/connection"));
-exports.Solicitudes = connection_1.default.define("solicituds", {
+exports.Solicitudes = connection_1.default.define("Solicituds", {
     id: {
         autoIncrement: true,
         type: sequelize_1.DataTypes.INTEGER,
@@ -46,7 +46,7 @@ exports.Solicitudes = connection_1.default.define("solicituds", {
         allowNull: true
     }
 }, {
-    tableName: 'solicituds',
+    tableName: 'Solicituds',
     timestamps: true,
     paranoid: true,
     indexes: [

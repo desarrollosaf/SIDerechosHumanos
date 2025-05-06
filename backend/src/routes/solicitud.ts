@@ -3,11 +3,10 @@ import { deleteRegistro, getRegistros, getRegistro, saveRegistro, putRegistro} f
 
 const router = Router();
 
-
-router.get("/api/solicitud", getRegistros)
-router.post("/api/solicitud/:id", getRegistro)
-router.delete("/api/solicitud/:id", deleteRegistro)
-router.post("/api/solicitud/", saveRegistro)
-router.put("/api/solicitud/:id", putRegistro)
+router.post("/api/solicitud/create", saveRegistro)
+router.get("/api/solicitud/read", getRegistros)
+router.delete("/api/solicitud/delete/:id", deleteRegistro)
+router.post("/api/solicitud/edit/:id", getRegistro)
+router.put("/api/solicitud/update/:id", putRegistro)
 
 export default router

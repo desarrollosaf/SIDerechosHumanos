@@ -50,21 +50,20 @@ const deleteRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.deleteRegistro = deleteRegistro;
 const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
-    console.log(req);
-    res.status(404).json({
-        msg: `${body}`,
-    });
-    // try {
-    //     await Solicitudes.create(body);
-    //     res.json({
-    //         msg: `Agregado con exito`,
-    //     });
-    // }catch (error){
-    //     console.log(error);
-    //     res.json({
-    //         msg: `Ocurrio un error al cargar `,
-    //     });
-    // }
+    console.log(req.body);
+    console.log("LLEGUE");
+    try {
+        yield solicitud_1.Solicitudes.create(body);
+        res.json({
+            msg: `Agregado con exito`,
+        });
+    }
+    catch (error) {
+        console.log(error);
+        res.json({
+            msg: `Ocurrio un error al cargar `,
+        });
+    }
 });
 exports.saveRegistro = saveRegistro;
 const putRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

@@ -8,7 +8,7 @@ import jwt from 'jsonwebtoken'
 export const ReadUser = async (req: Request, res: Response) => {
     const listUser = await User.findAll();
     res.json({
-        msg: `List de categoría encontrada exitosamente`,
+        msg: `List de categoría encontrada exitosamenteeeee`,
         data: listUser
     });
 }

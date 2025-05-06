@@ -2,7 +2,7 @@ import { DataTypes } from "sequelize";
 import sequelize from "../database/connection";
 
 
-export const Solicitudes = sequelize.define("solicituds", {
+export const Solicitudes = sequelize.define("Solicituds", {
   id: {
     autoIncrement: true,
     type: DataTypes.INTEGER,
@@ -42,7 +42,7 @@ export const Solicitudes = sequelize.define("solicituds", {
     allowNull: true
   }
 }, {
-  tableName: 'solicituds',
+  tableName: 'Solicituds',
   timestamps: true,
   paranoid: true,
   indexes: [

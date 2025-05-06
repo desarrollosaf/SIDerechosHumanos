@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { NgStyle } from '@angular/common';
 import {FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms'
 import { CommonModule } from '@angular/common';
 import {Registro} from '../../../interfaces/registro'
-import {RegistroService} from '../../../service/registro'
+import { HttpErrorResponse } from '@angular/common/http';
+import {RegistroService} from '../../../service/registro.service'
 @Component({
   selector: 'app-registro',
   imports: [CommonModule,FormsModule,ReactiveFormsModule
@@ -14,7 +15,8 @@ import {RegistroService} from '../../../service/registro'
 })
 export class RegistroComponent {
   formReg: FormGroup;
-  private _registroService: RegistroService;
+  
+  public _registroService  =  inject( RegistroService )
 
   constructor(private fb: FormBuilder){
     this.formReg = this.fb.group({
@@ -62,6 +64,7 @@ export class RegistroComponent {
   }
 
   sendReg(){
+
     const registroval: Registro = {
       ap_paterno: this.formReg.value.ap_paterno,
       ap_materno: this.formReg.value.ap_materno,
@@ -72,9 +75,23 @@ export class RegistroComponent {
       cedula_profesional: this.formReg.value.cedula_profesional,
       aviso_privacidad: this.formReg.value.aviso_privacidad,
     }
+    console.log(registroval)
 
-    this._registroService.saveRegistro(registroval).subscribe(() => {
-    })
+  
+    this._registroService.saveRegistro(registroval).subscribe({
+      next: (response: any) => {
+        console.log(response);     
+       
+      },
+      error: (e: HttpErrorResponse) => {
+        if (e.error && e.error.msg) {
+          console.error('Error del servidor:', e.error.msg);
+          // Aquí podrías usar un alert o mostrar en pantalla
+        } else {
+          console.error('Error desconocido:', e);
+        }
+      },
+    }) 
 
     console.log(registroval);
     // if (this.formReg.valid) {

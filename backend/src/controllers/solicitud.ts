@@ -44,21 +44,20 @@ export const deleteRegistro = async (req: Request, res: Response) => {
 
 export const saveRegistro = async (req: Request, res: Response) => {
     const { body } = req;
-    console.log(req);
-    res.status(404).json({
-        msg: `${body}`,
-    });
-    // try {
-    //     await Solicitudes.create(body);
-    //     res.json({
-    //         msg: `Agregado con exito`,
-    //     });
-    // }catch (error){
-    //     console.log(error);
-    //     res.json({
-    //         msg: `Ocurrio un error al cargar `,
-    //     });
-    // }
+    console.log(req.body);
+    console.log("LLEGUE");
+    try {
+        await Solicitudes.create(body);
+        res.json({
+            msg: `Agregado con exito`,
+        });
+
+    }catch (error){
+        console.log(error);
+        res.json({
+            msg: `Ocurrio un error al cargar `,
+        });
+    }
 }
 
 export const putRegistro = async (req: Request, res: Response) => {

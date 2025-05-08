@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import {Registro} from '../../../interfaces/registro'
 import { HttpErrorResponse } from '@angular/common/http';
 import {RegistroService} from '../../../service/registro.service'
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-registro',
   imports: [CommonModule,FormsModule,ReactiveFormsModule
@@ -18,7 +19,7 @@ export class RegistroComponent {
   
   public _registroService  =  inject( RegistroService )
 
-  constructor(private fb: FormBuilder){
+  constructor(private fb: FormBuilder,private router: Router){
     this.formReg = this.fb.group({
       ap_paterno:['', Validators.required],
       ap_materno:['', Validators.required],
@@ -81,7 +82,15 @@ export class RegistroComponent {
     this._registroService.saveRegistro(registroval).subscribe({
       next: (response: any) => {
         console.log(response);     
-       
+        Swal.fire({
+          position: "center", // posición centrada
+          icon: "success",
+          title: "Tu registro ha sido enviado.",
+          showConfirmButton: false,
+          timer: 3000
+        });
+
+        this.router.navigate(['/']);
       },
       error: (e: HttpErrorResponse) => {
         if (e.error && e.error.msg) {

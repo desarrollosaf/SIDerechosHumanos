@@ -1,10 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import bcrypt from 'bcrypt'
-<<<<<<< HEAD
-import User from '../models/user'
-=======
 import  User  from '../models/user'
->>>>>>> 6e48f721c3baddcf03590f224bcfca963a4a8413
 import { Op } from 'sequelize'
 import jwt from 'jsonwebtoken'
 

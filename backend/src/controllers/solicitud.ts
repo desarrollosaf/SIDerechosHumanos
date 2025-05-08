@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import bcrypt from 'bcrypt'
-import  Solicitudes  from '../models/solicitud'
-import User from '../models/user'
+import  Solicitudes   from '../models/solicitud'
+import User  from '../models/user'
 const nodemailer = require('nodemailer');
 import dotenv from "dotenv";
 dotenv.config();
@@ -68,8 +68,9 @@ export const saveRegistro = async (req: Request, res: Response) => {
         email: body.correo,
         password: UpasswordHash,
       });
-  
+      console.log(newUser.id)
       body.userId = newUser.id;
+      console.log(body)
       await Solicitudes.create(body);
   
       // Configurar el transporte del correo
@@ -100,7 +101,9 @@ export const saveRegistro = async (req: Request, res: Response) => {
       });
   
       res.json({ msg: `Agregado con éxito y correo enviado` });
+
     } catch (error) {
+      
       console.error(error);
       res.status(500).json({ msg: `Ocurrió un error al registrar` });
     }

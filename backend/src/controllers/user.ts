@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import bcrypt from 'bcrypt'
-import { User } from '../models/user'
+import User from '../models/user'
 import { Op } from 'sequelize'
 import jwt from 'jsonwebtoken'
 
@@ -17,7 +17,7 @@ export const ReadUser = async (req: Request, res: Response) => {
 
 export const CreateUser = async (req: Request, res: Response,  next: NextFunction) => {
 
-    const { Uname, Ulastname, Upassword, Uemail, Ucredential } = req.body  
+    /*const { Uname, Ulastname, Upassword, Uemail, Ucredential } = req.body  
     console.log(req.body);
     const userEmail = await User.findOne({ where: {  Uemail: Uemail  }})
     const userCredential = await User.findOne({ where: {  Ucredential: Ucredential  }})
@@ -26,7 +26,7 @@ export const CreateUser = async (req: Request, res: Response,  next: NextFunctio
         return next(JSON.stringify({ msg: `Usuario ya existe con el email ${Uemail}`}));
         /*return res.status(400).json({
             msg: `Usuario ya existe con el email ${Uemail}`
-        })*/
+        })
     }
 
     if (userCredential) {
@@ -34,14 +34,14 @@ export const CreateUser = async (req: Request, res: Response,  next: NextFunctio
         /*
         return res.status(400).json({
             msg: `Usuario ya existe con la credencial ${Ucredential}`
-        })*/
+        })
     }
 
     const UpasswordHash = await bcrypt.hash(Upassword, 10)
     try {
         User.create({
-            Uname: Uname,
-            Ulastname: Ulastname,
+            name: Uname,
+            lastname: Ulastname,
             Uemail: Uemail,
             Upassword: UpasswordHash,
             Ucredential: Ucredential,
@@ -51,14 +51,14 @@ export const CreateUser = async (req: Request, res: Response,  next: NextFunctio
         return next(JSON.stringify({ msg: `User ${Uname} ${Ulastname} create success.`}));
         /*res.json({
             msg: `User ${Uname} ${Ulastname} create success.`
-        })*/
+        })
 
     } catch (error) {
         return next(JSON.stringify({ msg: `Existe un error al crear el usuario => `, error}));
         /*res.status(400).json({
             msg: `Existe un error al crear el usuario => `, error
-        })*/
-    }
+        })
+    }*/
 }
 
 export const LoginUser = async (req: Request, res: Response, next: NextFunction) => {

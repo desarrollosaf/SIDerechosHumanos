@@ -74,7 +74,9 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             email: body.correo,
             password: UpasswordHash,
         });
+        console.log(newUser.id);
         body.userId = newUser.id;
+        console.log(body);
         yield solicitud_1.default.create(body);
         // Configurar el transporte del correo
         const transporter = nodemailer.createTransport({

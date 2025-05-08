@@ -14,8 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
-const user_1 = require("./user");
-const solicitud_1 = require("./solicitud");
+const user_1 = __importDefault(require("./user"));
+const solicitud_1 = __importDefault(require("./solicitud"));
 const user_2 = __importDefault(require("../routes/user"));
 const solicitud_2 = __importDefault(require("../routes/solicitud"));
 class Server {
@@ -44,8 +44,8 @@ class Server {
     DBconnetc() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield user_1.User.sync();
-                yield solicitud_1.Solicitudes.sync();
+                yield user_1.default.sync();
+                yield solicitud_1.default.sync();
                 console.log("Conexion de DB exitoso");
             }
             catch (error) {

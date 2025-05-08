@@ -49,6 +49,14 @@ export const routes: Routes = [
       {
         path: 'solicitudes',
         loadChildren: () => import('./views/pages/solicitudes/solicitudes.route')
+      },
+      {
+        path: 'documentos',
+        loadComponent: () => import('./views/pages/documentos/documentos.component').then(c => c.DocumentosComponent)
+      },
+      {
+        path: 'add-documentos',
+        loadComponent: () => import('./views/pages/add-edit-documentos/add-edit-documentos.component').then(c => c.AddEditDocumentosComponent)
       }
     ]
   },
@@ -64,5 +72,6 @@ export const routes: Routes = [
     path: 'registro',
     loadComponent: () => import('./views/pages/registro/registro.component').then(c => c.RegistroComponent)
   },
+  
   { path: '**', redirectTo: 'error/404', pathMatch: 'full' }
 ];

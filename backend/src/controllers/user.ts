@@ -90,5 +90,5 @@ export const LoginUser = async (req: Request, res: Response, next: NextFunction)
     { expiresIn: 10000 }
     );
     
-    res.json({ token })
+    res.json({ token,user })
 }

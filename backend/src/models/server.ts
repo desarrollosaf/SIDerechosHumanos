@@ -5,6 +5,7 @@ import Solicitudes from './solicitud'
 import routesUser from '../routes/user'
 import routesSolicitud from '../routes/solicitud'
 
+
 class Server {
 
     private app: Application

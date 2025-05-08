@@ -1,9 +1,10 @@
 import express, {Application} from 'express'
 import cors from 'cors'
-import {User} from './user'
-import {Solicitudes} from './solicitud'
+import User from './user'
+import Solicitudes from './solicitud'
 import routesUser from '../routes/user'
 import routesSolicitud from '../routes/solicitud'
+
 
 class Server {
 

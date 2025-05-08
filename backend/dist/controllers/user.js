@@ -14,10 +14,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoginUser = exports.CreateUser = exports.ReadUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const user_1 = require("../models/user");
+const user_1 = __importDefault(require("../models/user"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const ReadUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const listUser = yield user_1.User.findAll();
+    const listUser = yield user_1.default.findAll();
     res.json({
         msg: `List de categoría encontrada exitosamenteeeee`,
         data: listUser
@@ -27,8 +27,8 @@ exports.ReadUser = ReadUser;
 const CreateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { Uname, Ulastname, Upassword, Uemail, Ucredential } = req.body;
     console.log(req.body);
-    const userEmail = yield user_1.User.findOne({ where: { Uemail: Uemail } });
-    const userCredential = yield user_1.User.findOne({ where: { Ucredential: Ucredential } });
+    const userEmail = yield user_1.default.findOne({ where: { Uemail: Uemail } });
+    const userCredential = yield user_1.default.findOne({ where: { Ucredential: Ucredential } });
     if (userEmail) {
         return next(JSON.stringify({ msg: `Usuario ya existe con el email ${Uemail}` }));
         /*return res.status(400).json({
@@ -44,7 +44,7 @@ const CreateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     }
     const UpasswordHash = yield bcrypt_1.default.hash(Upassword, 10);
     try {
-        user_1.User.create({
+        user_1.default.create({
             Uname: Uname,
             Ulastname: Ulastname,
             Uemail: Uemail,
@@ -68,7 +68,7 @@ exports.CreateUser = CreateUser;
 const LoginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     console.log(req.body);
-    const user = yield user_1.User.findOne({ where: { email: email } });
+    const user = yield user_1.default.findOne({ where: { email: email } });
     if (!user) {
         //return next(JSON.stringify({ msg: `Usuario no existe con el email ${email}`}));
         return res.status(400).json({

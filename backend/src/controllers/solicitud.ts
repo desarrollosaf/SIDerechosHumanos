@@ -1,8 +1,13 @@
 import { Request, Response, NextFunction } from 'express'
 import bcrypt from 'bcrypt'
-import { Solicitudes } from '../models/solicitud'
-import { Op } from 'sequelize'
-import jwt from 'jsonwebtoken'
+import  Solicitudes  from '../models/solicitud'
+import User from '../models/user'
+const nodemailer = require('nodemailer');
+import dotenv from "dotenv";
+dotenv.config();
+
+
+
 
 
 export const getRegistros = async (req: Request, res: Response) => {
@@ -44,21 +49,62 @@ export const deleteRegistro = async (req: Request, res: Response) => {
 
 export const saveRegistro = async (req: Request, res: Response) => {
     const { body } = req;
-    console.log(req.body);
-    console.log("LLEGUE");
-    try {
-        await Solicitudes.create(body);
-        res.json({
-            msg: `Agregado con exito`,
-        });
-
-    }catch (error){
-        console.log(error);
-        res.json({
-            msg: `Ocurrio un error al cargar `,
-        });
+  
+    function generateRandomPassword(length: number = 10): string {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$!';
+      let password = '';
+      for (let i = 0; i < length; i++) {
+        password += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return password;
     }
-}
+  
+    try {
+      const Upassword = generateRandomPassword(12);
+      const UpasswordHash = await bcrypt.hash(Upassword, 10);
+  
+      const newUser = await User.create({
+        name: body.curp,
+        email: body.correo,
+        password: UpasswordHash,
+      });
+  
+      body.userId = newUser.id;
+      await Solicitudes.create(body);
+  
+      // Configurar el transporte del correo
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST,
+        port: Number(process.env.SMTP_PORT),
+        secure: false,
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS,
+        },
+      });
+  
+      // Enviar el correo
+      await transporter.sendMail({
+        from: `"Registro" <${process.env.SMTP_USER}>`, 
+        to: body.correo,
+        subject: "Tus credenciales de acceso",
+        html: `
+          <h3>Hola ${body.nombres},</h3>
+          <p>Tu cuenta ha sido creada exitosamente. Aquí tienes tus credenciales:</p>
+          <ul>
+            <li><strong>Email:</strong> ${body.correo}</li>
+            <li><strong>Contraseña:</strong> ${Upassword}</li>
+          </ul>
+          <p>Por favor cambia tu contraseña al iniciar sesión.</p>
+        `,
+      });
+  
+      res.json({ msg: `Agregado con éxito y correo enviado` });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ msg: `Ocurrió un error al registrar` });
+    }
+  };
 
 export const putRegistro = async (req: Request, res: Response) => {
     res.status(404).json({

@@ -8,11 +8,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.putRegistro = exports.saveRegistro = exports.deleteRegistro = exports.getRegistro = exports.getRegistros = void 0;
-const solicitud_1 = require("../models/solicitud");
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const solicitud_1 = __importDefault(require("../models/solicitud"));
+const user_1 = __importDefault(require("../models/user"));
+const nodemailer = require('nodemailer');
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const getRegistros = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const listSolicitudes = yield solicitud_1.Solicitudes.findAll();
+    const listSolicitudes = yield solicitud_1.default.findAll();
     res.json({
         msg: `List de exitosamente`,
         data: listSolicitudes
@@ -21,7 +29,7 @@ const getRegistros = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.getRegistros = getRegistros;
 const getRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const solicitud = yield solicitud_1.Solicitudes.findByPk(id);
+    const solicitud = yield solicitud_1.default.findByPk(id);
     if (solicitud) {
         res.json(solicitud);
     }
@@ -34,7 +42,7 @@ const getRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getRegistro = getRegistro;
 const deleteRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const solicitud = yield solicitud_1.Solicitudes.findByPk(id);
+    const solicitud = yield solicitud_1.default.findByPk(id);
     if (solicitud) {
         yield solicitud.destroy();
         res.json({
@@ -50,19 +58,54 @@ const deleteRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.deleteRegistro = deleteRegistro;
 const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
-    console.log(req.body);
-    console.log("LLEGUE");
+    function generateRandomPassword(length = 10) {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$!';
+        let password = '';
+        for (let i = 0; i < length; i++) {
+            password += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return password;
+    }
     try {
-        yield solicitud_1.Solicitudes.create(body);
-        res.json({
-            msg: `Agregado con exito`,
+        const Upassword = generateRandomPassword(12);
+        const UpasswordHash = yield bcrypt_1.default.hash(Upassword, 10);
+        const newUser = yield user_1.default.create({
+            name: body.curp,
+            email: body.correo,
+            password: UpasswordHash,
         });
+        body.userId = newUser.id;
+        yield solicitud_1.default.create(body);
+        // Configurar el transporte del correo
+        const transporter = nodemailer.createTransport({
+            host: process.env.SMTP_HOST,
+            port: Number(process.env.SMTP_PORT),
+            secure: false,
+            auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS,
+            },
+        });
+        // Enviar el correo
+        yield transporter.sendMail({
+            from: `"Registro" <${process.env.SMTP_USER}>`,
+            to: body.correo,
+            subject: "Tus credenciales de acceso",
+            html: `
+          <h3>Hola ${body.nombres},</h3>
+          <p>Tu cuenta ha sido creada exitosamente. Aquí tienes tus credenciales:</p>
+          <ul>
+            <li><strong>Email:</strong> ${body.correo}</li>
+            <li><strong>Contraseña:</strong> ${Upassword}</li>
+          </ul>
+          <p>Por favor cambia tu contraseña al iniciar sesión.</p>
+        `,
+        });
+        res.json({ msg: `Agregado con éxito y correo enviado` });
     }
     catch (error) {
-        console.log(error);
-        res.json({
-            msg: `Ocurrio un error al cargar `,
-        });
+        console.error(error);
+        res.status(500).json({ msg: `Ocurrió un error al registrar` });
     }
 });
 exports.saveRegistro = saveRegistro;

@@ -9,7 +9,7 @@ export const MENU: MenuItem[] = [
   {
     label: 'Bandeja de entrada',
     icon: 'mail',
-    roles: ['martin.sanchezg@hotmail.com'],
+    roles: ['martin.sanchez@congresoedomex.gob.mx'],
     subMenus: [
       {
         subMenuItems: [

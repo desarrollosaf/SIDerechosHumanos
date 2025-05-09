@@ -1,5 +1,6 @@
 import express, {Application} from 'express'
 import cors from 'cors'
+import path from 'path';
 import User from './user'
 import Solicitudes from './solicitud'
 import routesUser from '../routes/user'
@@ -41,6 +42,7 @@ class Server {
         //Parseo BOdy
         this.app.use(express.json())
         this.app.use(cors())
+        this.app.use('/storage', express.static(path.join(process.cwd(), 'storage')));
     }
 
     async DBconnetc(){

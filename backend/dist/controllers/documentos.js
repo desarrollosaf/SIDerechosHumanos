@@ -8,9 +8,36 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.saveDocumentos = void 0;
+const documentos_1 = __importDefault(require("../models/documentos"));
+const solicitud_1 = __importDefault(require("../models/solicitud"));
 const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { body } = req;
+    const archivo = req.file; // contiene el archivo subido
+    const { tipo, usuario } = req.body;
+    if (!archivo) {
+        res.status(400).json({ message: 'Archivo no recibido' });
+    }
+    /*console.log('Archivo guardado en:', archivo?.path);
+    console.log('Nombre original:', archivo?.originalname);
+    console.log('Nombre actual:', archivo?.filename);
+    console.log('Tipo de documento:', tipo);
+    console.log('Usuario:', usuario);*/
+    const solicitud = yield solicitud_1.default.findOne({ where: { userId: 9 } });
+    if (!solicitud) {
+        res.status(404).json({ message: 'Solicitud no encontrada' });
+    }
+    const nuevoDocumento = yield documentos_1.default.create({
+        solicitudId: solicitud.id,
+        path: `storage/${usuario}/${archivo === null || archivo === void 0 ? void 0 : archivo.filename}`,
+        tipoDocumento: "1",
+    });
+    res.status(201).json({
+        message: 'Documento guardado exitosamente',
+        documento: nuevoDocumento
+    });
 });
 exports.saveDocumentos = saveDocumentos;

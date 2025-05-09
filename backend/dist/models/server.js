@@ -14,10 +14,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
+const path_1 = __importDefault(require("path"));
 const user_1 = __importDefault(require("./user"));
 const solicitud_1 = __importDefault(require("./solicitud"));
 const user_2 = __importDefault(require("../routes/user"));
 const solicitud_2 = __importDefault(require("../routes/solicitud"));
+const documentos_1 = __importDefault(require("../routes/documentos"));
 class Server {
     constructor() {
         this.app = (0, express_1.default)();
@@ -35,11 +37,13 @@ class Server {
     router() {
         this.app.use(user_2.default);
         this.app.use(solicitud_2.default);
+        this.app.use(documentos_1.default);
     }
     midlewares() {
         //Parseo BOdy
         this.app.use(express_1.default.json());
         this.app.use((0, cors_1.default)());
+        this.app.use('/storage', express_1.default.static(path_1.default.join(process.cwd(), 'storage')));
     }
     DBconnetc() {
         return __awaiter(this, void 0, void 0, function* () {

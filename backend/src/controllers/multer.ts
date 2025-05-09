@@ -2,15 +2,16 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 
-
-const uploadDir = path.join(__dirname, '../uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
-}
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, uploadDir); // Carpeta donde guardar
+    const usuarioId = req.params.usuarioId;
+    const uploadPath = path.join(process.cwd(), 'storage', usuarioId.toString());
+
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+
+    cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);

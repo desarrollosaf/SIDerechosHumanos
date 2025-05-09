@@ -2,6 +2,7 @@ export interface Documento {
     estatus?: number;
     tipo?: string;
     archivo?: File;
+    usuario?:number;
 }
 
 

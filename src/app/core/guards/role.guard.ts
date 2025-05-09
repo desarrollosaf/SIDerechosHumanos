@@ -1,5 +1,5 @@
-import { CanActivateFn } from '@angular/router';
+import { CanActivate, CanActivateFn, CanLoad, CanMatch } from '@angular/router';
 
-export const roleGuard: CanActivateFn = (route, state) => {
-  return true;
+export class roleGuard implements CanActivate, CanMatch{
+ 
 };

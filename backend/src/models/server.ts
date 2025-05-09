@@ -4,6 +4,7 @@ import User from './user'
 import Solicitudes from './solicitud'
 import routesUser from '../routes/user'
 import routesSolicitud from '../routes/solicitud'
+import routesDocumentos from '../routes/documentos'
 
 
 class Server {

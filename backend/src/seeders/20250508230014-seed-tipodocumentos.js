@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('tipodocumentos', [
+    await queryInterface.bulkInsert('TipoDocumentos', [
       { valor: 'curp', createdAt: new Date(), updatedAt: new Date() },
       { valor: 'ine', createdAt: new Date(), updatedAt: new Date() },
       { valor: 'titulo_licenciatura', createdAt: new Date(), updatedAt: new Date() },

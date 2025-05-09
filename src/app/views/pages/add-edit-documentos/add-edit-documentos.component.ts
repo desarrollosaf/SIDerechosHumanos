@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms'
 import { CommonModule } from '@angular/common';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
+import { Documento } from '../../../interfaces/documento';
 
 
 @Component({
@@ -37,21 +38,29 @@ export class AddEditDocumentosComponent {
 
 
 
-
-
-  onFile7(event: Event, controlName: string): void {
+  onFile7(event: Event, controlName: string, maxmb: number): void {
     const input = event.target as HTMLInputElement;
     const control = this.formDoc.get(controlName);
-  console.log(control);
+   
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
-      const maxSize = 7 * 1024 * 1024;
+      const maxSize = maxmb * 1024 * 1024;
   
       if (file.size > maxSize) {
         control?.setErrors({ fileSize: true });
       } else {
+        
         control?.setErrors(null); // Borra errores anteriores
         this.files[controlName] = file; // Guarda el archivo localmente
+
+
+
+        const document: Documento = {
+          tipo: input.id,
+          archivo: this.files[controlName],
+        }
+console.log(document);
+
       }
   
       control?.markAsTouched();

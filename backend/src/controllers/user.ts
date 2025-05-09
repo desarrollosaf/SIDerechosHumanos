@@ -69,7 +69,7 @@ export const LoginUser = async (req: Request, res: Response, next: NextFunction)
     const user: any = await User.findOne({ where: { email: email } })
     if (!user) {
         //return next(JSON.stringify({ msg: `Usuario no existe con el email ${email}`}));
-        return res.status(400).json({
+         res.status(400).json({
             msg: `Usuario no existe con el email ${email}`
         })
     }
@@ -79,7 +79,7 @@ export const LoginUser = async (req: Request, res: Response, next: NextFunction)
 
     if (!passwordValid) {
         //return next(JSON.stringify({ msg: `Password Incorrecto => ${password}`}));
-        return res.status(400).json({
+        res.status(400).json({
             msg: `Password Incorrecto => ${password}`
         })
     }

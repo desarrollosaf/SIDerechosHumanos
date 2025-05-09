@@ -67,7 +67,12 @@ getcurrusr(){
           archivo: this.files[controlName],
           usuario: 1
         }
-        this._documentoService.saveDocumentos(document).subscribe({
+        const formData = new FormData();
+        formData.append('tipo', input.id); // asegúrate de convertirlo a string si es un número
+        formData.append('archivo', this.files[controlName]); // debe ser un objeto File o Blob
+        formData.append('usuario', '1');
+        console.log(document)
+        this._documentoService.saveDocumentos(formData).subscribe({
           next: (response: any) => {
             console.log('holi');
           },

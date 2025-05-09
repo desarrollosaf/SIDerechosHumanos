@@ -32,6 +32,7 @@ class Server {
         
         this.app.use(routesUser);
         this.app.use(routesSolicitud);
+        this.app.use(routesDocumentos);
     }
 
     

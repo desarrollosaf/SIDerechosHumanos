@@ -17,7 +17,7 @@ export class DocumentoService {
 
   }
 
-  saveDocumentos(documento: Documento): Observable<string> {
-    return this.http.post<string>(`${this.myAppUrl}${this.myAPIUrl}/create`,documento)
+  saveDocumentos(document: FormData): Observable<string> {
+    return this.http.post<string>(`${this.myAppUrl}${this.myAPIUrl}/create`,document)
   }
 }

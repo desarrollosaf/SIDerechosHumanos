@@ -72,9 +72,9 @@ getcurrusr(){
         const formData = new FormData();
         formData.append('tipo', input.id); // asegúrate de convertirlo a string si es un número
         formData.append('archivo', this.files[controlName]); // debe ser un objeto File o Blob
-        formData.append('usuario', '1');
+        formData.append('usuario', '9');
         console.log(document)
-        this._documentoService.saveDocumentos(formData).subscribe({
+        this._documentoService.saveDocumentos(formData, 9).subscribe({
           next: (response: any) => {
             console.log(input.id);
             const archivoUrl = response.documento.path;

@@ -31,6 +31,26 @@ export const MENU: MenuItem[] = [
     ]
   },
   {
+    label: 'Documentos',
+    icon: 'mail',
+    roles: ['martin.sanchez@congresoedomex.gob.mx'],
+    subMenus: [
+      {
+        subMenuItems: [
+          {
+            label: 'Mis documentos',
+            isTitle: true,
+          },
+          {
+            label: 'Documentos',
+            link: '/add-documentos'
+          }
+        ]
+      },
+      
+    ]
+  },
+  {
     label: 'Apps',
     icon: 'mail',
     subMenus: [

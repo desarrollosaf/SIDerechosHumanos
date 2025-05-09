@@ -1,4 +1,4 @@
-import { Component, HostListener, Inject, OnInit } from '@angular/core';
+import { Component, HostListener, inject, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { ThemeModeService } from '../../../core/services/theme-mode.service';
@@ -6,7 +6,11 @@ import { DOCUMENT, NgClass, NgFor, NgIf } from '@angular/common';
 
 import { MENU } from './menu';
 import { MenuItem } from './menu.model';
+import { SubMenus } from './menu.model';
+import { SubMenuItems } from './menu.model';
 import { FeatherIconDirective } from '../../../core/feather-icon/feather-icon.directive';
+
+import { UserService } from '../../../service/user.service';
 
 @Component({
     selector: 'app-navbar',
@@ -25,9 +29,12 @@ import { FeatherIconDirective } from '../../../core/feather-icon/feather-icon.di
 export class NavbarComponent implements OnInit {
 
   currentTheme: string;
-  menuItems: MenuItem[] = []
+  menuItems: MenuItem[] = [];
+  sub: SubMenus[] = [];
+  subItem: SubMenuItems[] = [];
 
   currentlyOpenedNavItem: HTMLElement | undefined;
+  public _userService = inject(UserService);
 
   constructor(
     private router: Router,
@@ -39,8 +46,15 @@ export class NavbarComponent implements OnInit {
       this.currentTheme = theme;
       this.showActiveTheme(this.currentTheme);
     });
-
+    const role = this._userService.currentUserValue?.email;
     this.menuItems = MENU;
+
+    if (role) {
+      this.menuItems = this.filterMenuByRole(MENU, role);
+    } else {
+      this.menuItems = []; 
+    }
+    //this.menuItems = this.filterMenuByRole(MENU, role);
 
     /**
      * Close the header menu after a route change on tablet and mobile devices
@@ -54,6 +68,20 @@ export class NavbarComponent implements OnInit {
         }
       });
     // }
+  }
+
+  private filterMenuByRole(menu: MenuItem[], role: string): MenuItem[] {
+    return menu
+      .filter(item => !item.roles || item.roles.includes(role))
+      .map(item => ({
+        ...item,
+        subMenus: item.subMenus?.map((sub: SubMenus) => ({
+          ...sub,
+          subMenuItems: (sub.subMenuItems ?? []).filter((subItem: SubMenuItems) =>
+            !subItem.roles || subItem.roles.includes(role)
+          )
+        }))
+      }));
   }
 
   showActiveTheme(theme: string) {

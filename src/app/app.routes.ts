@@ -16,7 +16,8 @@ export const routes: Routes = [
       },
       {
         path: 'apps',
-        loadChildren: () => import('./views/pages/apps/apps.routes')
+        loadChildren: () => import('./views/pages/apps/apps.routes'),
+        data: { roles: ['admin'] }
       },
       {
         path: 'ui-components',

@@ -42,3 +42,5 @@ testem.log
 Thumbs.db
 
 backend/src/database/connection.ts
+backend/dist/uploads
+backend/src/config

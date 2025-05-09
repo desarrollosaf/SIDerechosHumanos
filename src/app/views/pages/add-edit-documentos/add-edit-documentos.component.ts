@@ -17,6 +17,7 @@ export class AddEditDocumentosComponent {
   files: { [key: string]: File } = {};
   public _userService = inject(UserService);
   public _documentoService  =  inject( DocumentoService );
+   archivosSubidos: { [key: string]: string } = {};
   constructor(private fb: FormBuilder){
     this.formDoc = this.fb.group({
       curp:[null, Validators.required],
@@ -50,6 +51,7 @@ getcurrusr(){
     const input = event.target as HTMLInputElement;
     const control = this.formDoc.get(controlName);
     const currntUsr = this._userService.currentUserValue?.id;
+   
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       const maxSize = maxmb * 1024 * 1024;
@@ -74,7 +76,10 @@ getcurrusr(){
         console.log(document)
         this._documentoService.saveDocumentos(formData).subscribe({
           next: (response: any) => {
-            console.log('holi');
+            console.log(input.id);
+            const archivoUrl = response.documento.path;
+            this.archivosSubidos[input.id] = archivoUrl;
+           
           },
           error: (e: HttpErrorResponse) => {
             if (e.error && e.error.msg) {

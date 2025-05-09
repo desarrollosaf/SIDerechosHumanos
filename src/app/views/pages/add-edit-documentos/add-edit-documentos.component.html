@@ -13,16 +13,26 @@
                                         mexicano por nacimiento en pleno goce y
                                         ejercicio de sus derechos políticos y civiles (CURP)*:
                                     </label>
-
                                     <div class="mt-auto">
-                                        <input formControlName="curp" class="form-control" type="file" id="curp" accept="application/pdf" (change)="onFile7($event, 'curp',7)">
+                                        <input  class="form-control" type="file" id="curp"
+                                            accept="application/pdf" (change)="onFile7($event, 'curp',7)">
                                     </div>
+
                                     <div *ngIf="formDoc.get('curp')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
-                                      </div>
-                                      <div *ngIf="formDoc.get('curp')?.hasError('fileSize')">
+                                    </div>
+                                    <div *ngIf="formDoc.get('curp')?.hasError('fileSize')">
                                         <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
-                                      </div>
+                                    </div>
+
+                                    <div *ngIf="archivosSubidos['curp']" class="mt-2">
+                                        <a [href]="archivosSubidos['curp']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -39,14 +49,23 @@
                                     </label>
 
                                     <div class="mt-auto">
-                                        <input formControlName="ine" class="form-control" type="file" id="ine" accept="application/pdf" (change)="onFile7($event, 'ine',7)">
+                                        <input  class="form-control" type="file" id="ine"
+                                            accept="application/pdf" (change)="onFile7($event, 'ine',7)">
                                     </div>
                                     <div *ngIf="formDoc.get('ine')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
-                                      </div>
-                                      <div *ngIf="formDoc.get('ine')?.hasError('fileSize')">
+                                    </div>
+                                    <div *ngIf="formDoc.get('ine')?.hasError('fileSize')">
                                         <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
-                                      </div>
+                                    </div>
+                                    <div *ngIf="archivosSubidos['ine']" class="mt-2">
+                                        <a [href]="archivosSubidos['ine']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -61,14 +80,24 @@
                                     </label>
 
                                     <div class="mt-auto">
-                                        <input formControlName="titulo_licenciatura" class="form-control" type="file" id="titulo_licenciatura" accept="application/pdf" (change)="onFile7($event, 'titulo_licenciatura',7)">
+                                        <input  class="form-control" type="file"
+                                            id="titulo_licenciatura" accept="application/pdf"
+                                            (change)="onFile7($event, 'titulo_licenciatura',7)">
                                     </div>
                                     <div *ngIf="formDoc.get('titulo_licenciatura')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
-                                      </div>
-                                      <div *ngIf="formDoc.get('titulo_licenciatura')?.hasError('fileSize')">
+                                    </div>
+                                    <div *ngIf="formDoc.get('titulo_licenciatura')?.hasError('fileSize')">
                                         <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
-                                      </div>
+                                    </div>
+                                    <div *ngIf="archivosSubidos['titulo_licenciatura']" class="mt-2">
+                                        <a [href]="archivosSubidos['titulo_licenciatura']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -82,14 +111,24 @@
                                     </label>
 
                                     <div class="mt-auto">
-                                        <input formControlName="acta_nacimiento" class="form-control" type="file" id="acta_nacimiento" accept="application/pdf" (change)="onFile7($event, 'acta_nacimiento',7)">
+                                        <input  class="form-control" type="file"
+                                            id="acta_nacimiento" accept="application/pdf"
+                                            (change)="onFile7($event, 'acta_nacimiento',7)">
                                     </div>
                                     <div *ngIf="formDoc.get('acta_nacimiento')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
-                                      </div>
-                                      <div *ngIf="formDoc.get('acta_nacimiento')?.hasError('fileSize')">
+                                    </div>
+                                    <div *ngIf="formDoc.get('acta_nacimiento')?.hasError('fileSize')">
                                         <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
-                                      </div>
+                                    </div>
+                                    <div *ngIf="archivosSubidos['acta_nacimiento']" class="mt-2">
+                                        <a [href]="archivosSubidos['acta_nacimiento']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -106,14 +145,24 @@
                                     </label>
 
                                     <div class="mt-auto">
-                                        <input formControlName="carta_ant_no_penales" class="form-control" type="file" id="carta_ant_no_penales" accept="application/pdf" (change)="onFile7($event, 'carta_ant_no_penales',7)">
+                                        <input  class="form-control" type="file"
+                                            id="carta_ant_no_penales" accept="application/pdf"
+                                            (change)="onFile7($event, 'carta_ant_no_penales',7)">
                                     </div>
                                     <div *ngIf="formDoc.get('carta_ant_no_penales')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
-                                      </div>
-                                      <div *ngIf="formDoc.get('carta_ant_no_penales')?.hasError('fileSize')">
+                                    </div>
+                                    <div *ngIf="formDoc.get('carta_ant_no_penales')?.hasError('fileSize')">
                                         <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
-                                      </div>
+                                    </div>
+                                    <div *ngIf="archivosSubidos['carta_ant_no_penales']" class="mt-2">
+                                        <a [href]="archivosSubidos['carta_ant_no_penales']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -128,14 +177,24 @@
                                     </label>
 
                                     <div class="mt-auto">
-                                        <input formControlName="carta_protesta1" class="form-control" type="file" id="carta_protesta1" accept="application/pdf" (change)="onFile7($event, 'carta_protesta1',7)">
+                                        <input  class="form-control" type="file"
+                                            id="carta_protesta1" accept="application/pdf"
+                                            (change)="onFile7($event, 'carta_protesta1',7)">
                                     </div>
                                     <div *ngIf="formDoc.get('carta_protesta1')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
-                                      </div>
-                                      <div *ngIf="formDoc.get('carta_protesta1')?.hasError('fileSize')">
+                                    </div>
+                                    <div *ngIf="formDoc.get('carta_protesta1')?.hasError('fileSize')">
                                         <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
-                                      </div>
+                                    </div>
+                                    <div *ngIf="archivosSubidos['carta_protesta1']" class="mt-2">
+                                        <a [href]="archivosSubidos['carta_protesta1']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -151,14 +210,24 @@
                                     </label>
 
                                     <div class="mt-auto">
-                                        <input formControlName="carta_protesta2" class="form-control" type="file" id="carta_protesta2" accept="application/pdf" (change)="onFile7($event, 'carta_protesta2',7)">
+                                        <input  class="form-control" type="file"
+                                            id="carta_protesta2" accept="application/pdf"
+                                            (change)="onFile7($event, 'carta_protesta2',7)">
                                     </div>
                                     <div *ngIf="formDoc.get('carta_protesta2')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
-                                      </div>
-                                      <div *ngIf="formDoc.get('carta_protesta2')?.hasError('fileSize')">
+                                    </div>
+                                    <div *ngIf="formDoc.get('carta_protesta2')?.hasError('fileSize')">
                                         <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
-                                      </div>
+                                    </div>
+                                    <div *ngIf="archivosSubidos['carta_protesta2']" class="mt-2">
+                                        <a [href]="archivosSubidos['carta_protesta2']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -175,14 +244,24 @@
                                     </label>
 
                                     <div class="mt-auto">
-                                        <input formControlName="carta_protesta3" class="form-control" type="file" id="carta_protesta3" accept="application/pdf" (change)="onFile7($event, 'carta_protesta3',7)">
+                                        <input  class="form-control" type="file"
+                                            id="carta_protesta3" accept="application/pdf"
+                                            (change)="onFile7($event, 'carta_protesta3',7)">
                                     </div>
                                     <div *ngIf="formDoc.get('carta_protesta3')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
-                                      </div>
-                                      <div *ngIf="formDoc.get('carta_protesta3')?.hasError('fileSize')">
+                                    </div>
+                                    <div *ngIf="formDoc.get('carta_protesta3')?.hasError('fileSize')">
                                         <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
-                                      </div>
+                                    </div>
+                                    <div *ngIf="archivosSubidos['carta_protesta3']" class="mt-2">
+                                        <a [href]="archivosSubidos['carta_protesta3']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -199,14 +278,24 @@
                                     </label>
 
                                     <div class="mt-auto">
-                                        <input formControlName="carta_protesta4" class="form-control" type="file" id="carta_protesta4" accept="application/pdf" (change)="onFile7($event, 'carta_protesta4',7)">
+                                        <input  class="form-control" type="file"
+                                            id="carta_protesta4" accept="application/pdf"
+                                            (change)="onFile7($event, 'carta_protesta4',7)">
                                     </div>
                                     <div *ngIf="formDoc.get('carta_protesta4')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
-                                      </div>
-                                      <div *ngIf="formDoc.get('carta_protesta4')?.hasError('fileSize')">
+                                    </div>
+                                    <div *ngIf="formDoc.get('carta_protesta4')?.hasError('fileSize')">
                                         <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
-                                      </div>
+                                    </div>
+                                    <div *ngIf="archivosSubidos['carta_protesta4']" class="mt-2">
+                                        <a [href]="archivosSubidos['carta_protesta4']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -221,14 +310,23 @@
                                     </label>
 
                                     <div class="mt-auto">
-                                        <input formControlName="carta_protesta5" class="form-control" type="file" id="curp" accept="application/pdf" (change)="onFile7($event, 'carta_protesta5',7)">
+                                        <input  class="form-control" type="file"
+                                            id="carta_protesta5" accept="application/pdf"
+                                            (change)="onFile7($event, 'carta_protesta5',7)">
                                     </div>
                                     <div *ngIf="formDoc.get('carta_protesta5')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
-                                      </div>
-                                      <div *ngIf="formDoc.get('carta_protesta5')?.hasError('fileSize')">
+                                    </div>
+                                    <div *ngIf="formDoc.get('carta_protesta5')?.hasError('fileSize')">
                                         <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
-                                      </div>
+                                    </div>
+                                    <div *ngIf="archivosSubidos['carta_protesta5']" class="mt-2">
+                                        <a [href]="archivosSubidos['carta_protesta5']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -246,14 +344,24 @@
                                         publicaciones en materias relacionadas con los derechos humanos (CURRICULUM)*:
                                     </label>
                                     <div class="mt-auto">
-                                        <input  formControlName="curriculum" class="form-control" type="file" id="curriculum" accept="application/pdf" (change)="onFile7($event, 'curriculum',50)">
+                                        <input  class="form-control" type="file"
+                                            id="curriculum" accept="application/pdf"
+                                            (change)="onFile7($event, 'curriculum',50)">
                                     </div>
                                     <div *ngIf="formDoc.get('curriculum')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
-                                      </div>
-                                      <div *ngIf="formDoc.get('curriculum')?.hasError('fileSize')">
+                                    </div>
+                                    <div *ngIf="formDoc.get('curriculum')?.hasError('fileSize')">
                                         <small class="text-danger">El archivo no debe exceder los 50 MB.</small>
-                                      </div>
+                                    </div>
+                                    <div *ngIf="archivosSubidos['curriculum']" class="mt-2">
+                                        <a [href]="archivosSubidos['curriculum']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -271,14 +379,24 @@
                                         PROGRAMA)*:
                                     </label>
                                     <div class="mt-auto">
-                                        <input class="form-control" type="file" id="propuesta_programa" accept="application/pdf" (change)="onFile7($event, 'propuesta_programa',50)">
+                                        <input class="form-control" type="file" id="propuesta_programa"
+                                            accept="application/pdf"
+                                            (change)="onFile7($event, 'propuesta_programa',50)">
                                     </div>
                                     <div *ngIf="formDoc.get('propuesta_programa')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
-                                      </div>
-                                      <div *ngIf="formDoc.get('propuesta_programa')?.hasError('fileSize')">
+                                    </div>
+                                    <div *ngIf="formDoc.get('propuesta_programa')?.hasError('fileSize')">
                                         <small class="text-danger">El archivo no debe exceder los 50 MB.</small>
-                                      </div>
+                                    </div>
+                                    <div *ngIf="archivosSubidos['propuesta_programa']" class="mt-2">
+                                        <a [href]="archivosSubidos['propuesta_programa']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -292,14 +410,22 @@
                                         edad; así como de título(s) o grados académicos (COPIAS CERTIFICADAS)*:
                                     </label>
                                     <div class="mt-auto">
-                                        <input class="form-control" type="file" id="copia_certificada" accept="application/pdf" (change)="onFile7($event, 'copia_certificada',50)">
+                                        <input class="form-control" type="file" id="copia_certificada"
+                                            accept="application/pdf" (change)="onFile7($event, 'copia_certificada',50)">
                                     </div>
                                     <div *ngIf="formDoc.get('copia_certificada')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
-                                      </div>
-                                      <div *ngIf="formDoc.get('copia_certificada')?.hasError('fileSize')">
+                                    </div>
+                                    <div *ngIf="formDoc.get('copia_certificada')?.hasError('fileSize')">
                                         <small class="text-danger">El archivo no debe exceder los 50 MB.</small>
-                                      </div>
+                                    </div>
+                                    <div *ngIf="archivosSubidos['copia_certificada']" class="mt-2">
+                                        <a [href]="archivosSubidos['copia_certificada']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -308,7 +434,6 @@
                                 Enviar
                             </button>
                         </div>
-
                     </div>
                     <br>
                 </form>

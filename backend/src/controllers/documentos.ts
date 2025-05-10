@@ -4,8 +4,8 @@ import  Solicitudes   from '../models/solicitud'
 
 
 export const saveDocumentos = async (req: Request, res: Response) => {
-    const archivo = req.file; // contiene el archivo subido
-    const { tipo, usuario } = req.body;
+   const archivo = req.file; // contiene el archivo subido
+   const { tipo, usuario } = req.body;
     
    if (!archivo) {
         res.status(400).json({ message: 'Archivo no recibido' });
@@ -16,7 +16,6 @@ export const saveDocumentos = async (req: Request, res: Response) => {
     console.log('Nombre actual:', archivo?.filename);
     console.log('Tipo de documento:', tipo);
     console.log('Usuario:', usuario);*/
-
     const solicitud: any = await Solicitudes.findOne({ where: { userId: 9 } })
 
     if (!solicitud) {

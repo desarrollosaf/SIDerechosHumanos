@@ -26,7 +26,9 @@ const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function*
     console.log('Nombre actual:', archivo?.filename);
     console.log('Tipo de documento:', tipo);
     console.log('Usuario:', usuario);*/
+
     const solicitud = yield solicitud_1.default.findOne({ where: { userId: 9 } });
+
     if (!solicitud) {
         res.status(404).json({ message: 'Solicitud no encontrada' });
     }

@@ -44,3 +44,4 @@ Thumbs.db
 backend/src/database/connection.ts
 backend/dist/uploads
 backend/src/config
+backend/dist/storage

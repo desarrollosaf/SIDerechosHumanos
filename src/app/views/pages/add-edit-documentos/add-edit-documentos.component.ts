@@ -6,6 +6,7 @@ import { Documento } from '../../../interfaces/documento';
 import { UserService } from '../../../service/user.service';
 import { DocumentoService } from '../../../service/documento.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-add-edit-documentos',
   imports: [CommonModule,FormsModule,ReactiveFormsModule],
@@ -74,11 +75,26 @@ getcurrusr(){
         formData.append('archivo', this.files[controlName]); // debe ser un objeto File o Blob
         formData.append('usuario', '9');
         console.log(document)
-        this._documentoService.saveDocumentos(formData, 9).subscribe({
+        this._documentoService.saveDocumentos(formData, 1).subscribe({
           next: (response: any) => {
             console.log(input.id);
             const archivoUrl = response.documento.path;
             this.archivosSubidos[input.id] = archivoUrl;
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 2000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+              }
+            });
+            Toast.fire({
+              icon: "success",
+              title: "Documento guardado correctamente."
+            });
            
           },
           error: (e: HttpErrorResponse) => {

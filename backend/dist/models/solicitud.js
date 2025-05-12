@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../database/connection"));
+const documentos_1 = __importDefault(require("./documentos"));
 class Solicitudes extends sequelize_1.Model {
 }
 Solicitudes.init({
@@ -27,8 +28,12 @@ Solicitudes.init({
     aviso_privacidad: sequelize_1.DataTypes.BOOLEAN,
 }, {
     sequelize: connection_1.default,
-    tableName: 'solicituds',
+    tableName: 'Solicituds',
     timestamps: true,
     paranoid: true,
 });
 exports.default = Solicitudes;
+Solicitudes.hasMany(documentos_1.default, {
+    foreignKey: 'solicitudId',
+    as: 'documentos',
+});

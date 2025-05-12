@@ -10,7 +10,7 @@ module.exports = {
      * Add seed commands here.
      *
      * Example:*/
-    await queryInterface.bulkInsert('Users', [{
+    await queryInterface.bulkInsert('users', [{
       name: 'SAGM990220',
       email: 'martin.sanchez@congresoedomex.gob.mx',
       password: hashedPassword,

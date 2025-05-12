@@ -37,7 +37,7 @@ User.init({
     },
 }, {
     sequelize: connection_1.default,
-    tableName: 'Users',
+    tableName: 'users',
     timestamps: true,
     indexes: [
         {

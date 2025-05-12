@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Documentos', {
+    await queryInterface.createTable('documentos', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.INTEGER, // ✅ Debe ser INTEGER
         allowNull: false,
         references: {
-          model: 'Solicituds', // ✅ Nombre de la tabla relacionada
+          model: 'solicituds', // ✅ Nombre de la tabla relacionada
           key: 'id'
         },
         onUpdate: 'CASCADE', // Opcional, para actualizar la clave foránea en cascada
@@ -42,6 +42,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Documentos');
+    await queryInterface.dropTable('documentos');
   }
 };

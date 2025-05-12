@@ -20,7 +20,7 @@ TipoDocumentos.init({
     },
 }, {
     sequelize: connection_1.default,
-    tableName: 'TipoDocumentos',
+    tableName: 'tipodocumentos',
     timestamps: true,
     indexes: [
         {

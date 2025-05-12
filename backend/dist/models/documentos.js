@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../database/connection"));
-const solicitud_1 = __importDefault(require("./solicitud"));
 const tipodocumentos_1 = __importDefault(require("./tipodocumentos"));
 class Documentos extends sequelize_1.Model {
 }
@@ -37,9 +36,9 @@ Documentos.init({
     },
 }, {
     sequelize: connection_1.default,
-    tableName: 'Documentos',
+    tableName: 'documentos',
     timestamps: true,
 });
 exports.default = Documentos;
-Documentos.belongsTo(solicitud_1.default, { foreignKey: 'solicitudId', as: 'solicitud' });
-Documentos.belongsTo(tipodocumentos_1.default, { foreignKey: 'tipoDocumento', as: 'tipo' });
+// Documentos.belongsTo(Solicitudes, { foreignKey: 'solicitudId', as: 'solicitud' });
+Documentos.belongsTo(tipodocumentos_1.default, { foreignKey: 'tipodocumento', as: 'tipo' });

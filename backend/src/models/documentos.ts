@@ -64,4 +64,4 @@ Documentos.init(
 
 export default Documentos;
 // Documentos.belongsTo(Solicitudes, { foreignKey: 'solicitudId', as: 'solicitud' });
-Documentos.belongsTo(TipoDocumentos, {foreignKey: 'tipoDocumento', as: 'tipo' });
+Documentos.belongsTo(TipoDocumentos, {foreignKey: 'tipodocumento', as: 'tipo' });

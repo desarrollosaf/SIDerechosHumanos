@@ -20,4 +20,10 @@ export class DocumentoService {
   saveDocumentos(document: FormData, user : Number): Observable<string> {
     return this.http.post<string>(`${this.myAppUrl}${this.myAPIUrl}/create/${user}`,document)
   }
+
+  getDocumentosUser(user : Number): Observable<string> {
+    return this.http.get<string>(`${this.myAppUrl}${this.myAPIUrl}/getdocumentos/${user}`)
+  }
+
+
 }

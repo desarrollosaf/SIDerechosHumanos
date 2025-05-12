@@ -8,13 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.saveDocumentos = void 0;
-const documentos_1 = __importDefault(require("../models/documentos"));
-const solicitud_1 = __importDefault(require("../models/solicitud"));
+exports.getDocumentos = exports.saveDocumentos = void 0;
+const models_1 = require("../models");
 const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const archivo = req.file; // contiene el archivo subido
     const { tipo, usuario } = req.body;
@@ -26,14 +22,14 @@ const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function*
     console.log('Nombre actual:', archivo?.filename);
     console.log('Tipo de documento:', tipo);
     console.log('Usuario:', usuario);*/
-    const solicitud = yield solicitud_1.default.findOne({ where: { userId: 9 } });
+    const solicitud = yield models_1.Solicitudes.findOne({ where: { userId: 2 } });
     if (!solicitud) {
         res.status(404).json({ message: 'Solicitud no encontrada' });
     }
-    const nuevoDocumento = yield documentos_1.default.create({
+    const nuevoDocumento = yield models_1.Documentos.create({
         solicitudId: solicitud.id,
         path: `storage/${usuario}/${archivo === null || archivo === void 0 ? void 0 : archivo.filename}`,
-        tipoDocumento: "1",
+        tipoDocumento: 1,
     });
     res.status(201).json({
         message: 'Documento guardado exitosamente',
@@ -41,3 +37,30 @@ const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function*
     });
 });
 exports.saveDocumentos = saveDocumentos;
+const getDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const documentos = yield models_1.Documentos.findAll({
+        where: { solicitudId: 1 },
+        include: [
+            {
+                model: models_1.TipoDocumentos,
+                as: 'tipo',
+                attributes: ['valor']
+            }
+        ],
+        logging: console.log
+    });
+    const documentosFormateados = documentos.map(doc => {
+        var _a;
+        return (Object.assign(Object.assign({}, doc.toJSON()), { tipoDocumento: ((_a = doc.tipo) === null || _a === void 0 ? void 0 : _a.valor) || null }));
+    });
+    if (documentosFormateados) {
+        res.json(documentosFormateados);
+    }
+    else {
+        res.status(404).json({
+            msg: `No existe el id ${id}`,
+        });
+    }
+});
+exports.getDocumentos = getDocumentos;

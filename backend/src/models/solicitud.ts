@@ -46,7 +46,7 @@ Solicitudes.init(
   },
   {
     sequelize,
-    tableName: 'solicituds',
+    tableName: 'Solicituds',
     timestamps: true,
     paranoid: true,
   }

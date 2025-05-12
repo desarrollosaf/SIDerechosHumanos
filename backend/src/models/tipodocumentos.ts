@@ -30,7 +30,7 @@ TipoDocumentos.init(
   },
   {
     sequelize,
-    tableName: 'tipodocumentos',
+    tableName: 'TipoDocumentos',
     timestamps: true,
     indexes: [
       {

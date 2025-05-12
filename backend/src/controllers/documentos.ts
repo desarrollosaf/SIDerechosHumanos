@@ -16,7 +16,7 @@ export const saveDocumentos = async (req: Request, res: Response) => {
     console.log('Tipo de documento:', tipo);
     console.log('Usuario:', usuario);*/
 
-    const solicitud: any = await Solicitudes.findOne({ where: { userId: 11 } })
+    const solicitud: any = await Solicitudes.findOne({ where: { userId: 2 } })
     if (!solicitud) {
          res.status(404).json({ message: 'Solicitud no encontrada' });
     }
@@ -39,26 +39,21 @@ export const getDocumentos = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const documentos = await Documentos.findAll({
+        where: { solicitudId: 1 },
         include: [
-            {
-                model: Solicitudes,
-                as: 'solicitud',
-                where: { userId: 11 },
-                attributes: [] // No traer campos de Solicitudes, solo relacionar
-            },
-            {
-                model: TipoDocumentos,
-                as: 'tipo', // Alias que configuraste en la relación
-                attributes: ['valor']
-            }
+          {
+            model: TipoDocumentos,
+            as: 'tipo',
+            attributes: ['valor'] 
+          }
         ],
-        logging: console.log 
-    });
+        logging: console.log
+      });
 
-    
+
     const documentosFormateados = documentos.map(doc => ({
         ...doc.toJSON(),
-        tipoDocumento: doc.tipo?.valor || null // Reemplazar tipoDocumento con el valor
+        tipoDocumento: doc.tipo?.valor || null
     }));
 
     if(documentosFormateados){

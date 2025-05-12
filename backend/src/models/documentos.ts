@@ -7,6 +7,7 @@ import {
   ForeignKey,
 } from 'sequelize';
 import sequelize from '../database/connection';
+import Solicitudes from './solicitud';
 import TipoDocumentos from './tipodocumentos';
 
 class Documentos extends Model<
@@ -62,3 +63,5 @@ Documentos.init(
 );
 
 export default Documentos;
+Documentos.belongsTo(Solicitudes, { foreignKey: 'solicitudId', as: 'solicitud' });
+Documentos.belongsTo(TipoDocumentos, {foreignKey: 'tipoDocumento', as: 'tipo' });

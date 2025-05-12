@@ -10,15 +10,12 @@ Solicitudes.hasMany(Documentos, {
   as: 'documentos',
 });
 
-Documentos.belongsTo(Solicitudes, {
+/*Documentos.belongsTo(Solicitudes, {
   foreignKey: 'solicitudId',
   as: 'solicitud',
-});
+});*/
 
-Documentos.belongsTo(TipoDocumentos, {
-  foreignKey: 'tipoDocumento', // El campo en Documentos que se conecta
-  as: 'tipo' // Alias para facilitar la relación
-});
+
 
 // Opcional: relación entre Solicitudes y User si la tienes
 Solicitudes.belongsTo(User, { foreignKey: 'userId' });

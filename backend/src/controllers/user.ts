@@ -5,9 +5,9 @@ import { Op } from 'sequelize'
 import jwt from 'jsonwebtoken'
 
 
-export const ReadUser = async (req: Request, res: Response) => {
+export const ReadUser = async (req: Request, res: Response): Promise<any> => {
     const listUser = await User.findAll();
-    res.json({
+    return res.json({
         msg: `List de categoría encontrada exitosamenteeeee`,
         data: listUser
     });
@@ -61,15 +61,16 @@ export const CreateUser = async (req: Request, res: Response,  next: NextFunctio
     }*/
 }
 
-export const LoginUser = async (req: Request, res: Response, next: NextFunction) => {
+export const LoginUser = async (req: Request, res: Response): Promise<any> => {
     const { email, password } = req.body;
 
     console.log(req.body);
 
     const user: any = await User.findOne({ where: { email: email } })
     if (!user) {
+
         //return next(JSON.stringify({ msg: `Usuario no existe con el email ${email}`}));
-         res.status(400).json({
+        return res.status(400).json({
             msg: `Usuario no existe con el email ${email}`
         })
     }
@@ -78,8 +79,9 @@ export const LoginUser = async (req: Request, res: Response, next: NextFunction)
     const passwordValid = await bcrypt.compare(password, user.password)
 
     if (!passwordValid) {
-        //return next(JSON.stringify({ msg: `Password Incorrecto => ${password}`}));
-        res.status(400).json({
+
+       // return next(JSON.stringify({ msg: `Password Incorrecto => ${password}`}));
+        return res.status(400).json({
             msg: `Password Incorrecto => ${password}`
         })
     }
@@ -89,6 +91,7 @@ export const LoginUser = async (req: Request, res: Response, next: NextFunction)
     }, process.env.SECRET_KEY || 'TSE-Poder-legislativo',
     { expiresIn: 10000 }
     );
-    
-    res.json({ token,user })
+
+    //return next(JSON.stringify({ token, user }));
+    return res.json({ token,user })
 }

@@ -21,7 +21,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const getRegistros = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const listSolicitudes = yield solicitud_1.default.findAll();
-    res.json({
+    return res.json({
         msg: `List de exitosamente`,
         data: listSolicitudes
     });
@@ -31,10 +31,10 @@ const getRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const { id } = req.params;
     const solicitud = yield solicitud_1.default.findByPk(id);
     if (solicitud) {
-        res.json(solicitud);
+        return res.json(solicitud);
     }
     else {
-        res.status(404).json({
+        return res.status(404).json({
             msg: `No existe el id ${id}`,
         });
     }
@@ -45,12 +45,12 @@ const deleteRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const solicitud = yield solicitud_1.default.findByPk(id);
     if (solicitud) {
         yield solicitud.destroy();
-        res.json({
+        return res.json({
             msg: `Eliminado con exito`,
         });
     }
     else {
-        res.status(404).json({
+        return res.status(404).json({
             msg: `No existe el id ${id}`,
         });
     }
@@ -103,16 +103,16 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
           <p>Por favor cambia tu contraseña al iniciar sesión.</p>
         `,
         });
-        res.json({ msg: `Agregado con éxito y correo enviado` });
+        return res.json({ msg: `Agregado con éxito y correo enviado` });
     }
     catch (error) {
         console.error(error);
-        res.status(500).json({ msg: `Ocurrió un error al registrar` });
+        return res.status(500).json({ msg: `Ocurrió un error al registrar` });
     }
 });
 exports.saveRegistro = saveRegistro;
 const putRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.status(404).json({
+    return res.status(404).json({
         msg: 'put',
     });
     // try {

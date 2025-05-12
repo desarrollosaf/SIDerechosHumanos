@@ -45,7 +45,9 @@ exports.saveDocumentos = saveDocumentos;
 const getDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const solicitudConDocumentos = yield solicitud_1.default.findOne({
-        where: { userId: 11 },
+
+        where: { userId: id },
+
         include: [
             {
                 model: documentos_1.default,
@@ -53,13 +55,15 @@ const getDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 include: [
                     {
                         model: tipodocumentos_1.default,
-                        as: 'tipo', // Alias configurado en la relación
-                        attributes: ['valor'], // Solo traemos el campo que necesitamos
+
+                        as: 'tipo',
+                        attributes: ['valor'],
                     }
                 ],
             },
         ],
-        attributes: ['id'], // Puedes incluir más campos si los necesitas
+        attributes: ['id'],
+
         logging: console.log,
     });
     if (solicitudConDocumentos) {

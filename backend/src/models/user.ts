@@ -51,7 +51,7 @@ import {
     },
     {
       sequelize,
-      tableName: 'Users',
+      tableName: 'users',
       timestamps: true,
       indexes: [
         {

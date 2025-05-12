@@ -46,3 +46,5 @@ backend/dist/uploads
 backend/dist/storage
 backend/src/config
 backend/dist/database/connection.js
+
+backend/dist

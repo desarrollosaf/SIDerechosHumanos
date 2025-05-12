@@ -19,14 +19,10 @@ solicitud_1.default.hasMany(documentos_1.default, {
     foreignKey: 'solicitudId',
     as: 'documentos',
 });
-documentos_1.default.belongsTo(solicitud_1.default, {
-    foreignKey: 'solicitudId',
-    as: 'solicitud',
-});
-documentos_1.default.belongsTo(tipodocumentos_1.default, {
-    foreignKey: 'tipoDocumento', // El campo en Documentos que se conecta
-    as: 'tipo' // Alias para facilitar la relación
-});
+/*Documentos.belongsTo(Solicitudes, {
+  foreignKey: 'solicitudId',
+  as: 'solicitud',
+});*/
 // Opcional: relación entre Solicitudes y User si la tienes
 solicitud_1.default.belongsTo(user_1.default, { foreignKey: 'userId' });
 user_1.default.hasMany(solicitud_1.default, { foreignKey: 'userId' });

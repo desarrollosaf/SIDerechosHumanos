@@ -41,7 +41,7 @@ export const getDocumentos = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const solicitudConDocumentos = await Solicitudes.findOne({
-        where: { userId: 11 },
+        where: { userId: id },
         include: [
             {
             model: Documentos,
@@ -49,13 +49,13 @@ export const getDocumentos = async (req: Request, res: Response) => {
             include: [
                 {
                 model: TipoDocumentos,
-                as: 'tipo', // Alias configurado en la relación
-                attributes: ['valor'], // Solo traemos el campo que necesitamos
+                as: 'tipo', 
+                attributes: ['valor'], 
                 }
             ],
             },
         ],
-        attributes: ['id'], // Puedes incluir más campos si los necesitas
+        attributes: ['id'],
         logging: console.log,
     });
 

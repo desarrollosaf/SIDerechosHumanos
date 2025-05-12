@@ -1,67 +1,64 @@
 import {
-    Model,
-    DataTypes,
-    InferAttributes,
-    InferCreationAttributes,
-    CreationOptional,
-  } from 'sequelize';
-  import sequelize from '../database/connection';
-  
-  class Documentos extends Model<
-    InferAttributes<Documentos>,
-    InferCreationAttributes<Documentos>
-  > {
-    declare id: CreationOptional<number>;
-    declare solicitudId: string | null;
-    declare path: string | null;
-    declare tipoDocumento: string | null;
-    declare estatus: boolean | null;
-    declare observaciones: string | null;
-  }
-  
-  Documentos.init(
-    {
-      id: {
-        autoIncrement: true,
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        primaryKey: true,
-      },
-      solicitudId: {
-        type: DataTypes.STRING(255),
-        allowNull: true,
-      },
-      path: {
-        type: DataTypes.STRING(255),
-        allowNull: true,
-      },
-      tipoDocumento: {
-        type: DataTypes.STRING(255),
-        allowNull: true,
-      },
-      estatus: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
-      },
-      observaciones: {
-        type: DataTypes.STRING(255),
-        allowNull: true,
-      },
+  Model,
+  DataTypes,
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+  ForeignKey,
+} from 'sequelize';
+import sequelize from '../database/connection';
+import TipoDocumentos from './tipodocumentos';
+
+class Documentos extends Model<
+  InferAttributes<Documentos>,
+  InferCreationAttributes<Documentos>
+> {
+  declare id: CreationOptional<number>;
+  declare solicitudId: ForeignKey<number>;
+  declare tipoDocumento: number;
+  declare path: string;
+  declare estatus: boolean | null;
+  declare observaciones: string | null;
+
+  // ✅ Relación tipo, que es opcional
+  declare tipo?: {
+    valor: string;
+  };
+}
+
+Documentos.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
-    {
-      sequelize,
-      tableName: 'Documentos',
-      timestamps: true,
-      indexes: [
-        {
-          name: 'PRIMARY',
-          unique: true,
-          using: 'BTREE',
-          fields: [{ name: 'id' }],
-        },
-      ],
-    }
-  );
-  
-  export default Documentos;
-  
+    solicitudId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    tipoDocumento: {
+      type: DataTypes.INTEGER, // Debe ser entero, referencia a TipoDocumentos
+      allowNull: false,
+    },
+    path: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    estatus: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+    },
+    observaciones: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+  },
+  {
+    sequelize,
+    tableName: 'Documentos',
+    timestamps: true,
+  }
+);
+
+export default Documentos;

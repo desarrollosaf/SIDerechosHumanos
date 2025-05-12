@@ -7,7 +7,6 @@ import {
   ForeignKey,
 } from 'sequelize';
 import sequelize from '../database/connection';
-import User from '../models/user'
 
 class Solicitudes extends Model<
   InferAttributes<Solicitudes>,
@@ -28,69 +27,29 @@ class Solicitudes extends Model<
 Solicitudes.init(
   {
     id: {
-      autoIncrement: true,
       type: DataTypes.INTEGER,
-      allowNull: false,
+      autoIncrement: true,
       primaryKey: true,
     },
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: 'Users', // Nombre real de la tabla
-        key: 'id',
-      },
     },
-    ap_paterno: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-    },
-    ap_materno: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-    },
-    nombres: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-    },
-    correo: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-    },
-    celular: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-    },
-    curp: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-    },
-    cedula_profesional: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-    },
-    aviso_privacidad: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true,
-    },
+    ap_paterno: DataTypes.STRING,
+    ap_materno: DataTypes.STRING,
+    nombres: DataTypes.STRING,
+    correo: DataTypes.STRING,
+    celular: DataTypes.STRING,
+    curp: DataTypes.STRING,
+    cedula_profesional: DataTypes.STRING,
+    aviso_privacidad: DataTypes.BOOLEAN,
   },
   {
     sequelize,
-    tableName: 'Solicituds',
+    tableName: 'solicituds',
     timestamps: true,
     paranoid: true,
-    indexes: [
-      {
-        name: 'PRIMARY',
-        unique: true,
-        using: 'BTREE',
-        fields: [{ name: 'id' }],
-      },
-    ],
   }
 );
-
-// Opcional: establecer asociación
-Solicitudes.belongsTo(User, { foreignKey: 'userId' });
 
 export default Solicitudes;

@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import  Documentos   from '../models/documentos'
-import  Solicitudes   from '../models/solicitud'
+import { Solicitudes, Documentos, TipoDocumentos } from '../models';
 
 
 export const saveDocumentos = async (req: Request, res: Response) => {
@@ -16,7 +15,7 @@ export const saveDocumentos = async (req: Request, res: Response) => {
     console.log('Nombre actual:', archivo?.filename);
     console.log('Tipo de documento:', tipo);
     console.log('Usuario:', usuario);*/
-    const solicitud: any = await Solicitudes.findOne({ where: { userId: 9 } })
+    const solicitud: any = await Solicitudes.findOne({ where: { userId: 11 } })
 
     if (!solicitud) {
          res.status(404).json({ message: 'Solicitud no encontrada' });
@@ -25,7 +24,7 @@ export const saveDocumentos = async (req: Request, res: Response) => {
     const nuevoDocumento = await Documentos.create({
         solicitudId: solicitud.id,
         path: `storage/${usuario}/${archivo?.filename}`,
-        tipoDocumento: "1",
+        tipoDocumento: 1,
     });
 
     res.status(201).json({
@@ -34,5 +33,40 @@ export const saveDocumentos = async (req: Request, res: Response) => {
     });
 
 
+};
+
+export const getDocumentos = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const documentos = await Documentos.findAll({
+        include: [
+            {
+                model: Solicitudes,
+                as: 'solicitud',
+                where: { userId: 11 },
+                attributes: [] // No traer campos de Solicitudes, solo relacionar
+            },
+            {
+                model: TipoDocumentos,
+                as: 'tipo', // Alias que configuraste en la relación
+                attributes: ['valor']
+            }
+        ],
+        logging: console.log 
+    });
+
+    
+    const documentosFormateados = documentos.map(doc => ({
+        ...doc.toJSON(),
+        tipoDocumento: doc.tipo?.valor || null // Reemplazar tipoDocumento con el valor
+    }));
+
+    if(documentosFormateados){
+        res.json(documentosFormateados)
+    }else{
+        res.status(404).json({
+            msg: `No existe el id ${id}`,
+        });
+    }
 };
 

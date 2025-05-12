@@ -89,7 +89,6 @@ const LoginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = jsonwebtoken_1.default.sign({
         email: email
     }, process.env.SECRET_KEY || 'TSE-Poder-legislativo', { expiresIn: 10000 });
-    //return next(JSON.stringify({ token, user }));
     return res.json({ token, user });
 });
 exports.LoginUser = LoginUser;

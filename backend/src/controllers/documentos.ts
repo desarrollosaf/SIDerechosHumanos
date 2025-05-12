@@ -16,7 +16,9 @@ export const saveDocumentos = async (req: Request, res: Response) => {
     console.log('Nombre actual:', archivo?.filename);
     console.log('Tipo de documento:', tipo);
     console.log('Usuario:', usuario);*/
+
     const solicitud: any = await Solicitudes.findOne({ where: { userId: 9 } })
+
 
     if (!solicitud) {
          res.status(404).json({ message: 'Solicitud no encontrada' });

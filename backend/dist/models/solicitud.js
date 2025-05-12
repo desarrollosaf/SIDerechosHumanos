@@ -28,7 +28,7 @@ Solicitudes.init({
     aviso_privacidad: sequelize_1.DataTypes.BOOLEAN,
 }, {
     sequelize: connection_1.default,
-    tableName: 'solicituds',
+    tableName: 'Solicituds',
     timestamps: true,
     paranoid: true,
 });

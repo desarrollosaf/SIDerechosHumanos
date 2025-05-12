@@ -10,7 +10,14 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       solicitudId: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER, // ✅ Debe ser INTEGER
+        allowNull: false,
+        references: {
+          model: 'Solicituds', // ✅ Nombre de la tabla relacionada
+          key: 'id'
+        },
+        onUpdate: 'CASCADE', // Opcional, para actualizar la clave foránea en cascada
+        onDelete: 'CASCADE'  // Opcional, para eliminar los documentos si la solicitud se elimina
       },
       path: {
         type: Sequelize.STRING

@@ -41,6 +41,7 @@ export class AddEditDocumentosComponent {
 
   ngOnInit(): void {
     this.getcurrusr();
+    this.getDocumUsuario();
   }
 
 
@@ -64,15 +65,15 @@ getcurrusr(){
         control?.setErrors(null); // Borra errores anteriores
         this.files[controlName] = file; // Guarda el archivo localmente
 
-        //cambiar la variable de usuario logueado
+        //cambiar la variable de usuario logueado PENDIENTE********
         const document: Documento = {
           tipo: input.id,
           archivo: this.files[controlName],
           usuario: 1
         }
         const formData = new FormData();
-        formData.append('tipo', input.id); // asegúrate de convertirlo a string si es un número
-        formData.append('archivo', this.files[controlName]); // debe ser un objeto File o Blob
+        formData.append('tipo', input.id); 
+        formData.append('archivo', this.files[controlName]); 
         formData.append('usuario', '9');
         console.log(document)
         this._documentoService.saveDocumentos(formData, 9).subscribe({
@@ -95,8 +96,6 @@ getcurrusr(){
               icon: "success",
               title: "Documento guardado correctamente."
             });
-
-           
           },
           error: (e: HttpErrorResponse) => {
             if (e.error && e.error.msg) {
@@ -110,6 +109,21 @@ getcurrusr(){
       }
       control?.markAsTouched();
     }
+  }
+
+  getDocumUsuario(){
+    this._documentoService.getDocumentosUser(1).subscribe({
+      next: (response: any) => {
+        console.log(response);
+      },
+      error: (e: HttpErrorResponse) => {
+        if (e.error && e.error.msg) {
+          console.error('Error del servidor:', e.error.msg);
+        } else {
+          console.error('Error desconocido:', e);
+        }
+      },
+    }) 
   }
   sendDoc(){
     console.log('hola');

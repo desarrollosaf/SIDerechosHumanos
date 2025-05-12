@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
-import { Solicitudes, Documentos, TipoDocumentos } from '../models';
+import Solicitudes  from '../models/solicitud';
+import Documentos  from '../models/documentos';
+import TipoDocumentos  from '../models/tipodocumentos';
 
 
 export const saveDocumentos = async (req: Request, res: Response) => {
@@ -38,26 +40,27 @@ export const saveDocumentos = async (req: Request, res: Response) => {
 export const getDocumentos = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const documentos = await Documentos.findAll({
-        where: { solicitudId: 1 },
+    const solicitudConDocumentos = await Solicitudes.findOne({
+        where: { userId: 11 },
         include: [
-          {
-            model: TipoDocumentos,
-            as: 'tipo',
-            attributes: ['valor'] 
-          }
+            {
+            model: Documentos,
+            as: 'documentos',
+            include: [
+                {
+                model: TipoDocumentos,
+                as: 'tipo', // Alias configurado en la relación
+                attributes: ['valor'], // Solo traemos el campo que necesitamos
+                }
+            ],
+            },
         ],
-        logging: console.log
-      });
+        attributes: ['id'], // Puedes incluir más campos si los necesitas
+        logging: console.log,
+    });
 
-
-    const documentosFormateados = documentos.map(doc => ({
-        ...doc.toJSON(),
-        tipoDocumento: doc.tipo?.valor || null
-    }));
-
-    if(documentosFormateados){
-        res.json(documentosFormateados)
+    if(solicitudConDocumentos){
+        res.json(solicitudConDocumentos)
     }else{
         res.status(404).json({
             msg: `No existe el id ${id}`,

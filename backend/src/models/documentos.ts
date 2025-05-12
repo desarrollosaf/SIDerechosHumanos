@@ -57,11 +57,11 @@ Documentos.init(
   },
   {
     sequelize,
-    tableName: 'Documentos',
+    tableName: 'documentos',
     timestamps: true,
   }
 );
 
 export default Documentos;
-Documentos.belongsTo(Solicitudes, { foreignKey: 'solicitudId', as: 'solicitud' });
+// Documentos.belongsTo(Solicitudes, { foreignKey: 'solicitudId', as: 'solicitud' });
 Documentos.belongsTo(TipoDocumentos, {foreignKey: 'tipoDocumento', as: 'tipo' });

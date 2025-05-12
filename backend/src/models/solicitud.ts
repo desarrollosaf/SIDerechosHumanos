@@ -7,6 +7,7 @@ import {
   ForeignKey,
 } from 'sequelize';
 import sequelize from '../database/connection';
+import Documentos from './documentos';
 
 class Solicitudes extends Model<
   InferAttributes<Solicitudes>,
@@ -53,3 +54,8 @@ Solicitudes.init(
 );
 
 export default Solicitudes;
+
+Solicitudes.hasMany(Documentos, {
+  foreignKey: 'solicitudId',
+  as: 'documentos',
+});

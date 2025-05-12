@@ -9,42 +9,33 @@ class Documentos extends sequelize_1.Model {
 }
 Documentos.init({
     id: {
-        autoIncrement: true,
         type: sequelize_1.DataTypes.INTEGER,
-        allowNull: false,
         primaryKey: true,
+        autoIncrement: true,
     },
     solicitudId: {
-        type: sequelize_1.DataTypes.STRING(255),
-        allowNull: true,
-    },
-    path: {
-        type: sequelize_1.DataTypes.STRING(255),
-        allowNull: true,
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
     },
     tipoDocumento: {
-        type: sequelize_1.DataTypes.STRING(255),
-        allowNull: true,
+        type: sequelize_1.DataTypes.INTEGER, // Debe ser entero, referencia a TipoDocumentos
+        allowNull: false,
+    },
+    path: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
     },
     estatus: {
         type: sequelize_1.DataTypes.BOOLEAN,
         allowNull: true,
     },
     observaciones: {
-        type: sequelize_1.DataTypes.STRING(255),
+        type: sequelize_1.DataTypes.STRING,
         allowNull: true,
     },
 }, {
     sequelize: connection_1.default,
     tableName: 'Documentos',
     timestamps: true,
-    indexes: [
-        {
-            name: 'PRIMARY',
-            unique: true,
-            using: 'BTREE',
-            fields: [{ name: 'id' }],
-        },
-    ],
 });
 exports.default = Documentos;

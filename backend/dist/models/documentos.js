@@ -41,6 +41,4 @@ Documentos.init({
 });
 exports.default = Documentos;
 // Documentos.belongsTo(Solicitudes, { foreignKey: 'solicitudId', as: 'solicitud' });
-
 Documentos.belongsTo(tipodocumentos_1.default, { foreignKey: 'tipodocumento', as: 'tipo' });
-

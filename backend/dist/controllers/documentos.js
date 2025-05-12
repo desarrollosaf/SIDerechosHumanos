@@ -27,7 +27,7 @@ const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function*
     console.log('Nombre actual:', archivo?.filename);
     console.log('Tipo de documento:', tipo);
     console.log('Usuario:', usuario);*/
-    const solicitud = yield solicitud_1.default.findOne({ where: { userId: 2 } });
+    const solicitud = yield solicitud_1.default.findOne({ where: { userId: 1 } });
     if (!solicitud) {
         res.status(404).json({ message: 'Solicitud no encontrada' });
     }
@@ -45,9 +45,7 @@ exports.saveDocumentos = saveDocumentos;
 const getDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const solicitudConDocumentos = yield solicitud_1.default.findOne({
-
         where: { userId: id },
-
         include: [
             {
                 model: documentos_1.default,
@@ -55,7 +53,6 @@ const getDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 include: [
                     {
                         model: tipodocumentos_1.default,
-
                         as: 'tipo',
                         attributes: ['valor'],
                     }
@@ -63,7 +60,6 @@ const getDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             },
         ],
         attributes: ['id'],
-
         logging: console.log,
     });
     if (solicitudConDocumentos) {

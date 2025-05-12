@@ -22,7 +22,7 @@ const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function*
     console.log('Nombre actual:', archivo?.filename);
     console.log('Tipo de documento:', tipo);
     console.log('Usuario:', usuario);*/
-    const solicitud = yield models_1.Solicitudes.findOne({ where: { userId: 2 } });
+    const solicitud = yield solicitud_1.default.findOne({ where: { userId: 9 } });
     if (!solicitud) {
         res.status(404).json({ message: 'Solicitud no encontrada' });
     }
@@ -37,30 +37,3 @@ const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function*
     });
 });
 exports.saveDocumentos = saveDocumentos;
-const getDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    const documentos = yield models_1.Documentos.findAll({
-        where: { solicitudId: 1 },
-        include: [
-            {
-                model: models_1.TipoDocumentos,
-                as: 'tipo',
-                attributes: ['valor']
-            }
-        ],
-        logging: console.log
-    });
-    const documentosFormateados = documentos.map(doc => {
-        var _a;
-        return (Object.assign(Object.assign({}, doc.toJSON()), { tipoDocumento: ((_a = doc.tipo) === null || _a === void 0 ? void 0 : _a.valor) || null }));
-    });
-    if (documentosFormateados) {
-        res.json(documentosFormateados);
-    }
-    else {
-        res.status(404).json({
-            msg: `No existe el id ${id}`,
-        });
-    }
-});
-exports.getDocumentos = getDocumentos;

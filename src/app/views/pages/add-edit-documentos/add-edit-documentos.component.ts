@@ -19,6 +19,7 @@ export class AddEditDocumentosComponent {
   public _userService = inject(UserService);
   public _documentoService  =  inject( DocumentoService );
    archivosSubidos: { [key: string]: string } = {};
+  documentos: any;
   constructor(private fb: FormBuilder){
     this.formDoc = this.fb.group({
       curp:[null, Validators.required],
@@ -40,14 +41,11 @@ export class AddEditDocumentosComponent {
   }
 
   ngOnInit(): void {
-    this.getcurrusr();
     this.getDocumUsuario();
   }
 
 
-getcurrusr(){
-  console.log(this._userService.currentUserValue?.id);
-}
+
   onFile7(event: Event, controlName: string, maxmb: number): void {
     console.log();
     const input = event.target as HTMLInputElement;
@@ -75,10 +73,8 @@ getcurrusr(){
         formData.append('tipo', input.id); 
         formData.append('archivo', this.files[controlName]); 
         formData.append('usuario', '9');
-        console.log(document)
         this._documentoService.saveDocumentos(formData, 9).subscribe({
           next: (response: any) => {
-            console.log(input.id);
             const archivoUrl = response.documento.path;
             this.archivosSubidos[input.id] = archivoUrl;
             const Toast = Swal.mixin({
@@ -115,6 +111,21 @@ getcurrusr(){
     this._documentoService.getDocumentosUser(1).subscribe({
       next: (response: any) => {
         console.log(response);
+
+        this.documentos = response.documentos;
+          this.documentos.forEach((doc: any) => {
+          console.log(doc.tipo?.valor);
+          console.log(doc.path);
+          if(doc){
+          const archivoUrl = doc.path;
+            this.archivosSubidos[doc.tipo?.valor] = archivoUrl;
+            this.formDoc.get(doc.tipo?.valor)?.clearValidators();
+            this.formDoc.get(doc.tipo?.valor)?.updateValueAndValidity();
+          }
+           
+        });
+
+
       },
       error: (e: HttpErrorResponse) => {
         if (e.error && e.error.msg) {

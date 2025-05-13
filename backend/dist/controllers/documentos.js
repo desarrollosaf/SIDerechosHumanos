@@ -28,6 +28,7 @@ const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function*
     if (!solicitud) {
         return res.status(404).json({ message: 'Solicitud no encontrada' });
     }
+
     const documentoExistente = yield documentos_1.default.findOne({
         where: { solicitudId: solicitud.id },
         include: [
@@ -35,7 +36,9 @@ const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 model: tipodocumentos_1.default,
                 as: 'tipo',
                 where: { valor: tipo },
+
                 attributes: []
+
             }
         ]
     });
@@ -48,18 +51,22 @@ const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
     if (documentoExistente) {
         const documentoPath = path_1.default.resolve(documentoExistente.path);
+
         if (fs_1.default.existsSync(documentoPath)) {
             fs_1.default.unlinkSync(documentoPath);
         }
+
         documentoExistente.path = `storage/${usuario}/${archivo.filename}`;
         yield documentoExistente.save();
         documentoGuardado = documentoExistente;
     }
     else {
+
         documentoGuardado = yield documentos_1.default.create({
             solicitudId: solicitud.id,
             path: `storage/${usuario}/${archivo.filename}`,
             tipoDocumento: tipo1.id,
+
         });
     }
     return res.status(201).json({

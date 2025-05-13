@@ -5,9 +5,8 @@ import TipoDocumentos  from '../models/tipodocumentos';
 import fs from 'fs';
 import path from 'path';
 
-
 export const saveDocumentos = async (req: Request, res: Response): Promise<any> => {
-    const archivo = req.file; // contiene el archivo subido
+    const archivo = req.file; 
     const { tipo, usuario } = req.body;
 
     if (!archivo) {
@@ -19,7 +18,6 @@ export const saveDocumentos = async (req: Request, res: Response): Promise<any> 
         return res.status(404).json({ message: 'Solicitud no encontrada' });
     }
 
-    // Verificar si ya existe un documento de ese tipo para la solicitud
     const documentoExistente = await Documentos.findOne({
         where: { solicitudId: solicitud.id },
         include: [
@@ -27,7 +25,7 @@ export const saveDocumentos = async (req: Request, res: Response): Promise<any> 
                 model: TipoDocumentos,
                 as: 'tipo',
                 where: { valor: tipo },
-                attributes: [] // No traer campos de TipoDocumentos, solo filtrar
+                attributes: [] 
             }
         ]
     });
@@ -41,20 +39,20 @@ export const saveDocumentos = async (req: Request, res: Response): Promise<any> 
 
     if (documentoExistente) {
         const documentoPath = path.resolve(documentoExistente.path);
-        // Verificar si el archivo existe y eliminarlo
+        
         if (fs.existsSync(documentoPath)) {
             fs.unlinkSync(documentoPath);
         }
-        // Actualizar el documento existente
+        
         documentoExistente.path = `storage/${usuario}/${archivo.filename}`;
         await documentoExistente.save();
         documentoGuardado = documentoExistente;
     } else {
-        // Crear un nuevo documento si no existe
+        
         documentoGuardado = await Documentos.create({
             solicitudId: solicitud.id,
             path: `storage/${usuario}/${archivo.filename}`,
-            tipoDocumento: tipo1.id, // Asegúrate de que este valor sea un ID correcto
+            tipoDocumento: tipo1.id, 
         });
     }
 

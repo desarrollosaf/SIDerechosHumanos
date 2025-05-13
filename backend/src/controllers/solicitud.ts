@@ -7,47 +7,45 @@ import dotenv from "dotenv";
 dotenv.config();
 
 
-
-
-
-export const getRegistros = async (req: Request, res: Response) => {
+export const getRegistros = async (req: Request, res: Response): Promise<any> => {
     const listSolicitudes = await Solicitudes.findAll()
-    res.json({
+    return res.json({
         msg: `List de exitosamente`,
         data: listSolicitudes
     });
 }
 
-export const getRegistro = async (req: Request, res: Response) => {
+export const getRegistro = async (req: Request, res: Response): Promise<any> => {
     const { id } = req.params;
     const solicitud = await Solicitudes.findByPk(id)
 
     if(solicitud){
-        res.json(solicitud)
+      return res.json(solicitud)
+      
     }else{
-        res.status(404).json({
+      return res.status(404).json({
             msg: `No existe el id ${id}`,
         });
     }
 }
 
-export const deleteRegistro = async (req: Request, res: Response) => {
+export const deleteRegistro = async (req: Request, res: Response): Promise<any> => {
     const { id } = req.params;
     const solicitud = await Solicitudes.findByPk(id)
 
     if(solicitud){
         await solicitud.destroy();
-        res.json({
+        return res.json({
             msg: `Eliminado con exito`,
         });
     }else{
-        res.status(404).json({
+      return res.status(404).json({
             msg: `No existe el id ${id}`,
         });
     }
 }
 
-export const saveRegistro = async (req: Request, res: Response) => {
+export const saveRegistro = async (req: Request, res: Response): Promise<any> => {
     const { body } = req;
   
     function generateRandomPassword(length: number = 10): string {
@@ -100,17 +98,17 @@ export const saveRegistro = async (req: Request, res: Response) => {
         `,
       });
   
-      res.json({ msg: `Agregado con éxito y correo enviado` });
+      return res.json({ msg: `Agregado con éxito y correo enviado` });
 
     } catch (error) {
       
       console.error(error);
-      res.status(500).json({ msg: `Ocurrió un error al registrar` });
+      return res.status(500).json({ msg: `Ocurrió un error al registrar` });
     }
   };
 
-export const putRegistro = async (req: Request, res: Response) => {
-    res.status(404).json({
+export const putRegistro = async (req: Request, res: Response): Promise<any> => {
+    return res.status(404).json({
         msg: 'put',
     });
     // try {

@@ -5,6 +5,7 @@ import TipoDocumentos  from '../models/tipodocumentos';
 import fs from 'fs';
 import path from 'path';
 
+
 export const saveDocumentos = async (req: Request, res: Response): Promise<any> => {
     const archivo = req.file; 
     const { tipo, usuario } = req.body;
@@ -80,7 +81,7 @@ export const getDocumentos = async (req: Request, res: Response): Promise<any> =
             ],
             },
         ],
-        attributes: ['id'],
+        // attributes: ['id'],
         logging: console.log,
     });
 
@@ -92,4 +93,5 @@ export const getDocumentos = async (req: Request, res: Response): Promise<any> =
         });
     }
 };
+
 

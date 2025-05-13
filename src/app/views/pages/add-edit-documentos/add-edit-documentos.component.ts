@@ -72,9 +72,9 @@ export class AddEditDocumentosComponent {
         const formData = new FormData();
         formData.append('tipo', input.id); 
         formData.append('archivo', this.files[controlName]); 
-        formData.append('usuario', '9');
+        formData.append('usuario', String(currntUsr));
         console.log(document)
-        this._documentoService.saveDocumentos(formData, 9).subscribe({
+        this._documentoService.saveDocumentos(formData, currntUsr).subscribe({
           next: (response: any) => {
             const archivoUrl = response.documento.path;
             this.archivosSubidos[input.id] = archivoUrl;
@@ -109,7 +109,8 @@ export class AddEditDocumentosComponent {
   }
 
   getDocumUsuario(){
-    this._documentoService.getDocumentosUser(1).subscribe({
+    const id_user = Number(this._userService.currentUserValue?.id);
+    this._documentoService.getDocumentosUser(id_user).subscribe({
       next: (response: any) => {
         console.log(response);
 

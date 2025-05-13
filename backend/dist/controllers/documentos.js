@@ -19,7 +19,7 @@ const tipodocumentos_1 = __importDefault(require("../models/tipodocumentos"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const archivo = req.file; // contiene el archivo subido
+    const archivo = req.file;
     const { tipo, usuario } = req.body;
     if (!archivo) {
         return res.status(400).json({ message: 'Archivo no recibido' });
@@ -28,7 +28,6 @@ const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function*
     if (!solicitud) {
         return res.status(404).json({ message: 'Solicitud no encontrada' });
     }
-    // Verificar si ya existe un documento de ese tipo para la solicitud
     const documentoExistente = yield documentos_1.default.findOne({
         where: { solicitudId: solicitud.id },
         include: [
@@ -36,7 +35,7 @@ const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 model: tipodocumentos_1.default,
                 as: 'tipo',
                 where: { valor: tipo },
-                attributes: [] // No traer campos de TipoDocumentos, solo filtrar
+                attributes: []
             }
         ]
     });
@@ -49,21 +48,18 @@ const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
     if (documentoExistente) {
         const documentoPath = path_1.default.resolve(documentoExistente.path);
-        // Verificar si el archivo existe y eliminarlo
         if (fs_1.default.existsSync(documentoPath)) {
             fs_1.default.unlinkSync(documentoPath);
         }
-        // Actualizar el documento existente
         documentoExistente.path = `storage/${usuario}/${archivo.filename}`;
         yield documentoExistente.save();
         documentoGuardado = documentoExistente;
     }
     else {
-        // Crear un nuevo documento si no existe
         documentoGuardado = yield documentos_1.default.create({
             solicitudId: solicitud.id,
             path: `storage/${usuario}/${archivo.filename}`,
-            tipoDocumento: tipo1.id, // Asegúrate de que este valor sea un ID correcto
+            tipoDocumento: tipo1.id,
         });
     }
     return res.status(201).json({

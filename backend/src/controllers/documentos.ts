@@ -2,42 +2,69 @@ import { Request, Response, NextFunction } from 'express'
 import Solicitudes  from '../models/solicitud';
 import Documentos  from '../models/documentos';
 import TipoDocumentos  from '../models/tipodocumentos';
+import fs from 'fs';
+import path from 'path';
 
 
-export const saveDocumentos = async (req: Request, res: Response) => {
-   const archivo = req.file; // contiene el archivo subido
-   const { tipo, usuario } = req.body;
-    
-   if (!archivo) {
-        res.status(400).json({ message: 'Archivo no recibido' });
+export const saveDocumentos = async (req: Request, res: Response): Promise<any> => {
+    const archivo = req.file; // contiene el archivo subido
+    const { tipo, usuario } = req.body;
+
+    if (!archivo) {
+        return res.status(400).json({ message: 'Archivo no recibido' });
     }
 
-    /*console.log('Archivo guardado en:', archivo?.path);
-    console.log('Nombre original:', archivo?.originalname);
-    console.log('Nombre actual:', archivo?.filename);
-    console.log('Tipo de documento:', tipo);
-    console.log('Usuario:', usuario);*/
-
-    const solicitud: any = await Solicitudes.findOne({ where: { userId: 1 } })
+    const solicitud: any = await Solicitudes.findOne({ where: { userId: usuario } });
     if (!solicitud) {
-         res.status(404).json({ message: 'Solicitud no encontrada' });
+        return res.status(404).json({ message: 'Solicitud no encontrada' });
     }
 
-    const nuevoDocumento = await Documentos.create({
-        solicitudId: solicitud.id,
-        path: `storage/${usuario}/${archivo?.filename}`,
-        tipoDocumento: 1,
+    // Verificar si ya existe un documento de ese tipo para la solicitud
+    const documentoExistente = await Documentos.findOne({
+        where: { solicitudId: solicitud.id },
+        include: [
+            {
+                model: TipoDocumentos,
+                as: 'tipo',
+                where: { valor: tipo },
+                attributes: [] // No traer campos de TipoDocumentos, solo filtrar
+            }
+        ]
     });
+    let documentoGuardado;
+    const tipo1 = await TipoDocumentos.findOne({
+        where: { valor: tipo } 
+    });
+    if (!tipo1) {
+        return res.status(404).json({ message: 'Tipo de documento no encontrado' });
+    }
 
-    res.status(201).json({
+    if (documentoExistente) {
+        const documentoPath = path.resolve(documentoExistente.path);
+        // Verificar si el archivo existe y eliminarlo
+        if (fs.existsSync(documentoPath)) {
+            fs.unlinkSync(documentoPath);
+        }
+        // Actualizar el documento existente
+        documentoExistente.path = `storage/${usuario}/${archivo.filename}`;
+        await documentoExistente.save();
+        documentoGuardado = documentoExistente;
+    } else {
+        // Crear un nuevo documento si no existe
+        documentoGuardado = await Documentos.create({
+            solicitudId: solicitud.id,
+            path: `storage/${usuario}/${archivo.filename}`,
+            tipoDocumento: tipo1.id, // Asegúrate de que este valor sea un ID correcto
+        });
+    }
+
+    return res.status(201).json({
         message: 'Documento guardado exitosamente',
-        documento: nuevoDocumento
+        documento: documentoGuardado
     });
-
-
 };
 
-export const getDocumentos = async (req: Request, res: Response) => {
+export const getDocumentos = async (req: Request, res: Response): Promise<any> => {
     const { id } = req.params;
 
     const solicitudConDocumentos = await Solicitudes.findOne({
@@ -60,9 +87,9 @@ export const getDocumentos = async (req: Request, res: Response) => {
     });
 
     if(solicitudConDocumentos){
-        res.json(solicitudConDocumentos)
+        return res.json(solicitudConDocumentos)
     }else{
-        res.status(404).json({
+        return res.status(404).json({
             msg: `No existe el id ${id}`,
         });
     }

@@ -52,7 +52,7 @@ getcurrusr(){
     console.log();
     const input = event.target as HTMLInputElement;
     const control = this.formDoc.get(controlName);
-    const currntUsr = this._userService.currentUserValue?.id;
+    const currntUsr = Number(this._userService.currentUserValue?.id);
    
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
@@ -74,9 +74,9 @@ getcurrusr(){
         const formData = new FormData();
         formData.append('tipo', input.id); 
         formData.append('archivo', this.files[controlName]); 
-        formData.append('usuario', '9');
+        formData.append('usuario', String(currntUsr));
         console.log(document)
-        this._documentoService.saveDocumentos(formData, 9).subscribe({
+        this._documentoService.saveDocumentos(formData, currntUsr).subscribe({
           next: (response: any) => {
             console.log(input.id);
             const archivoUrl = response.documento.path;

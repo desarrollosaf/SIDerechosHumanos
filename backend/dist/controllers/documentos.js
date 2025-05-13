@@ -16,29 +16,59 @@ exports.getDocumentos = exports.saveDocumentos = void 0;
 const solicitud_1 = __importDefault(require("../models/solicitud"));
 const documentos_1 = __importDefault(require("../models/documentos"));
 const tipodocumentos_1 = __importDefault(require("../models/tipodocumentos"));
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
 const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const archivo = req.file; // contiene el archivo subido
     const { tipo, usuario } = req.body;
     if (!archivo) {
-        res.status(400).json({ message: 'Archivo no recibido' });
+        return res.status(400).json({ message: 'Archivo no recibido' });
     }
-    /*console.log('Archivo guardado en:', archivo?.path);
-    console.log('Nombre original:', archivo?.originalname);
-    console.log('Nombre actual:', archivo?.filename);
-    console.log('Tipo de documento:', tipo);
-    console.log('Usuario:', usuario);*/
-    const solicitud = yield solicitud_1.default.findOne({ where: { userId: 1 } });
+    const solicitud = yield solicitud_1.default.findOne({ where: { userId: usuario } });
     if (!solicitud) {
-        res.status(404).json({ message: 'Solicitud no encontrada' });
+        return res.status(404).json({ message: 'Solicitud no encontrada' });
     }
-    const nuevoDocumento = yield documentos_1.default.create({
-        solicitudId: solicitud.id,
-        path: `storage/${usuario}/${archivo === null || archivo === void 0 ? void 0 : archivo.filename}`,
-        tipoDocumento: 1,
+    // Verificar si ya existe un documento de ese tipo para la solicitud
+    const documentoExistente = yield documentos_1.default.findOne({
+        where: { solicitudId: solicitud.id },
+        include: [
+            {
+                model: tipodocumentos_1.default,
+                as: 'tipo',
+                where: { valor: tipo },
+                attributes: [] // No traer campos de TipoDocumentos, solo filtrar
+            }
+        ]
     });
-    res.status(201).json({
+    let documentoGuardado;
+    const tipo1 = yield tipodocumentos_1.default.findOne({
+        where: { valor: tipo }
+    });
+    if (!tipo1) {
+        return res.status(404).json({ message: 'Tipo de documento no encontrado' });
+    }
+    if (documentoExistente) {
+        const documentoPath = path_1.default.resolve(documentoExistente.path);
+        // Verificar si el archivo existe y eliminarlo
+        if (fs_1.default.existsSync(documentoPath)) {
+            fs_1.default.unlinkSync(documentoPath);
+        }
+        // Actualizar el documento existente
+        documentoExistente.path = `storage/${usuario}/${archivo.filename}`;
+        yield documentoExistente.save();
+        documentoGuardado = documentoExistente;
+    }
+    else {
+        // Crear un nuevo documento si no existe
+        documentoGuardado = yield documentos_1.default.create({
+            solicitudId: solicitud.id,
+            path: `storage/${usuario}/${archivo.filename}`,
+            tipoDocumento: tipo1.id, // Asegúrate de que este valor sea un ID correcto
+        });
+    }
+    return res.status(201).json({
         message: 'Documento guardado exitosamente',
-        documento: nuevoDocumento
+        documento: documentoGuardado
     });
 });
 exports.saveDocumentos = saveDocumentos;
@@ -59,14 +89,14 @@ const getDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 ],
             },
         ],
-        attributes: ['id'],
+        // attributes: ['id'],
         logging: console.log,
     });
     if (solicitudConDocumentos) {
-        res.json(solicitudConDocumentos);
+        return res.json(solicitudConDocumentos);
     }
     else {
-        res.status(404).json({
+        return res.status(404).json({
             msg: `No existe el id ${id}`,
         });
     }

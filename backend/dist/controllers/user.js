@@ -18,7 +18,7 @@ const user_1 = __importDefault(require("../models/user"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const ReadUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const listUser = yield user_1.default.findAll();
-    res.json({
+    return res.json({
         msg: `List de categoría encontrada exitosamenteeeee`,
         data: listUser
     });
@@ -75,20 +75,20 @@ const LoginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
     const user = yield user_1.default.findOne({ where: { email: email } });
     if (!user) {
         //return next(JSON.stringify({ msg: `Usuario no existe con el email ${email}`}));
-        res.status(400).json({
+        return res.status(400).json({
             msg: `Usuario no existe con el email ${email}`
         });
     }
     const passwordValid = yield bcrypt_1.default.compare(password, user.password);
     if (!passwordValid) {
         //return next(JSON.stringify({ msg: `Password Incorrecto => ${password}`}));
-        res.status(400).json({
+        return res.status(400).json({
             msg: `Password Incorrecto => ${password}`
         });
     }
     const token = jsonwebtoken_1.default.sign({
         email: email
     }, process.env.SECRET_KEY || 'TSE-Poder-legislativo', { expiresIn: 10000 });
-    res.json({ token, user });
+    return res.json({ token, user });
 });
 exports.LoginUser = LoginUser;

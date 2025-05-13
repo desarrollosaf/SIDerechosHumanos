@@ -18,6 +18,11 @@ export class UserService {
     this.myAppUrl = 'http://localhost:3001/'
     this.myAPIUrl = 'api/user';
 
+    const storedUser = localStorage.getItem('currentUser');
+    if (storedUser) {
+      this.currentUserSubject.next(JSON.parse(storedUser));
+    }
+
   }
   
   getUser(): Observable<User[]> {
@@ -39,6 +44,7 @@ export class UserService {
   
   setCurrentUser(user: User) {
     this.currentUserSubject.next(user);
+    localStorage.setItem('currentUser', JSON.stringify(user));
   }
   
 }

@@ -25,8 +25,8 @@ export class DocumentoService {
     return this.http.get<string>(`${this.myAppUrl}${this.myAPIUrl}/getdocumentos/${user}`)
   }
 
-  sendDocumentos(user : Number): Observable<string> {
-    return this.http.get<string>(`${this.myAppUrl}${this.myAPIUrl}/getdocumentos/${user}`)
+  sendDocumentos(user : Number): Observable<void> {
+    return this.http.get<void>(`${this.myAppUrl}${this.myAPIUrl}/envestatus/${user}`)
   }
 
 }

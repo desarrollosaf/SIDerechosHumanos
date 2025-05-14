@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
 import bcrypt from 'bcrypt'
 import  User  from '../models/user'
+import  RolUsers  from '../models/role_users'
+import  Roles  from '../models/role'
 import { Op } from 'sequelize'
 import jwt from 'jsonwebtoken'
 
@@ -66,7 +68,22 @@ export const LoginUser = async (req: Request, res: Response, next: NextFunction)
 
     console.log(req.body);
 
-    const user: any = await User.findOne({ where: { email: email } })
+    const user: any = await User.findOne({ 
+        where: { email: email },
+        include: [
+        {
+            model: RolUsers,
+            as: 'rol_users',
+            include: [
+            {
+                model: Roles,
+                as: 'role'
+            }
+            ]
+        }
+        ]
+    })
+    console.log(user)
     if (!user) {
         //return next(JSON.stringify({ msg: `Usuario no existe con el email ${email}`}));
         return res.status(400).json({

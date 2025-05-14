@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
       next: (response: any) => {
         const token = response.token;
         const userData = response.user;
-
+        console.log(userData)
         console.log('Token:', token);
         console.log('Usuario:', userData);
 

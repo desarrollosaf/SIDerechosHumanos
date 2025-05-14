@@ -6,6 +6,7 @@ import {
     CreationOptional,
   } from 'sequelize';
   import sequelize from '../database/connection';
+import RolUsers from './role_users';
   
   class User extends Model<
     InferAttributes<User>,
@@ -17,6 +18,7 @@ import {
     declare email_verified_at: Date | null;
     declare password: string | null;
     declare remember_token: string | null;
+    declare rol_users?: {role_id: number;};
   }
   
   // Inicializamos el modelo
@@ -65,3 +67,6 @@ import {
   );
   
   export default User;
+
+User.hasOne(RolUsers, { foreignKey: 'user_id', as: 'rol_users' });
+RolUsers.belongsTo(User, { foreignKey: 'user_id', as: 'user' });

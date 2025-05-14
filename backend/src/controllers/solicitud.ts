@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import bcrypt from 'bcrypt'
 import  Solicitudes   from '../models/solicitud'
 import User  from '../models/user'
+import RolUsers  from '../models/role_users'
 const nodemailer = require('nodemailer');
 import dotenv from "dotenv";
 dotenv.config();
@@ -65,8 +66,13 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
         name: body.curp,
         email: body.correo,
         password: UpasswordHash,
+        rol_users: {
+          role_id: 3,  
+        },
+      }, {
+        include: [{ model: RolUsers, as: 'rol_users' }],
       });
-      console.log(newUser.id)
+
       body.userId = newUser.id;
       body.estatusId = 1;
       console.log(body)

@@ -46,7 +46,8 @@ export class NavbarComponent implements OnInit {
       this.currentTheme = theme;
       this.showActiveTheme(this.currentTheme);
     });
-    const role = this._userService.currentUserValue?.email;
+    //console.log(this._userService.currentUserValue?.rol_users?.role?.name)
+    const role = this._userService.currentUserValue?.rol_users?.role?.name;
     this.menuItems = MENU;
 
     if (role) {

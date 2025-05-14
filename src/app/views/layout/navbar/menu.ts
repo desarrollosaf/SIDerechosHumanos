@@ -9,7 +9,7 @@ export const MENU: MenuItem[] = [
   {
     label: 'Bandeja de entrada',
     icon: 'mail',
-    roles: ['martin.sanchez@congresoedomex.gob.mx'],
+    roles: ['Administrador', 'Validador'],
     subMenus: [
       {
         subMenuItems: [
@@ -33,7 +33,7 @@ export const MENU: MenuItem[] = [
   {
     label: 'Documentos',
     icon: 'mail',
-    roles: ['martin.sanchez@congresoedomex.gob.mx'],
+    roles: ['Administrador', 'Usuario'],
     subMenus: [
       {
         subMenuItems: [
@@ -53,6 +53,7 @@ export const MENU: MenuItem[] = [
   {
     label: 'Apps',
     icon: 'mail',
+    roles: ['Administrador'],
     subMenus: [
       {
         subMenuItems: [
@@ -99,6 +100,7 @@ export const MENU: MenuItem[] = [
   {
     label: 'UI Kit',
     icon: 'feather',
+    roles: ['Administrador'],
     isMegaMenu: true,
     subMenus: [
       {
@@ -250,6 +252,7 @@ export const MENU: MenuItem[] = [
   {
     label: 'Forms',
     icon: 'file-text',
+    roles: ['Administrador'],
     subMenus: [
       {
         subMenuItems: [
@@ -308,6 +311,7 @@ export const MENU: MenuItem[] = [
   {
     label: 'Data',
     icon: 'pie-chart',
+    roles: ['Administrador'],
     subMenus: [
       {
         subMenuItems: [
@@ -346,6 +350,7 @@ export const MENU: MenuItem[] = [
   {
     label: 'Icons',
     icon: 'smile',
+    roles: ['Administrador'],
     subMenus: [
       {
         subMenuItems: [
@@ -361,6 +366,7 @@ export const MENU: MenuItem[] = [
     label: 'Special pages',
     icon: 'book',
     isMegaMenu: true,
+    roles: ['Administrador'],
     subMenus: [
       {
         subMenuItems: [

@@ -24,7 +24,6 @@ export class BaseComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    // Spinner for lazy loading modules/components
     this.router.events.forEach((event) => { 
       if (event instanceof RouteConfigLoadStart) {
         this.isLoading = true;
@@ -34,7 +33,7 @@ export class BaseComponent implements OnInit {
     });
 
     this.userService.currentUser$.subscribe(user => {
-      this.userRole = user?.email ?? null;
+      this.userRole = user?.rol_users?.role?.name ?? null;
       console.log('Rol desde BaseComponent:', this.userRole);
     });
   }

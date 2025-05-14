@@ -16,6 +16,7 @@ exports.putRegistro = exports.saveRegistro = exports.deleteRegistro = exports.ge
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const solicitud_1 = __importDefault(require("../models/solicitud"));
 const user_1 = __importDefault(require("../models/user"));
+const role_users_1 = __importDefault(require("../models/role_users"));
 const nodemailer = require('nodemailer');
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
@@ -73,8 +74,12 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             name: body.curp,
             email: body.correo,
             password: UpasswordHash,
+            rol_users: {
+                role_id: 3,
+            },
+        }, {
+            include: [{ model: role_users_1.default, as: 'rol_users' }],
         });
-        console.log(newUser.id);
         body.userId = newUser.id;
         body.estatusId = 1;
         console.log(body);

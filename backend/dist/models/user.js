@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../database/connection"));
+const role_users_1 = __importDefault(require("./role_users"));
 class User extends sequelize_1.Model {
 }
 // Inicializamos el modelo
@@ -49,3 +50,5 @@ User.init({
     ],
 });
 exports.default = User;
+User.hasOne(role_users_1.default, { foreignKey: 'user_id', as: 'rol_users' });
+role_users_1.default.belongsTo(User, { foreignKey: 'user_id', as: 'user' });

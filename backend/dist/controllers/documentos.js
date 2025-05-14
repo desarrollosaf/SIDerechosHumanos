@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteDoc = exports.envSolicitud = exports.getDocumentos = exports.saveDocumentos = void 0;
+exports.estatusDoc = exports.deleteDoc = exports.envSolicitud = exports.getDocumentos = exports.saveDocumentos = void 0;
 const solicitud_1 = __importDefault(require("../models/solicitud"));
 const documentos_1 = __importDefault(require("../models/documentos"));
 const tipodocumentos_1 = __importDefault(require("../models/tipodocumentos"));
@@ -142,3 +142,30 @@ const deleteDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.deleteDoc = deleteDoc;
+const estatusDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { tipo, usuario, estatus, observaciones } = req.body;
+    const solicitud = yield solicitud_1.default.findOne({ where: { userId: usuario } });
+    const documentoExistente = yield documentos_1.default.findOne({
+        where: { solicitudId: solicitud.id },
+        include: [
+            {
+                model: tipodocumentos_1.default,
+                as: 'tipo',
+                where: { valor: tipo },
+                attributes: []
+            }
+        ]
+    });
+    if (documentoExistente) {
+        documentoExistente.estatus = estatus;
+        documentoExistente.observaciones = observaciones;
+        yield documentoExistente.save();
+        return res.json('200');
+    }
+    else {
+        return res.status(404).json({
+            msg: `No existe el documento con el tipo y solicitud${usuario}`,
+        });
+    }
+});
+exports.estatusDoc = estatusDoc;

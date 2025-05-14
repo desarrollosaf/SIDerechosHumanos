@@ -138,4 +138,32 @@ export const deleteDoc = async (req: Request, res: Response): Promise<any> => {
     }
 }
 
+export const estatusDoc = async (req: Request, res: Response): Promise<any> => {
+    const { tipo, usuario, estatus, observaciones } = req.body;
+    
+    const solicitud: any = await Solicitudes.findOne({ where: { userId: usuario } });
+    const documentoExistente = await Documentos.findOne({
+        where: { solicitudId: solicitud.id },
+        include: [
+            {
+                model: TipoDocumentos,
+                as: 'tipo',
+                where: { valor: tipo },
+                attributes: [] 
+            }
+        ]
+    });
+
+    if(documentoExistente){
+       documentoExistente.estatus = estatus; 
+        documentoExistente.observaciones = observaciones; 
+       await documentoExistente.save();
+      return res.json('200')
+    }else{
+      return res.status(404).json({
+            msg: `No existe el documento con el tipo y solicitud${usuario}`,
+        });
+    }
+}
+
 

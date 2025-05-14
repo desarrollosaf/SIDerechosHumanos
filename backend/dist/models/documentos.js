@@ -27,7 +27,7 @@ Documentos.init({
         allowNull: false,
     },
     estatus: {
-        type: sequelize_1.DataTypes.BOOLEAN,
+        type: sequelize_1.DataTypes.NUMBER,
         allowNull: true,
     },
     observaciones: {

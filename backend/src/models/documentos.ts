@@ -18,7 +18,7 @@ class Documentos extends Model<
   declare solicitudId: ForeignKey<number>;
   declare tipoDocumento: number;
   declare path: string;
-  declare estatus: boolean | null;
+  declare estatus: number | null;
   declare observaciones: string | null;
 
   // ✅ Relación tipo, que es opcional
@@ -47,7 +47,7 @@ Documentos.init(
       allowNull: false,
     },
     estatus: {
-      type: DataTypes.BOOLEAN,
+      type: DataTypes.NUMBER,
       allowNull: true,
     },
     observaciones: {

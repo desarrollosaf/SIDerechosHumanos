@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { CommonModule } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
 import { Documento } from '../../../interfaces/documento';
 import { UserService } from '../../../service/user.service';
@@ -20,7 +21,7 @@ export class AddEditDocumentosComponent {
   public _documentoService = inject(DocumentoService);
   archivosSubidos: { [key: string]: string } = {};
   documentos: any;
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.formDoc = this.fb.group({
       curp: [null, Validators.required],
       ine: [null, Validators.required],
@@ -44,24 +45,18 @@ export class AddEditDocumentosComponent {
   ngOnInit(): void {
     this.getDocumUsuario();
   }
-
-
-
+  
   onFile7(event: Event, controlName: string, maxmb: number): void {
-    console.log();
     const input = event.target as HTMLInputElement;
     const control = this.formDoc.get(controlName);
-
     const currntUsr = Number(this._userService.currentUserValue?.id);
-
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       const maxSize = maxmb * 1024 * 1024;
 
       if (file.size > maxSize) {
         control?.setErrors({ fileSize: true });
-      } else {
-
+      }else{
         control?.setErrors(null); // Borra errores anteriores
         this.files[controlName] = file; // Guarda el archivo localmente
 
@@ -78,7 +73,6 @@ export class AddEditDocumentosComponent {
         this._documentoService.saveDocumentos(formData, currntUsr).subscribe({
           next: (response: any) => {
             const archivoUrl = 'http://localhost:3001/' + response.documento.path;
-            console.log(archivoUrl);
             this.archivosSubidos[input.id] = archivoUrl;
             const Toast = Swal.mixin({
               toast: true,
@@ -104,7 +98,6 @@ export class AddEditDocumentosComponent {
             }
           },
         })
-
       }
       control?.markAsTouched();
     }
@@ -114,18 +107,16 @@ export class AddEditDocumentosComponent {
     const id_user = Number(this._userService.currentUserValue?.id);
     this._documentoService.getDocumentosUser(id_user).subscribe({
       next: (response: any) => {
-        console.log(response);
-        this.documentos = response.documentos;
-        this.documentos.forEach((doc: any) => {
-          if (doc) {
-            const archivoUrl = 'http://localhost:3001/' + doc.path;
-            this.archivosSubidos[doc.tipo?.valor] = archivoUrl;
-            this.formDoc.get(doc.tipo?.valor)?.clearValidators();
-            this.formDoc.get(doc.tipo?.valor)?.updateValueAndValidity();
-          }
-        });
-
-
+        console.log(response.estatusId);
+          this.documentos = response.documentos;
+          this.documentos.forEach((doc: any) => {
+            if (doc) {
+              const archivoUrl = 'http://localhost:3001/' + doc.path;
+              this.archivosSubidos[doc.tipo?.valor] = archivoUrl;
+              this.formDoc.get(doc.tipo?.valor)?.clearValidators();
+              this.formDoc.get(doc.tipo?.valor)?.updateValueAndValidity();
+            }
+          });  
       },
       error: (e: HttpErrorResponse) => {
         if (e.error && e.error.msg) {
@@ -138,13 +129,16 @@ export class AddEditDocumentosComponent {
   }
   sendDoc() {
     const id_user = Number(this._userService.currentUserValue?.id);
-    console.log('hola');
-    const document: Documento = {
-      usuario: id_user
-    }
     this._documentoService.sendDocumentos(id_user).subscribe({
       next: (response: any) => {
-        //rescatar
+        Swal.fire({
+          position: "center", // posición centrada
+          icon: "success",
+          title: "Tu registro ha sido enviado.",
+          showConfirmButton: false,
+          timer: 3000
+        });
+        this.router.navigate(['/documentos']);
       },
       error: (e: HttpErrorResponse) => {
         if (e.error && e.error.msg) {
@@ -155,7 +149,5 @@ export class AddEditDocumentosComponent {
       },
     })
   }
-
-
 }
 

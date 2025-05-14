@@ -6,5 +6,10 @@ const multer_1 = require("../controllers/multer");
 const router = (0, express_1.Router)();
 router.post("/api/documentos/create/:usuarioId", multer_1.upload.single('archivo'), documentos_1.saveDocumentos);
 router.get("/api/documentos/getdocumentos/:id", documentos_1.getDocumentos);
-router.post("/api/documentos/envestatus/:id", documentos_1.envSolicitud);
+router.get("/api/documentos/envestatus/:id", documentos_1.envSolicitud);
+router.post("/api/documentos/deleted", documentos_1.deleteDoc);
+router.post("/api/documentos/validadoc", documentos_1.estatusDoc);
+
+
+
 exports.default = router;

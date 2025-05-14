@@ -80,6 +80,7 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }, {
             include: [{ model: role_users_1.default, as: 'rol_users' }],
         });
+        console.log(newUser.id);
         body.userId = newUser.id;
         body.estatusId = 1;
         console.log(body);

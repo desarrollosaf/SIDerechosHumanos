@@ -72,7 +72,7 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
       }, {
         include: [{ model: RolUsers, as: 'rol_users' }],
       });
-
+      console.log(newUser.id)
       body.userId = newUser.id;
       body.estatusId = 1;
       console.log(body)

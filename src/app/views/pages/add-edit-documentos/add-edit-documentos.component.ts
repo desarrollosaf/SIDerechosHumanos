@@ -45,23 +45,18 @@ export class AddEditDocumentosComponent {
   ngOnInit(): void {
     this.getDocumUsuario();
   }
-
-
-
+  
   onFile7(event: Event, controlName: string, maxmb: number): void {
     const input = event.target as HTMLInputElement;
     const control = this.formDoc.get(controlName);
-
     const currntUsr = Number(this._userService.currentUserValue?.id);
-
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       const maxSize = maxmb * 1024 * 1024;
 
       if (file.size > maxSize) {
         control?.setErrors({ fileSize: true });
-      } else {
-
+      }else{
         control?.setErrors(null); // Borra errores anteriores
         this.files[controlName] = file; // Guarda el archivo localmente
 
@@ -103,7 +98,6 @@ export class AddEditDocumentosComponent {
             }
           },
         })
-
       }
       control?.markAsTouched();
     }
@@ -135,9 +129,6 @@ export class AddEditDocumentosComponent {
   }
   sendDoc() {
     const id_user = Number(this._userService.currentUserValue?.id);
-    const document: Documento = {
-      usuario: id_user
-    }
     this._documentoService.sendDocumentos(id_user).subscribe({
       next: (response: any) => {
         Swal.fire({
@@ -147,7 +138,6 @@ export class AddEditDocumentosComponent {
           showConfirmButton: false,
           timer: 3000
         });
-
         this.router.navigate(['/documentos']);
       },
       error: (e: HttpErrorResponse) => {
@@ -159,7 +149,5 @@ export class AddEditDocumentosComponent {
       },
     })
   }
-
-
 }
 

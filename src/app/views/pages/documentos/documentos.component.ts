@@ -27,26 +27,13 @@ export class DocumentosComponent {
       const id_user = Number(this._userService.currentUserValue?.id);
       this._documentoService.getDocumentosUser(id_user).subscribe({
       next: (response: any) => {
-        console.log(response);
-        console.log(response.estatusId);
-
-
-     
-       this.persona = {
-        nombre: response.ap_paterno + ' ' + response.ap_materno + ' ' + response.nombres,
-        correo: response.correo,
-        curp: response.curp,
-        telefono: response.celular,
-        estatus: response.estatusId
-      };
-        //  this.listUsuario: any = {
-        //   usuario: id_user,
-        //   nombre: response.ap_paterno + ' ' + response.ap_materno + ' ' + response.nombres,
-        //   correo: response.correo,
-        //   telefono: response.celular,
-        //   estatus: response.estatusId
-        // }
-         console.log('');
+        this.persona = {
+          nombre: response.ap_paterno + ' ' + response.ap_materno + ' ' + response.nombres,
+          correo: response.correo,
+          curp: response.curp,
+          telefono: response.celular,
+          estatus: response.estatusId
+        };
       },
       error: (e: HttpErrorResponse) => {
         if (e.error && e.error.msg) {

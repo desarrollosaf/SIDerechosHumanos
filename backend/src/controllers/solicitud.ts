@@ -68,6 +68,7 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
       });
       console.log(newUser.id)
       body.userId = newUser.id;
+      body.estatusId = 1;
       console.log(body)
       await Solicitudes.create(body);
   

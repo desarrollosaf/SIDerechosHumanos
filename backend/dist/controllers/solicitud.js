@@ -76,6 +76,7 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
         console.log(newUser.id);
         body.userId = newUser.id;
+        body.estatusId = 1;
         console.log(body);
         yield solicitud_1.default.create(body);
         // Configurar el transporte del correo

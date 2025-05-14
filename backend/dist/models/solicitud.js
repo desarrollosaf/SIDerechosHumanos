@@ -18,6 +18,10 @@ Solicitudes.init({
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false,
     },
+    estatusId: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
+    },
     ap_paterno: sequelize_1.DataTypes.STRING,
     ap_materno: sequelize_1.DataTypes.STRING,
     nombres: sequelize_1.DataTypes.STRING,

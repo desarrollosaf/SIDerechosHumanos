@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDocumentos = exports.saveDocumentos = void 0;
+exports.envSolicitud = exports.getDocumentos = exports.saveDocumentos = void 0;
 const solicitud_1 = __importDefault(require("../models/solicitud"));
 const documentos_1 = __importDefault(require("../models/documentos"));
 const tipodocumentos_1 = __importDefault(require("../models/tipodocumentos"));
@@ -98,3 +98,18 @@ const getDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.getDocumentos = getDocumentos;
+const envSolicitud = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const solicitud = yield solicitud_1.default.findOne({ where: { userId: id } });
+    if (solicitud) {
+        solicitud.estatusId = 2;
+        yield solicitud.save();
+        return res.json('200');
+    }
+    else {
+        return res.status(404).json({
+            msg: `No existe el id ${id}`,
+        });
+    }
+});
+exports.envSolicitud = envSolicitud;

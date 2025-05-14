@@ -94,4 +94,18 @@ export const getDocumentos = async (req: Request, res: Response): Promise<any> =
     }
 };
 
+export const envSolicitud = async (req: Request, res: Response): Promise<any> => {
+    const { id } = req.params;
+    const solicitud: any = await Solicitudes.findOne({ where: { userId: id } });
+    if(solicitud){
+         solicitud.estatusId = 2;
+        await solicitud.save();
+      return res.json('200')
+    }else{
+      return res.status(404).json({
+            msg: `No existe el id ${id}`,
+        });
+    }
+}
+
 

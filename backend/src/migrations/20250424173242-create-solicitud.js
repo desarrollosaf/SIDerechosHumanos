@@ -17,6 +17,14 @@ module.exports = {
         },
         allowNull: false,
       },
+      estatusId: {
+        type: Sequelize.DataTypes.INTEGER,
+        references: {
+          model: 'estatussolicituds',
+          key: 'id'
+        },
+        allowNull: false,
+      },
       ap_paterno: {
         type: Sequelize.STRING
       },

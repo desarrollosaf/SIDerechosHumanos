@@ -15,6 +15,7 @@ class Solicitudes extends Model<
 > {
   declare id: CreationOptional<number>;
   declare userId: ForeignKey<number>;
+  declare estatusId: ForeignKey<number>;
   declare ap_paterno: string | null;
   declare ap_materno: string | null;
   declare nombres: string | null;
@@ -33,6 +34,10 @@ Solicitudes.init(
       primaryKey: true,
     },
     userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    estatusId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },

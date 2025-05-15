@@ -66,6 +66,10 @@ export const routes: Routes = [
       {
         path: 'solicitud/finalizados',
         loadComponent: () => import('./views/pages/lista-validador/lista-validador.component').then(c => c.ListaValidadorComponent)
+      },
+      {
+        path: 'solicitud/rechazados',
+        loadComponent: () => import('./views/pages/lista-validador/lista-validador.component').then(c => c.ListaValidadorComponent)
       }
     ]
   },

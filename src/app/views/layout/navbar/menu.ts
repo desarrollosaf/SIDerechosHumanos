@@ -25,6 +25,10 @@ export const MENU: MenuItem[] = [
             label: 'Finalizadas',
             link: '/solicitud/finalizados'
           },
+          {
+            label: 'Rechazadas',
+            link: '/solicitud/rechazados'
+          },
         ]
       },
       

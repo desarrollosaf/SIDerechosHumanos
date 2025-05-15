@@ -1,1 +1,296 @@
-<p>detalle-validador works!</p>
+<div class="container">
+    <div class="row w-100 mx-0 auth-page">
+        <div class="mx-auto">
+            <div class="card">
+                <form >
+                    <div class="row">
+
+                        <div class="col-md-12 grid-margin stretch-card">
+                            <div class="card h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <label class="form-label" for="formFile" style="text-align: justify;">
+                                        Ser
+                                        mexicano por nacimiento en pleno goce y
+                                        ejercicio de sus derechos políticos y civiles (CURP)*:
+                                    </label>
+                                   
+
+                                    <div *ngIf="archivosSubidos['curp']" class="mt-2">
+                                        <a [href]="archivosSubidos['curp']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 grid-margin stretch-card">
+                            <div class="card h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <label class="form-label" for="formFile" style="text-align: justify;">
+                                        Tener residencia efectiva en el territorio del Estado de México no menor de
+                                        cinco años
+                                        anteriores al día de su elección (CREDENCIAL PARA VOTAR CON FOTOGRAFÍA VIGENTE,
+                                        EXPEDIDA POR
+                                        EL INSTITUTO NACIONAL ELECTORAL)*:
+                                    </label>
+
+                                  
+                                    <div *ngIf="archivosSubidos['ine']" class="mt-2">
+                                        <a [href]="archivosSubidos['ine']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 grid-margin stretch-card">
+                            <div class="card h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <label class="form-label" for="formFile" style="text-align: justify;">
+                                        Tener preferentemente título de licenciado en derecho, así como experiencia o
+                                        estudios en
+                                        materia de derechos humanos (TÍTULO DE LICENCIATURA EN DERECHO)*:
+                                    </label>
+                                    <div *ngIf="archivosSubidos['titulo_licenciatura']" class="mt-2">
+                                        <a [href]="archivosSubidos['titulo_licenciatura']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 grid-margin stretch-card">
+                            <div class="card h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <label class="form-label" for="formFile" style="text-align: justify;">
+                                        Tener treinta y cinco años cumplidos, el día de su elección (ACTA DE
+                                        NACIMIENTO)*:
+                                    </label>
+
+                                    <div *ngIf="archivosSubidos['acta_nacimiento']" class="mt-2">
+                                        <a [href]="archivosSubidos['acta_nacimiento']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 grid-margin stretch-card">
+                            <div class="card h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <label class="form-label" for="formFile" style="text-align: justify;">
+                                        Gozar de buena fama pública y no haber sido condenado mediante sentencia
+                                        ejecutoriada, por
+                                        delito intencional (CARTA BAJO PROTESTA DE DECIR VERDAD DE QUE SE GOZA DE BUENA
+                                        FAMA PÚBLICA
+                                        Y/O CARTA DE ANTECEDENTES NO PENALES)*:
+                                    </label>
+
+                                    <div *ngIf="archivosSubidos['carta_ant_no_penales']" class="mt-2">
+                                        <a [href]="archivosSubidos['carta_ant_no_penales']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 grid-margin stretch-card">
+                            <div class="card h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <label class="form-label" for="formFile" style="text-align: justify;">
+                                        No ser ministro de culto, excepto que se haya separado de su ministerio con tres
+                                        años de
+                                        anticipación al día de su elección (CARTA BAJO PROTESTA DE DECIR VERDAD)*:
+                                    </label>
+                                    <div *ngIf="archivosSubidos['carta_protesta1']" class="mt-2">
+                                        <a [href]="archivosSubidos['carta_protesta1']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 grid-margin stretch-card">
+                            <div class="card h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <label class="form-label" for="formFile" style="text-align: justify;">
+                                        No haber desempeñado cargo directivo en algún partido, asociación u organización
+                                        política,
+                                        en los tres años anteriores al día de su elección (CARTA BAJO PROTESTA DE DECIR
+                                        VERDAD)*:
+                                    </label>
+                                    <div *ngIf="archivosSubidos['carta_protesta2']" class="mt-2">
+                                        <a [href]="archivosSubidos['carta_protesta2']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 grid-margin stretch-card">
+                            <div class="card h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <label class="form-label" for="formFile" style="text-align: justify;">
+                                        No haber sido sancionado en el desempeño de empleo, cargo o comisión en el
+                                        servicio público
+                                        federal, estatal o municipal, con motivo de alguna recomendación emitida por
+                                        organismos
+                                        públicos de derechos humanos (CARTA BAJO PROTESTA DE DECIR VERDAD)*:
+                                    </label>
+                                    <div *ngIf="archivosSubidos['carta_protesta3']" class="mt-2">
+                                        <a [href]="archivosSubidos['carta_protesta3']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 grid-margin stretch-card">
+                            <div class="card h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <label class="form-label" for="formFile" style="text-align: justify;">
+                                        No haber sido objeto de sanción de inhabilitación o destitución administrativas
+                                        para el
+                                        desempeño de empleo, cargo o comisión en el servicio público, mediante
+                                        resolución que haya
+                                        causado estado (CARTA BAJO PROTESTA DE DECIR VERDAD)*:
+                                    </label>
+                                    <div *ngIf="archivosSubidos['carta_protesta4']" class="mt-2">
+                                        <a [href]="archivosSubidos['carta_protesta4']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 grid-margin stretch-card">
+                            <div class="card h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <label class="form-label" for="formFile" style="text-align: justify;">
+                                        Carta firmada por la persona aspirante, en donde manifiesten su voluntad expresa
+                                        de
+                                        participar en el proceso de selección (CARTA)*:
+                                    </label>
+                                    <div *ngIf="archivosSubidos['carta_protesta5']" class="mt-2">
+                                        <a [href]="archivosSubidos['carta_protesta5']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 grid-margin stretch-card">
+                            <div class="card h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <label class="form-label" for="curriculum" style="text-align: justify;">
+                                        Currículum Vitae en el que se señale su experiencia laboral, formación
+                                        académica;
+                                        especialización en derechos humanos; experiencia profesional en el ámbito de la
+                                        protección,
+                                        observancia, promoción, estudio y divulgación de los derechos humanos; y, en su
+                                        caso,
+                                        publicaciones en materias relacionadas con los derechos humanos (CURRICULUM)*:
+                                    </label>
+                                    <div *ngIf="archivosSubidos['curriculum']" class="mt-2">
+                                        <a [href]="archivosSubidos['curriculum']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 grid-margin stretch-card">
+                            <div class="card h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <label class="form-label" for="propuesta_programa" style="text-align: justify;">
+                                        Propuesta de programa de trabajo y una descripción de las razones que justifican
+                                        su
+                                        idoneidad para ocupar la titularidad de la Comisión Estatal, con una extensión
+                                        máxima de
+                                        diez cuartillas, con letra tipo Arial, tamaño número 12 e interlineado 1.5
+                                        (PROPUESTA DEL
+                                        PROGRAMA)*:
+                                    </label>
+                                    <div *ngIf="archivosSubidos['propuesta_programa']" class="mt-2">
+                                        <a [href]="archivosSubidos['propuesta_programa']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 grid-margin stretch-card">
+                            <div class="card h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <label class="form-label" for="copia_certificada" style="text-align: justify;">
+                                        Copia certificada de los documentos con los que acredite su nacionalidad,
+                                        ciudadanía y
+                                        edad; así como de título(s) o grados académicos (COPIAS CERTIFICADAS)*:
+                                    </label>
+                                    <div *ngIf="archivosSubidos['copia_certificada']" class="mt-2">
+                                        <a [href]="archivosSubidos['copia_certificada']" target="_blank"
+                                            class="d-flex align-items-center text-decoration-none">
+                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
+                                                width="50" height="50" class="me-2" />
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button  type="submit" class="btn btn-primary submit">
+                                Enviar
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

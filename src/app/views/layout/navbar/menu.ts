@@ -19,11 +19,11 @@ export const MENU: MenuItem[] = [
           },
           {
             label: 'En tramite',
-            link: '/solicitudes/tramite'
+            link: '/solicitud/tramite'
           },
           {
             label: 'Finalizadas',
-            link: '/solicitudes'
+            link: '/solicitud/finalizados'
           },
         ]
       },

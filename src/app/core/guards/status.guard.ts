@@ -1,5 +1,31 @@
-import { CanActivateFn } from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
+import { RegistroService } from '../../service/registro.service';
+import { inject } from '@angular/core';
+import { UserService } from '../../../app/service/user.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { catchError, map } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 export const statusGuard: CanActivateFn = (route, state) => {
-  return true;
+  const router = inject(Router);
+  const _userService = inject(UserService);
+  const registroService = inject(RegistroService);
+
+  const id = _userService.currentUserValue?.id;
+
+ 
+  return registroService.getStatus(Number(id)).pipe(
+    map((response: any) => {
+      if (response.data === 1 || response.data === 4) {
+        return true;
+
+      } else {
+        return router.createUrlTree(['/documentos']);
+      }
+
+    }),
+    catchError((error: HttpErrorResponse) => {
+      return of(router.createUrlTree(['/error/404']));
+    })
+  );
 };

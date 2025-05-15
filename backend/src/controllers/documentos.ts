@@ -10,6 +10,7 @@ export const saveDocumentos = async (req: Request, res: Response): Promise<any> 
     const archivo = req.file; 
     const { tipo, usuario } = req.body;
 
+    
     if (!archivo) {
         return res.status(400).json({ message: 'Archivo no recibido' });
     }

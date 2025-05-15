@@ -154,7 +154,7 @@ const getestatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     if (solicitud) {
         return res.json({
             msg: `List de exitosamente`,
-            data: solicitud.estatus
+            data: solicitud.estatusId
         });
     }
     else {

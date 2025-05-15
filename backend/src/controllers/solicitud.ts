@@ -150,7 +150,7 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
     if(solicitud){
         return res.json({
           msg: `List de exitosamente`,
-          data: solicitud.estatus
+          data: solicitud.estatusId
       });
     }else{
       return res.status(404).json({

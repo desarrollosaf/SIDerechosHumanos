@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.putRegistro = exports.saveRegistro = exports.deleteRegistro = exports.getRegistro = exports.getRegistros = void 0;
+exports.getsolicitudes = exports.putRegistro = exports.saveRegistro = exports.deleteRegistro = exports.getRegistro = exports.getRegistros = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const solicitud_1 = __importDefault(require("../models/solicitud"));
 const user_1 = __importDefault(require("../models/user"));
@@ -129,3 +129,16 @@ const putRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     // }
 });
 exports.putRegistro = putRegistro;
+const getsolicitudes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const listSolicitudes = yield solicitud_1.default.findAll({
+        where: {
+            estatusId: id
+        }
+    });
+    return res.json({
+        msg: `List de exitosamente`,
+        data: listSolicitudes
+    });
+});
+exports.getsolicitudes = getsolicitudes;

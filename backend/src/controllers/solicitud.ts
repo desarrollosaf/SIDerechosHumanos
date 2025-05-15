@@ -144,6 +144,21 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
       });
   }
 
+  export const getestatus = async (req: Request, res: Response): Promise<any> => {
+    const { id } = req.params;
+    const solicitud: any = await Solicitudes.findOne({ where: { userId: id } });
+    if(solicitud){
+        return res.json({
+          msg: `List de exitosamente`,
+          data: solicitud.estatus
+      });
+    }else{
+      return res.status(404).json({
+            msg: `No existe el id ${id}`,
+        });
+    }
+}
+
 
 
 

@@ -42,7 +42,7 @@ export class ListaValidadorComponent {
       this.titulo='Solicitudes rechazadas'
       this.tipoEstatus = 4;
     }
-    this._solicitudesService.getSolicitudes().subscribe({
+    this._solicitudesService.getSolicitudes(this.tipoEstatus).subscribe({
       next: (response: any) => {
         console.log(response.data);
         this.originalData = [...response.data];

@@ -18,7 +18,7 @@ export class ValidadorService {
 
   }
 
-  getSolicitudes(): Observable<string> {
-    return this.http.get<string>(`${this.myAppUrl}${this.myAPIUrl}/read`)
+  getSolicitudes(id : Number): Observable<string> {
+    return this.http.get<string>(`${this.myAppUrl}${this.myAPIUrl}/getsolicitudes/${id}`)
   }
 }

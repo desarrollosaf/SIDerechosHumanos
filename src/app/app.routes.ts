@@ -70,6 +70,10 @@ export const routes: Routes = [
       {
         path: 'solicitud/rechazados',
         loadComponent: () => import('./views/pages/lista-validador/lista-validador.component').then(c => c.ListaValidadorComponent)
+      },
+      {
+        path: 'validacion/:id',
+        loadComponent: () => import('./views/pages/detalle-validador/detalle-validador.component').then(c => c.DetalleValidadorComponent)
       }
     ]
   },

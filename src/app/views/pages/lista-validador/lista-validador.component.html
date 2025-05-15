@@ -27,7 +27,7 @@
                         <ngx-datatable-column [headerClass]="'text-center'" [cellClass]="'text-center'" name="Estatus">
                             <ng-template let-row="row" ngx-datatable-cell-template>
                                 <div class="text-center">
-                                    <a *ngIf="row.estatusId == 2" [routerLink]="['/add-documentos']"
+                                    <a *ngIf="row.estatusId == 2" [routerLink]="['/validacion/{{row.userId}}']"
                                         style="display: block; width: 100%; text-decoration: none;">
                                         <div class="progress">
                                             <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
@@ -36,7 +36,7 @@
                                             </div>
                                         </div>
                                     </a>
-                                    <a *ngIf="row.estatusId == 3" [routerLink]="['/add-documentos']"
+                                    <a *ngIf="row.estatusId == 3" [routerLink]="['/validacion/{{row.userId}}']"
                                         style="display: block; width: 100%; text-decoration: none;">
                                         <div class="progress">
                                             <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
@@ -45,7 +45,7 @@
                                             </div>
                                         </div>
                                     </a>
-                                    <a *ngIf="row.estatusId == 4" [routerLink]="['/add-documentos']"
+                                    <a *ngIf="row.estatusId == 4" [routerLink]="['/validacion/{{row.userId}}']"
                                         style="display: block; width: 100%; text-decoration: none;">
                                         <div class="progress">
                                             <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
@@ -64,3 +64,4 @@
     </div>
 </div>
 
+<!-- routerLink="/edit/{{row.userId}}" -->

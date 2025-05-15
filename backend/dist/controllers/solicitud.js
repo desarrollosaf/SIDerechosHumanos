@@ -74,7 +74,7 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             email: body.correo,
             password: UpasswordHash,
         });
-        console.log(newUser.id);
+        console.log(body);
         body.userId = newUser.id;
         body.estatusId = 1;
         console.log(body);

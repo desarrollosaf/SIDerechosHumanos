@@ -64,15 +64,11 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('myToken', token);
         localStorage.setItem('isLoggedin', 'true');
 
-        // Guardar el usuario en el servicio (para el observable)
         this._userService.setCurrentUser(userData);
-
-        //suscribirse al rol 
         this.userRole$.subscribe(role => {
           console.log('Rol actual:', role);
         });
-
-        // Redireccionar
+        
         this.router.navigate([this.returnUrl]);
       },
       error: (e: HttpErrorResponse) => {

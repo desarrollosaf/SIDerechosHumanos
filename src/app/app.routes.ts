@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { BaseComponent } from './views/layout/base/base.component';
 import { authGuard } from './core/guards/auth.guard';
+import { adminGuard } from './core/guards/admin.guard';
+import { statusGuard } from './core/guards/status.guard';
 
 export const routes: Routes = [
   { path: 'auth', loadChildren: () => import('./views/pages/auth/auth.routes')},
@@ -48,8 +50,9 @@ export const routes: Routes = [
         loadChildren: () => import('./views/pages/general/general.routes')
       },
       {
-        path: 'solicitudes',
-        loadChildren: () => import('./views/pages/solicitudes/solicitudes.route')
+        path: 'solicitud',
+        loadChildren: () => import('./views/pages/lista-validador/lista-validador.route'),
+        canActivate : [ adminGuard ]
       },
       {
         path: 'documentos',
@@ -57,19 +60,8 @@ export const routes: Routes = [
       },
       {
         path: 'add-documentos',
-        loadComponent: () => import('./views/pages/add-edit-documentos/add-edit-documentos.component').then(c => c.AddEditDocumentosComponent)
-      },
-      {
-        path: 'solicitud/tramite',
-        loadComponent: () => import('./views/pages/lista-validador/lista-validador.component').then(c => c.ListaValidadorComponent)
-      },
-      {
-        path: 'solicitud/finalizados',
-        loadComponent: () => import('./views/pages/lista-validador/lista-validador.component').then(c => c.ListaValidadorComponent)
-      },
-      {
-        path: 'solicitud/rechazados',
-        loadComponent: () => import('./views/pages/lista-validador/lista-validador.component').then(c => c.ListaValidadorComponent)
+        loadComponent: () => import('./views/pages/add-edit-documentos/add-edit-documentos.component').then(c => c.AddEditDocumentosComponent),
+        canActivate : [ statusGuard ]
       },
       {
         path: 'validacion/:id',

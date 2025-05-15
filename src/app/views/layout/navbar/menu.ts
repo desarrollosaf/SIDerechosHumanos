@@ -35,14 +35,14 @@ export const MENU: MenuItem[] = [
     ]
   },
   {
-    label: 'Documentos',
+    label: 'Solicitud',
     icon: 'mail',
     roles: ['Administrador', 'Usuario'],
     subMenus: [
       {
         subMenuItems: [
           {
-            label: 'Mis documentos',
+            label: 'Mi solicitud',
             isTitle: true,
           },
           {

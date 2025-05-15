@@ -114,22 +114,35 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
     }
   };
 
-export const putRegistro = async (req: Request, res: Response): Promise<any> => {
-    return res.status(404).json({
-        msg: 'put',
-    });
-    // try {
-    //     await Solicitudes.create(body);
-    //     res.json({
-    //         msg: `Agregado con exito`,
-    //     });
-    // }catch (error){
-    //     console.log(error);
-    //     res.json({
-    //         msg: `Ocurrio un error al cargar `,
-    //     });
-    // }
-}
+  export const putRegistro = async (req: Request, res: Response): Promise<any> => {
+      return res.status(404).json({
+          msg: 'put',
+      });
+      // try {
+      //     await Solicitudes.create(body);
+      //     res.json({
+      //         msg: `Agregado con exito`,
+      //     });
+      // }catch (error){
+      //     console.log(error);
+      //     res.json({
+      //         msg: `Ocurrio un error al cargar `,
+      //     });
+      // }
+  }
+
+  export const getsolicitudes = async (req: Request, res: Response): Promise<any> => {
+      const { id } = req.params;
+      const listSolicitudes = await Solicitudes.findAll({
+          where: {
+              estatusId: id 
+          }
+      });
+      return res.json({
+          msg: `List de exitosamente`,
+          data: listSolicitudes
+      });
+  }
 
 
 

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getsolicitudes = exports.putRegistro = exports.saveRegistro = exports.deleteRegistro = exports.getRegistro = exports.getRegistros = void 0;
+exports.getestatus = exports.getsolicitudes = exports.putRegistro = exports.saveRegistro = exports.deleteRegistro = exports.getRegistro = exports.getRegistros = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const solicitud_1 = __importDefault(require("../models/solicitud"));
 const user_1 = __importDefault(require("../models/user"));
@@ -148,3 +148,19 @@ const getsolicitudes = (req, res) => __awaiter(void 0, void 0, void 0, function*
     });
 });
 exports.getsolicitudes = getsolicitudes;
+const getestatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const solicitud = yield solicitud_1.default.findOne({ where: { userId: id } });
+    if (solicitud) {
+        return res.json({
+            msg: `List de exitosamente`,
+            data: solicitud.estatus
+        });
+    }
+    else {
+        return res.status(404).json({
+            msg: `No existe el id ${id}`,
+        });
+    }
+});
+exports.getestatus = getestatus;

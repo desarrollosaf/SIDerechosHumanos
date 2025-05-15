@@ -58,6 +58,14 @@ export const routes: Routes = [
       {
         path: 'add-documentos',
         loadComponent: () => import('./views/pages/add-edit-documentos/add-edit-documentos.component').then(c => c.AddEditDocumentosComponent)
+      },
+      {
+        path: 'solicitud/tramite',
+        loadComponent: () => import('./views/pages/lista-validador/lista-validador.component').then(c => c.ListaValidadorComponent)
+      },
+      {
+        path: 'solicitud/finalizados',
+        loadComponent: () => import('./views/pages/lista-validador/lista-validador.component').then(c => c.ListaValidadorComponent)
       }
     ]
   },

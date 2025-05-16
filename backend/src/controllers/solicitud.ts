@@ -133,8 +133,8 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
   }
 
   export const getSolicitudes = async (req: Request, res: Response): Promise<any> => {
-      //const { id, usuario } = req.body;
-      console.log('holi', req);
+      const { id, usuario } = req.body;
+      console.log('holi', usuario);
       /*const usuario = await RolUsers.findOne({
           where: {
               user_id: body.usuario 
@@ -174,7 +174,9 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
 
   export const getestatus = async (req: Request, res: Response): Promise<any> => {
     const { id } = req.params;
+    
     const solicitud: any = await Solicitudes.findOne({ where: { userId: id } });
+    console.log(id, solicitud)
     if(solicitud){
         return res.json({
           msg: `List de exitosamente`,

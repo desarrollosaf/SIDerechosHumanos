@@ -136,8 +136,8 @@ const putRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.putRegistro = putRegistro;
 const getSolicitudes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    //const { id, usuario } = req.body;
-    console.log('holi', req);
+    const { id, usuario } = req.body;
+    console.log('holi', usuario);
     /*const usuario = await RolUsers.findOne({
         where: {
             user_id: body.usuario
@@ -176,6 +176,7 @@ exports.getSolicitudes = getSolicitudes;
 const getestatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const solicitud = yield solicitud_1.default.findOne({ where: { userId: id } });
+    console.log(id, solicitud);
     if (solicitud) {
         return res.json({
             msg: `List de exitosamente`,

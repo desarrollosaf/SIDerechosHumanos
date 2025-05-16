@@ -24,7 +24,7 @@ export class ListaValidadorComponent {
   titulo: string = '';
   tipoEstatus: number = 0;
   public _userService = inject(UserService);
-  public _solicitudesService = inject(ValidadorService);
+  public _validadorService = inject(ValidadorService);
   @ViewChild('table') table: DatatableComponent;
 
 
@@ -32,32 +32,28 @@ export class ListaValidadorComponent {
 
   ngOnInit(): void {
     this.rutaActual = this.router.url;
-    console.log('Ruta actual:', this.rutaActual);
     if (this.rutaActual.includes('tramite')) {
       this.titulo='Solicitudes en tramite'
       this.tipoEstatus = 2;
+
     } else if (this.rutaActual.includes('finalizados')) {
       this.titulo='Solicitudes finalizadas'
       this.tipoEstatus = 3;
+
     }else if(this.rutaActual.includes('rechazados')){
       this.titulo='Solicitudes rechazadas'
       this.tipoEstatus = 4;
     }
 
-    const formData = new FormData();
-
+    const payload: any = {};
     if (this._userService.currentUserValue?.id !== undefined) {
-      formData.append('usuario', String(this._userService.currentUserValue.id));
+      payload.usuario = this._userService.currentUserValue.id;
     }
-
     if (typeof this.tipoEstatus !== 'undefined') {
-        formData.append('id', String(this.tipoEstatus));
+      payload.id = this.tipoEstatus;
     }
     
-    console.log('FormData:', formData.get('usuario'), formData.get('id'));
-
-
-    this._solicitudesService.getSolicitudes(formData).subscribe({
+    this._validadorService.getSolicitudes(payload).subscribe({
       next: (response: any) => {
         console.log(response.data);
         this.originalData = [...response.data];
@@ -82,7 +78,6 @@ export class ListaValidadorComponent {
 
 updateFilter(event: any) {
   const val = (event.target?.value || '').toLowerCase();
-
   this.temp = this.originalData.filter((row: any) => {
     return Object.values(row).some((field) => {
       return field && field.toString().toLowerCase().includes(val);

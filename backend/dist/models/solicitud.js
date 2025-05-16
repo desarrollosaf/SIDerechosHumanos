@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../database/connection"));
 const documentos_1 = __importDefault(require("./documentos"));
-const validadorsolicitud_1 = __importDefault(require("./validadorsolicitud"));
 class Solicitudes extends sequelize_1.Model {
 }
 Solicitudes.init({
@@ -38,7 +37,7 @@ Solicitudes.init({
     paranoid: true,
 });
 exports.default = Solicitudes;
-Solicitudes.belongsTo(validadorsolicitud_1.default, { foreignKey: "solicitudId", as: "validasolicitud" });
+//Solicitudes.belongsTo(ValidadorSolicitud, { foreignKey: "solicitudId", as: "validasolicitud" });
 Solicitudes.hasMany(documentos_1.default, {
     foreignKey: 'solicitudId',
     as: 'documentos',

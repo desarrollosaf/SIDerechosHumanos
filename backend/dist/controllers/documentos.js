@@ -18,6 +18,8 @@ const documentos_1 = __importDefault(require("../models/documentos"));
 const tipodocumentos_1 = __importDefault(require("../models/tipodocumentos"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
+const role_users_1 = __importDefault(require("../models/role_users"));
+const validadorsolicitud_1 = __importDefault(require("../models/validadorsolicitud"));
 const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const archivo = req.file;
     const { tipo, usuario } = req.body;
@@ -102,16 +104,24 @@ exports.getDocumentos = getDocumentos;
 const envSolicitud = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const solicitud = yield solicitud_1.default.findOne({ where: { userId: id } });
-    if (solicitud) {
-        solicitud.estatusId = 2;
-        yield solicitud.save();
-        return res.json('200');
+    if (!solicitud) {
+        return res.status(404).json({ msg: `No existe el id ${id}` });
     }
-    else {
-        return res.status(404).json({
-            msg: `No existe el id ${id}`,
-        });
+    const validadores = yield role_users_1.default.findAll({ where: { role_id: 2 } });
+    if (validadores.length === 0) {
+        return res.status(400).json({ msg: "No hay validadores disponibles" });
     }
+    const validadorConMenosSolicitudes = yield Promise.all(validadores.map((validador) => __awaiter(void 0, void 0, void 0, function* () {
+        const count = yield validadorsolicitud_1.default.count({ where: { validadorId: validador.user_id } });
+        return { validador, count };
+    }))).then((results) => results.sort((a, b) => a.count - b.count)[0].validador);
+    yield validadorsolicitud_1.default.create({
+        solicitudId: solicitud.id,
+        validadorId: validadorConMenosSolicitudes.user_id,
+    });
+    solicitud.estatusId = 2;
+    yield solicitud.save();
+    return res.json("200");
 });
 exports.envSolicitud = envSolicitud;
 const deleteDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

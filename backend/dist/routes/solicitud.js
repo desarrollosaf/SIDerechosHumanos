@@ -8,6 +8,6 @@ router.get("/api/solicitud/read", solicitud_1.getRegistros);
 router.delete("/api/solicitud/delete/:id", solicitud_1.deleteRegistro);
 router.post("/api/solicitud/edit/:id", solicitud_1.getRegistro);
 router.put("/api/solicitud/update/:id", solicitud_1.putRegistro);
-router.get("/api/solicitud/getsolicitudes/:id", solicitud_1.getsolicitudes);
+router.post("/api/solicitud/getsolicitudes", solicitud_1.getsolicitudes);
 router.get("/api/solicitud/getestatus/:id", solicitud_1.getestatus);
 exports.default = router;

@@ -8,6 +8,8 @@ import {
 } from 'sequelize';
 import sequelize from '../database/connection';
 import Documentos from './documentos';
+import RolUsers from './role_users';
+import ValidadorSolicitud from './validadorsolicitud';
 
 class Solicitudes extends Model<
   InferAttributes<Solicitudes>,
@@ -60,7 +62,11 @@ Solicitudes.init(
 
 export default Solicitudes;
 
+
+Solicitudes.belongsTo(ValidadorSolicitud, { foreignKey: "solicitudId", as: "validasolicitud" });
+
 Solicitudes.hasMany(Documentos, {
   foreignKey: 'solicitudId',
   as: 'documentos',
 });
+

@@ -111,15 +111,13 @@ export const envSolicitud = async (req: Request, res: Response): Promise<any> =>
         return res.status(400).json({ msg: "No hay validadores disponibles" });
     }
 
-    // return res.json(validadores)
-
     const validadorConMenosSolicitudes = await Promise.all(
         validadores.map(async (validador) => {
         const count = await ValidadorSolicitud.count({ where: { validadorId: validador.user_id } });
         return { validador, count };
         })
     ).then((results) => results.sort((a, b) => a.count - b.count)[0].validador);
-    // return res.json(validadorConMenosSolicitudes)
+   
     await ValidadorSolicitud.create({
         solicitudId: solicitud.id,
         validadorId: validadorConMenosSolicitudes.user_id,

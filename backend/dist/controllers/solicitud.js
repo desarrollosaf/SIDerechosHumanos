@@ -19,6 +19,7 @@ const user_1 = __importDefault(require("../models/user"));
 const role_users_1 = __importDefault(require("../models/role_users"));
 const nodemailer = require('nodemailer');
 const dotenv_1 = __importDefault(require("dotenv"));
+const validadorsolicitud_1 = __importDefault(require("../models/validadorsolicitud"));
 dotenv_1.default.config();
 const getRegistros = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const listSolicitudes = yield solicitud_1.default.findAll();
@@ -136,12 +137,36 @@ const putRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.putRegistro = putRegistro;
 const getsolicitudes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    const listSolicitudes = yield solicitud_1.default.findAll({
+    const { body } = req;
+    const usuario = yield role_users_1.default.findOne({
         where: {
-            estatusId: id
+            user_id: body.id
         }
     });
+    let listSolicitudes = [];
+    if (usuario && usuario.role_id == 1) {
+        const listSolicitudes = yield solicitud_1.default.findAll({
+            where: {
+                estatusId: body.id
+            }
+        });
+    }
+    else {
+        const listSolicitudes = yield solicitud_1.default.findAll({
+            where: {
+                estatusId: body.id,
+            },
+            include: [
+                {
+                    model: validadorsolicitud_1.default,
+                    as: "validasolicitud",
+                    where: {
+                        validadorId: body.usuario,
+                    },
+                },
+            ],
+        });
+    }
     return res.json({
         msg: `List de exitosamente`,
         data: listSolicitudes

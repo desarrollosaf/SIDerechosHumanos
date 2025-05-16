@@ -43,7 +43,13 @@ export class ListaValidadorComponent {
       this.titulo='Solicitudes rechazadas'
       this.tipoEstatus = 4;
     }
-    this._solicitudesService.getSolicitudes(this.tipoEstatus).subscribe({
+
+    const formData = new FormData();
+    
+    formData.append('usuario', String(this._userService.currentUserValue?.id));
+    formData.append('id', String(this.tipoEstatus));
+    console.log( String(this.tipoEstatus));
+    this._solicitudesService.getSolicitudes(formData).subscribe({
       next: (response: any) => {
         console.log(response.data);
         this.originalData = [...response.data];

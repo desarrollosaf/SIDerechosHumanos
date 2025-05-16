@@ -138,9 +138,10 @@ const putRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.putRegistro = putRegistro;
 const getsolicitudes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
+    console.log(body);
     const usuario = yield role_users_1.default.findOne({
         where: {
-            user_id: body.id
+            user_id: body.usuario
         }
     });
     let listSolicitudes = [];

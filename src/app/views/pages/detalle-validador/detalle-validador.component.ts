@@ -6,6 +6,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
+import { UserService } from '../../../service/user.service';
 @Component({
   selector: 'app-detalle-validador',
   imports: [CommonModule, FormsModule, ReactiveFormsModule, MatSlideToggleModule, MatIconModule],
@@ -14,7 +15,9 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class DetalleValidadorComponent {
   id: number;
+ 
   public _documentoService = inject(DocumentoService);
+ 
   archivosSubidos: { [key: string]: string } = {};
   documentos: any;
 

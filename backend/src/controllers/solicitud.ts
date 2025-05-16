@@ -134,10 +134,10 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
 
   export const getsolicitudes = async (req: Request, res: Response): Promise<any> => {
       const { body } = req;
-
+      console.log(body);
       const usuario = await RolUsers.findOne({
           where: {
-              user_id: body.id 
+              user_id: body.usuario 
           }
       });
 

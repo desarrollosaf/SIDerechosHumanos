@@ -5,6 +5,7 @@ import User  from '../models/user'
 import RolUsers  from '../models/role_users'
 const nodemailer = require('nodemailer');
 import dotenv from "dotenv";
+import ValidadorSolicitud from '../models/validadorsolicitud'
 dotenv.config();
 
 
@@ -132,12 +133,38 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
   }
 
   export const getsolicitudes = async (req: Request, res: Response): Promise<any> => {
-      const { id } = req.params;
-      const listSolicitudes = await Solicitudes.findAll({
+      const { body } = req;
+
+      const usuario = await RolUsers.findOne({
           where: {
-              estatusId: id 
+              user_id: body.id 
           }
       });
+
+      let listSolicitudes: any[] = [];
+      if(usuario && usuario.role_id == 1){
+        const listSolicitudes = await Solicitudes.findAll({
+            where: {
+                estatusId: body.id 
+            }
+        });
+      }else{
+          const listSolicitudes = await Solicitudes.findAll({
+            where: {
+              estatusId: body.id,
+            },
+            include: [
+              {
+                model: ValidadorSolicitud,
+                as: "validasolicitud",
+                where: {
+                  validadorId: body.usuario,
+                },
+              },
+            ],
+          });
+      }
+
       return res.json({
           msg: `List de exitosamente`,
           data: listSolicitudes

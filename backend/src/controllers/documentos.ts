@@ -4,6 +4,8 @@ import Documentos  from '../models/documentos';
 import TipoDocumentos  from '../models/tipodocumentos';
 import fs from 'fs';
 import path from 'path';
+import RolUsers from '../models/role_users';
+import ValidadorSolicitud from '../models/validadorsolicitud';
 
 
 export const saveDocumentos = async (req: Request, res: Response): Promise<any> => {
@@ -98,17 +100,34 @@ export const getDocumentos = async (req: Request, res: Response): Promise<any> =
 
 export const envSolicitud = async (req: Request, res: Response): Promise<any> => {
     const { id } = req.params;
+
     const solicitud: any = await Solicitudes.findOne({ where: { userId: id } });
-    if(solicitud){
-         solicitud.estatusId = 2;
-        await solicitud.save();
-      return res.json('200')
-    }else{
-      return res.status(404).json({
-            msg: `No existe el id ${id}`,
-        });
+
+    if (!solicitud) {
+        return res.status(404).json({ msg: `No existe el id ${id}` });
     }
-}
+
+    const validadores: any[] = await RolUsers.findAll({ where: { role_id: 2 } });
+    if (validadores.length === 0) {
+        return res.status(400).json({ msg: "No hay validadores disponibles" });
+    }
+
+    const validadorConMenosSolicitudes = await Promise.all(
+        validadores.map(async (validador) => {
+        const count = await ValidadorSolicitud.count({ where: { validadorId: validador.user_id } });
+        return { validador, count };
+        })
+    ).then((results) => results.sort((a, b) => a.count - b.count)[0].validador);
+   
+    await ValidadorSolicitud.create({
+        solicitudId: solicitud.id,
+        validadorId: validadorConMenosSolicitudes.user_id,
+    });
+
+    solicitud.estatusId = 2;
+    await solicitud.save();
+    return res.json("200");
+};
 
 export const deleteDoc = async (req: Request, res: Response): Promise<any> => {
     const { tipo, usuario } = req.body;

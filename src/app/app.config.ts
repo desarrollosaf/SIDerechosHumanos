@@ -26,6 +26,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withInMemoryScrolling({ scrollPositionRestoration: 'top' })), 
     provideAnimationsAsync(),
     importProvidersFrom([SweetAlert2Module.forRoot(), HttpClientModule, NgModule, FormsModule, ReactiveFormsModule]), // ngx-sweetalert2: https://github.com/sweetalert2/ngx-sweetalert2
-    provideHighlightOptions(highlightOptions), // ngx-highlightjs: https://github.com/murhafsousli/ngx-highlightjs
+    provideHighlightOptions(highlightOptions), provideAnimationsAsync(), // ngx-highlightjs: https://github.com/murhafsousli/ngx-highlightjs
   ],
 };

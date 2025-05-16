@@ -27,6 +27,7 @@ export class ListaValidadorComponent {
   public _solicitudesService = inject(ValidadorService);
   @ViewChild('table') table: DatatableComponent;
 
+
   constructor(private router: Router) {}
 
   ngOnInit(): void {

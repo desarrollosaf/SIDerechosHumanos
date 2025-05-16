@@ -12,14 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getestatus = exports.getsolicitudes = exports.putRegistro = exports.saveRegistro = exports.deleteRegistro = exports.getRegistro = exports.getRegistros = void 0;
+exports.getestatus = exports.getSolicitudes = exports.putRegistro = exports.saveRegistro = exports.deleteRegistro = exports.getRegistro = exports.getRegistros = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const solicitud_1 = __importDefault(require("../models/solicitud"));
 const user_1 = __importDefault(require("../models/user"));
 const role_users_1 = __importDefault(require("../models/role_users"));
 const nodemailer = require('nodemailer');
 const dotenv_1 = __importDefault(require("dotenv"));
-const validadorsolicitud_1 = __importDefault(require("../models/validadorsolicitud"));
 dotenv_1.default.config();
 const getRegistros = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const listSolicitudes = yield solicitud_1.default.findAll();
@@ -136,44 +135,44 @@ const putRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     // }
 });
 exports.putRegistro = putRegistro;
-const getsolicitudes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { body } = req;
-    console.log(body);
-    const usuario = yield role_users_1.default.findOne({
+const getSolicitudes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    //const { id, usuario } = req.body;
+    console.log('holi', req);
+    /*const usuario = await RolUsers.findOne({
         where: {
             user_id: body.usuario
-        }
+        }s
     });
-    let listSolicitudes = [];
-    if (usuario && usuario.role_id == 1) {
-        const listSolicitudes = yield solicitud_1.default.findAll({
-            where: {
-                estatusId: body.id
-            }
-        });
-    }
-    else {
-        const listSolicitudes = yield solicitud_1.default.findAll({
-            where: {
-                estatusId: body.id,
-            },
-            include: [
-                {
-                    model: validadorsolicitud_1.default,
-                    as: "validasolicitud",
-                    where: {
-                        validadorId: body.usuario,
-                    },
-                },
-            ],
-        });
-    }
-    return res.json({
-        msg: `List de exitosamente`,
-        data: listSolicitudes
-    });
+    return res.json(usuario);*/
+    // let listSolicitudes: any[] = [];
+    // if(usuario && usuario.role_id == 1){
+    //   const listSolicitudes = await Solicitudes.findAll({
+    //       where: {
+    //           estatusId: body.id 
+    //       }
+    //   });
+    // }else{
+    //     const listSolicitudes = await Solicitudes.findAll({
+    //       where: {
+    //         estatusId: body.id,
+    //       },
+    //       include: [
+    //         {
+    //           model: ValidadorSolicitud,
+    //           as: "validasolicitud",
+    //           where: {
+    //             validadorId: body.usuario,
+    //           },
+    //         },
+    //       ],
+    //     });
+    // }
+    // return res.json({
+    //     msg: `List de exitosamente`,
+    //     data: listSolicitudes
+    // });
 });
-exports.getsolicitudes = getsolicitudes;
+exports.getSolicitudes = getSolicitudes;
 const getestatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const solicitud = yield solicitud_1.default.findOne({ where: { userId: id } });

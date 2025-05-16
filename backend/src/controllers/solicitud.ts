@@ -132,43 +132,44 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
       // }
   }
 
-  export const getsolicitudes = async (req: Request, res: Response): Promise<any> => {
-      const { body } = req;
-      console.log(body);
-      const usuario = await RolUsers.findOne({
+  export const getSolicitudes = async (req: Request, res: Response): Promise<any> => {
+      //const { id, usuario } = req.body;
+      console.log('holi', req);
+      /*const usuario = await RolUsers.findOne({
           where: {
               user_id: body.usuario 
-          }
+          }s
       });
+      return res.json(usuario);*/
 
-      let listSolicitudes: any[] = [];
-      if(usuario && usuario.role_id == 1){
-        const listSolicitudes = await Solicitudes.findAll({
-            where: {
-                estatusId: body.id 
-            }
-        });
-      }else{
-          const listSolicitudes = await Solicitudes.findAll({
-            where: {
-              estatusId: body.id,
-            },
-            include: [
-              {
-                model: ValidadorSolicitud,
-                as: "validasolicitud",
-                where: {
-                  validadorId: body.usuario,
-                },
-              },
-            ],
-          });
-      }
+      // let listSolicitudes: any[] = [];
+      // if(usuario && usuario.role_id == 1){
+      //   const listSolicitudes = await Solicitudes.findAll({
+      //       where: {
+      //           estatusId: body.id 
+      //       }
+      //   });
+      // }else{
+      //     const listSolicitudes = await Solicitudes.findAll({
+      //       where: {
+      //         estatusId: body.id,
+      //       },
+      //       include: [
+      //         {
+      //           model: ValidadorSolicitud,
+      //           as: "validasolicitud",
+      //           where: {
+      //             validadorId: body.usuario,
+      //           },
+      //         },
+      //       ],
+      //     });
+      // }
 
-      return res.json({
-          msg: `List de exitosamente`,
-          data: listSolicitudes
-      });
+      // return res.json({
+      //     msg: `List de exitosamente`,
+      //     data: listSolicitudes
+      // });
   }
 
   export const getestatus = async (req: Request, res: Response): Promise<any> => {

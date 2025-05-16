@@ -45,10 +45,18 @@ export class ListaValidadorComponent {
     }
 
     const formData = new FormData();
+
+    if (this._userService.currentUserValue?.id !== undefined) {
+      formData.append('usuario', String(this._userService.currentUserValue.id));
+    }
+
+    if (typeof this.tipoEstatus !== 'undefined') {
+        formData.append('id', String(this.tipoEstatus));
+    }
     
-    formData.append('usuario', String(this._userService.currentUserValue?.id));
-    formData.append('id', String(this.tipoEstatus));
-    console.log( String(this.tipoEstatus));
+    console.log('FormData:', formData.get('usuario'), formData.get('id'));
+
+
     this._solicitudesService.getSolicitudes(formData).subscribe({
       next: (response: any) => {
         console.log(response.data);

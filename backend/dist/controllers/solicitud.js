@@ -19,6 +19,7 @@ const user_1 = __importDefault(require("../models/user"));
 const role_users_1 = __importDefault(require("../models/role_users"));
 const nodemailer = require('nodemailer');
 const dotenv_1 = __importDefault(require("dotenv"));
+const validadorsolicitud_1 = __importDefault(require("../models/validadorsolicitud"));
 dotenv_1.default.config();
 const getRegistros = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const listSolicitudes = yield solicitud_1.default.findAll();
@@ -137,40 +138,47 @@ const putRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.putRegistro = putRegistro;
 const getSolicitudes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id, usuario } = req.body;
-    console.log('holi', usuario);
-    /*const usuario = await RolUsers.findOne({
-        where: {
-            user_id: body.usuario
-        }s
+    const user = yield user_1.default.findOne({
+        where: { id: usuario },
+        include: [
+            {
+                model: role_users_1.default,
+                as: 'rol_users',
+            }
+        ]
     });
-    return res.json(usuario);*/
-    // let listSolicitudes: any[] = [];
-    // if(usuario && usuario.role_id == 1){
-    //   const listSolicitudes = await Solicitudes.findAll({
-    //       where: {
-    //           estatusId: body.id 
-    //       }
-    //   });
-    // }else{
-    //     const listSolicitudes = await Solicitudes.findAll({
-    //       where: {
-    //         estatusId: body.id,
-    //       },
-    //       include: [
-    //         {
-    //           model: ValidadorSolicitud,
-    //           as: "validasolicitud",
-    //           where: {
-    //             validadorId: body.usuario,
-    //           },
-    //         },
-    //       ],
-    //     });
-    // }
-    // return res.json({
-    //     msg: `List de exitosamente`,
-    //     data: listSolicitudes
-    // });
+    const roleId = user.rol_users.role_id;
+    console.log(roleId, id);
+    let listSolicitudes = [];
+    if (user && roleId == 1) {
+        const listSolicitudes = yield solicitud_1.default.findAll({
+            where: {
+                estatusId: id
+            }
+        });
+    }
+    else {
+        console.log('segundo');
+        const listSolicitudes = yield solicitud_1.default.findAll({
+            where: {
+                estatusId: id,
+            },
+            include: [
+                {
+                    model: validadorsolicitud_1.default,
+                    as: "validasolicitud",
+                    where: {
+                        validadorId: usuario,
+                    },
+                },
+            ],
+        });
+    }
+    console.log(listSolicitudes);
+    return res.json({
+        msg: `List de exitosamente`,
+        data: listSolicitudes
+    });
 });
 exports.getSolicitudes = getSolicitudes;
 const getestatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

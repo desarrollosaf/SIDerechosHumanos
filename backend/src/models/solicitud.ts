@@ -63,7 +63,7 @@ Solicitudes.init(
 export default Solicitudes;
 
 
-Solicitudes.belongsTo(ValidadorSolicitud, { foreignKey: "solicitudId", as: "validasolicitud" });
+Solicitudes.hasOne(ValidadorSolicitud, { foreignKey: "solicitudId", as: "validasolicitud" });
 
 Solicitudes.hasMany(Documentos, {
   foreignKey: 'solicitudId',

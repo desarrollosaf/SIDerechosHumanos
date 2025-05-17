@@ -45,7 +45,7 @@ ValidadorSolicitud.init(
 );
 
 // Relaciones
-// ValidadorSolicitud.belongsTo(Solicitud, { foreignKey: "solicitudId", as: "solicitud" });
+//ValidadorSolicitud.belongsTo(Solicitud, { foreignKey: "id", as: "solicitud" });
 ValidadorSolicitud.belongsTo(User, { foreignKey: "validadorId", as: "validador" });
 
 export default ValidadorSolicitud;

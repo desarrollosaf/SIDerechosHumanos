@@ -134,42 +134,49 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
 
   export const getSolicitudes = async (req: Request, res: Response): Promise<any> => {
       const { id, usuario } = req.body;
-      console.log('holi', usuario);
-      /*const usuario = await RolUsers.findOne({
-          where: {
-              user_id: body.usuario 
-          }s
+      
+      const user: any = await User.findOne({ 
+        where: { id: usuario },
+        include: [
+        {
+            model: RolUsers,
+            as: 'rol_users',
+        }
+        ]
+      })
+     
+      const roleId = user.rol_users.role_id
+      console.log(roleId, id);
+      let listSolicitudes: any[] = [];
+      if(user && roleId == 1){
+        const listSolicitudes = await Solicitudes.findAll({
+            where: {
+                estatusId: id 
+            }
+        });
+        
+      }else{
+        console.log('segundo');
+          const listSolicitudes = await Solicitudes.findAll({
+            where: {
+              estatusId: id,
+            },
+            include: [
+              {
+                model: ValidadorSolicitud,
+                as: "validasolicitud",
+                where: {
+                  validadorId: usuario,
+                },
+              },
+            ],
+          });
+      }
+      console.log(listSolicitudes)
+      return res.json({
+          msg: `List de exitosamente`,
+          data: listSolicitudes
       });
-      return res.json(usuario);*/
-
-      // let listSolicitudes: any[] = [];
-      // if(usuario && usuario.role_id == 1){
-      //   const listSolicitudes = await Solicitudes.findAll({
-      //       where: {
-      //           estatusId: body.id 
-      //       }
-      //   });
-      // }else{
-      //     const listSolicitudes = await Solicitudes.findAll({
-      //       where: {
-      //         estatusId: body.id,
-      //       },
-      //       include: [
-      //         {
-      //           model: ValidadorSolicitud,
-      //           as: "validasolicitud",
-      //           where: {
-      //             validadorId: body.usuario,
-      //           },
-      //         },
-      //       ],
-      //     });
-      // }
-
-      // return res.json({
-      //     msg: `List de exitosamente`,
-      //     data: listSolicitudes
-      // });
   }
 
   export const getestatus = async (req: Request, res: Response): Promise<any> => {

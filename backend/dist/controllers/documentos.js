@@ -153,29 +153,34 @@ const deleteDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.deleteDoc = deleteDoc;
 const estatusDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { tipo, usuario, estatus, observaciones } = req.body;
-    const solicitud = yield solicitud_1.default.findOne({ where: { userId: usuario } });
-    const documentoExistente = yield documentos_1.default.findOne({
+    const userId = req.params.id; // 👈 aquí recuperas el ID de la URL
+    const documentos = req.body;
+    console.log('User ID:', userId);
+    console.log('Documentos:', documentos);
+    return res.json('200');
+    /*
+    const solicitud: any = await Solicitudes.findOne({ where: { userId: usuario } });
+    const documentoExistente = await Documentos.findOne({
         where: { solicitudId: solicitud.id },
         include: [
             {
-                model: tipodocumentos_1.default,
+                model: TipoDocumentos,
                 as: 'tipo',
                 where: { valor: tipo },
                 attributes: []
             }
         ]
     });
-    if (documentoExistente) {
-        documentoExistente.estatus = estatus;
+
+    if(documentoExistente){
+       documentoExistente.estatus = estatus;
         documentoExistente.observaciones = observaciones;
-        yield documentoExistente.save();
-        return res.json('200');
-    }
-    else {
-        return res.status(404).json({
+       await documentoExistente.save();
+      return res.json('200')
+    }else{
+      return res.status(404).json({
             msg: `No existe el documento con el tipo y solicitud${usuario}`,
         });
-    }
+    }*/
 });
 exports.estatusDoc = estatusDoc;

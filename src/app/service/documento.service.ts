@@ -29,4 +29,7 @@ export class DocumentoService {
     return this.http.get<void>(`${this.myAppUrl}${this.myAPIUrl}/envestatus/${user}`)
   }
 
+  sendValidacion(documentos: any[], user: number): Observable<void> {
+    return this.http.post<void>(`${this.myAppUrl}${this.myAPIUrl}/validadoc/${user}`, documentos);
+  }
 }

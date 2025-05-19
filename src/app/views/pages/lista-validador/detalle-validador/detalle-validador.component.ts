@@ -2,11 +2,13 @@ import { Component, inject, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DocumentoService } from '../../../../service/documento.service';
+import { ValidadorService } from '../../../../service/validador.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { UserService } from '../../../../service/user.service';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-detalle-validador',
   imports: [CommonModule, FormsModule, ReactiveFormsModule, MatSlideToggleModule, MatIconModule],
@@ -17,6 +19,8 @@ export class DetalleValidadorComponent {
   id: number;
  
   public _documentoService = inject(DocumentoService);
+  public _validadorService = inject(ValidadorService);
+  
  
   archivosSubidos: { [key: string]: string } = {};
   documentos: any;
@@ -98,7 +102,7 @@ export class DetalleValidadorComponent {
         observaciones: ''
       }
     };
-  constructor(private aRouter: ActivatedRoute) {
+  constructor(private aRouter: ActivatedRoute,  private router: Router) {
     this.id = Number(aRouter.snapshot.paramMap.get('id'));
   }
 
@@ -110,8 +114,6 @@ export class DetalleValidadorComponent {
   getDocumUsuario() {
     this._documentoService.getDocumentosUser(this.id).subscribe({
       next: (response: any) => {
-        console.log(response);
-        console.log(response.estatusId);
         this.documentos = response.documentos;
         this.documentos.forEach((doc: any) => {
           if (doc) {
@@ -137,5 +139,40 @@ export class DetalleValidadorComponent {
     if (estadoActual === true) {
       this.validarrechazar[clave].observaciones = '';
     }
+   
   }
+
+  enviarValidacion(): void {
+    console.log('Formulario enviado');
+    console.log(this.validarrechazar)
+    const documentosArray = Object.entries(this.validarrechazar)
+    .filter(([_, datos]) => datos.estado === false)
+      .map(([nombre, datos]) => ({
+        nombre,
+        estado: datos.estado,
+        observaciones: datos.observaciones
+      }
+    ));
+    this._documentoService.sendValidacion(documentosArray, this.id).subscribe({
+      next: (response: any) => {
+         Swal.fire({
+          position: "center", 
+          icon: "success",
+          title: "Solicitud validada correctamente.",
+          showConfirmButton: false,
+          timer: 3000
+        });
+        this.router.navigate(['/solicitud/tramite']);
+      },
+      error: (e: HttpErrorResponse) => {
+        if (e.error && e.error.msg) {
+          console.error('Error del servidor:', e.error.msg);
+        } else {
+          console.error('Error desconocido:', e);
+        }
+      },
+    })
+    
+  }
+
 }

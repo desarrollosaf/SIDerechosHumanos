@@ -159,8 +159,13 @@ export const deleteDoc = async (req: Request, res: Response): Promise<any> => {
 }
 
 export const estatusDoc = async (req: Request, res: Response): Promise<any> => {
-    const { tipo, usuario, estatus, observaciones } = req.body;
-    
+    const userId = req.params.id; // 👈 aquí recuperas el ID de la URL
+    const documentos = req.body;
+  
+    console.log('User ID:', userId);
+    console.log('Documentos:', documentos);
+    return res.json('200')
+    /*
     const solicitud: any = await Solicitudes.findOne({ where: { userId: usuario } });
     const documentoExistente = await Documentos.findOne({
         where: { solicitudId: solicitud.id },
@@ -183,7 +188,7 @@ export const estatusDoc = async (req: Request, res: Response): Promise<any> => {
       return res.status(404).json({
             msg: `No existe el documento con el tipo y solicitud${usuario}`,
         });
-    }
+    }*/
 }
 
 

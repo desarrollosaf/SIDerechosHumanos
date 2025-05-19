@@ -7,6 +7,6 @@ router.post("/api/documentos/create/:usuarioId", upload.single('archivo'), saveD
 router.get("/api/documentos/getdocumentos/:id", getDocumentos)
 router.get("/api/documentos/envestatus/:id", envSolicitud)
 router.post("/api/documentos/deleted", deleteDoc)
-router.post("/api/documentos/validadoc", estatusDoc)
+router.post("/api/documentos/validadoc/:id", estatusDoc)
 
 export default router 

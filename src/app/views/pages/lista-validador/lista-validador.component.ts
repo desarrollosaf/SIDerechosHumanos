@@ -55,12 +55,12 @@ export class ListaValidadorComponent {
     
     this._validadorService.getSolicitudes(payload).subscribe({
       next: (response: any) => {
-        console.log(response.data);
         this.originalData = [...response.data];
         this.temp = [...this.originalData];
         this.filteredCount = this.temp.length;
         this.setPage({ offset: 0 });
         this.loading = false;
+        
       },
       error: (e: HttpErrorResponse) => {
         const msg = e.error?.msg || 'Error desconocido';
@@ -76,15 +76,17 @@ export class ListaValidadorComponent {
     this.rows = this.temp.slice(start, end); 
   }
 
-updateFilter(event: any) {
-  const val = (event.target?.value || '').toLowerCase();
-  this.temp = this.originalData.filter((row: any) => {
-    return Object.values(row).some((field) => {
-      return field && field.toString().toLowerCase().includes(val);
+  updateFilter(event: any) {
+    const val = (event.target?.value || '').toLowerCase();
+    this.temp = this.originalData.filter((row: any) => {
+      return Object.values(row).some((field) => {
+        return field && field.toString().toLowerCase().includes(val);
+      });
     });
-  });
 
-  this.filteredCount = this.temp.length;
-  this.setPage({ offset: 0 }); 
-}
+    this.filteredCount = this.temp.length;
+    this.setPage({ offset: 0 }); 
+  }
+
+  
 }

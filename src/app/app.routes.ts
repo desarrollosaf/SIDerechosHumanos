@@ -62,10 +62,6 @@ export const routes: Routes = [
         path: 'add-documentos',
         loadComponent: () => import('./views/pages/add-edit-documentos/add-edit-documentos.component').then(c => c.AddEditDocumentosComponent),
         canActivate : [ statusGuard ]
-      },
-      {
-        path: 'validacion/:id',
-        loadComponent: () => import('./views/pages/detalle-validador/detalle-validador.component').then(c => c.DetalleValidadorComponent)
       }
     ]
   },

@@ -34,7 +34,6 @@ export class BaseComponent implements OnInit {
 
     this.userService.currentUser$.subscribe(user => {
       this.userRole = user?.rol_users?.role?.name ?? null;
-      console.log('Rol desde BaseComponent:', this.userRole);
     });
   }
 

@@ -7,7 +7,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
-import { UserService } from '../../../../service/user.service';
 import Swal from 'sweetalert2';
 @Component({
   selector: 'app-detalle-validador',
@@ -24,6 +23,7 @@ export class DetalleValidadorComponent {
  
   archivosSubidos: { [key: string]: string } = {};
   documentos: any;
+  solicitante: any;
 
 
   documentosRequeridos = [
@@ -107,13 +107,13 @@ export class DetalleValidadorComponent {
   }
 
   ngOnInit(): void {
-    console.log(this.id)
     this.getDocumUsuario();
   }
 
   getDocumUsuario() {
     this._documentoService.getDocumentosUser(this.id).subscribe({
       next: (response: any) => {
+        this.solicitante = response
         this.documentos = response.documentos;
         this.documentos.forEach((doc: any) => {
           if (doc) {

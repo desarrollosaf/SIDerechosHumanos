@@ -1,7 +1,26 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink=".">Solicitud</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Validacion</li>
+    </ol>
+  </nav>
 <div class="container">
     <div class="row w-100 mx-0 auth-page">
         <div class="mx-auto">
+            <div class="row">
+                <div class="col-md-12 grid-margin stretch-card">
+                  <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">Datos del solicitante</h4>
+                      <p class="text">Nombre completo: {{ solicitante?.nombres }} {{ solicitante?.ap_paterno }} {{ solicitante?.ap_materno }} <br>
+                        Curp: {{ solicitante?.curp }} <br>
+                        Cedula profesional: {{ solicitante?.cedula_profesional }} </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             <div class="card">
+                
                 <form>
                     <div class="row">
                         @for (doc of documentosRequeridos; track doc.clave) {

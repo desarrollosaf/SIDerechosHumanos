@@ -134,7 +134,7 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
 
   export const getSolicitudes = async (req: Request, res: Response): Promise<any> => {
       const { id, usuario } = req.body;
-      
+      console.log('USUARIO ES: ', usuario);
       const user: any = await User.findOne({ 
         where: { id: usuario },
         include: [
@@ -146,18 +146,17 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
       })
      
       const roleId = user.rol_users.role_id
-      console.log(roleId, id);
+      
       let listSolicitudes: any[] = [];
       if(user && roleId == 1){
-        const listSolicitudes = await Solicitudes.findAll({
+        listSolicitudes = await Solicitudes.findAll({
             where: {
                 estatusId: id 
             }
         });
         
       }else{
-        console.log('segundo');
-          const listSolicitudes = await Solicitudes.findAll({
+          listSolicitudes = await Solicitudes.findAll({
             where: {
               estatusId: id,
             },
@@ -172,7 +171,7 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
             ],
           });
       }
-      console.log(listSolicitudes)
+      
       return res.json({
           msg: `List de exitosamente`,
           data: listSolicitudes

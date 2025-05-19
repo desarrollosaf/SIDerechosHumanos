@@ -138,6 +138,7 @@ const putRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.putRegistro = putRegistro;
 const getSolicitudes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id, usuario } = req.body;
+    console.log('USUARIO ES: ', usuario);
     const user = yield user_1.default.findOne({
         where: { id: usuario },
         include: [
@@ -148,18 +149,16 @@ const getSolicitudes = (req, res) => __awaiter(void 0, void 0, void 0, function*
         ]
     });
     const roleId = user.rol_users.role_id;
-    console.log(roleId, id);
     let listSolicitudes = [];
     if (user && roleId == 1) {
-        const listSolicitudes = yield solicitud_1.default.findAll({
+        listSolicitudes = yield solicitud_1.default.findAll({
             where: {
                 estatusId: id
             }
         });
     }
     else {
-        console.log('segundo');
-        const listSolicitudes = yield solicitud_1.default.findAll({
+        listSolicitudes = yield solicitud_1.default.findAll({
             where: {
                 estatusId: id,
             },
@@ -174,7 +173,6 @@ const getSolicitudes = (req, res) => __awaiter(void 0, void 0, void 0, function*
             ],
         });
     }
-    console.log(listSolicitudes);
     return res.json({
         msg: `List de exitosamente`,
         data: listSolicitudes

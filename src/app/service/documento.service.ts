@@ -17,19 +17,19 @@ export class DocumentoService {
 
   }
 
-  saveDocumentos(document: FormData, user : Number): Observable<string> {
+  saveDocumentos(document: FormData, user : String): Observable<string> {
     return this.http.post<string>(`${this.myAppUrl}${this.myAPIUrl}/create/${user}`,document)
   }
 
-  getDocumentosUser(user : Number): Observable<string> {
+  getDocumentosUser(user : String): Observable<string> {
     return this.http.get<string>(`${this.myAppUrl}${this.myAPIUrl}/getdocumentos/${user}`)
   }
 
-  sendDocumentos(user : Number): Observable<void> {
+  sendDocumentos(user : String): Observable<void> {
     return this.http.get<void>(`${this.myAppUrl}${this.myAPIUrl}/envestatus/${user}`)
   }
 
-  sendValidacion(documentos: any[], user: number): Observable<void> {
+  sendValidacion(documentos: any[], user: String): Observable<void> {
     return this.http.post<void>(`${this.myAppUrl}${this.myAPIUrl}/validadoc/${user}`, documentos);
   }
 }

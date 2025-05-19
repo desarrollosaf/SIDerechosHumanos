@@ -23,6 +23,7 @@ export class AddEditDocumentosComponent {
   public _documentoService = inject(DocumentoService);
   archivosSubidos: { [key: string]: string } = {};
   documentos: any;
+
   constructor(private fb: FormBuilder, private router: Router) {
     this.formDoc = this.fb.group({
       curp: [null, Validators.required],
@@ -38,10 +39,9 @@ export class AddEditDocumentosComponent {
       curriculum: [null, Validators.required],
       propuesta_programa: [null, Validators.required],
       copia_certificada: [null, Validators.required],
-    },
-      {
+    },{
         validators: []
-      });
+    });
   }
 
   ngOnInit(): void {
@@ -51,7 +51,8 @@ export class AddEditDocumentosComponent {
   onFile7(event: Event, controlName: string, maxmb: number): void {
     const input = event.target as HTMLInputElement;
     const control = this.formDoc.get(controlName);
-    const currntUsr = Number(this._userService.currentUserValue?.id);
+    const currntUsr = String(this._userService.currentUserValue?.id);
+
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       const maxSize = maxmb * 1024 * 1024;
@@ -59,19 +60,20 @@ export class AddEditDocumentosComponent {
       if (file.size > maxSize) {
         control?.setErrors({ fileSize: true });
       }else{
-        control?.setErrors(null); // Borra errores anteriores
-        this.files[controlName] = file; // Guarda el archivo localmente
+        control?.setErrors(null); 
+        this.files[controlName] = file; 
 
-        //cambiar la variable de usuario logueado PENDIENTE********
         const document: Documento = {
           tipo: input.id,
           archivo: this.files[controlName],
           usuario: 1
         }
+
         const formData = new FormData();
         formData.append('tipo', input.id);
         formData.append('archivo', this.files[controlName]);
         formData.append('usuario', String(currntUsr));
+
         this._documentoService.saveDocumentos(formData, currntUsr).subscribe({
           next: (response: any) => {
             const archivoUrl = 'http://localhost:3001/' + response.documento.path;
@@ -100,13 +102,14 @@ export class AddEditDocumentosComponent {
             }
           },
         })
+
       }
       control?.markAsTouched();
     }
   }
 
   getDocumUsuario() {
-    const id_user = Number(this._userService.currentUserValue?.id);
+    const id_user = String(this._userService.currentUserValue?.id);
     this._documentoService.getDocumentosUser(id_user).subscribe({
       next: (response: any) => {
         console.log(response.estatusId);
@@ -129,8 +132,9 @@ export class AddEditDocumentosComponent {
       },
     })
   }
+
   sendDoc() {
-    const id_user = Number(this._userService.currentUserValue?.id);
+    const id_user = String(this._userService.currentUserValue?.id);
     this._documentoService.sendDocumentos(id_user).subscribe({
       next: (response: any) => {
         Swal.fire({

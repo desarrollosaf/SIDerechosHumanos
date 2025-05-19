@@ -16,7 +16,7 @@ import { RouterModule } from '@angular/router';
   styleUrl: './detalle-validador.component.scss'
 })
 export class DetalleValidadorComponent {
-  id: number;
+  id: string;
  
   public _documentoService = inject(DocumentoService);
   public _validadorService = inject(ValidadorService);
@@ -104,7 +104,7 @@ export class DetalleValidadorComponent {
       }
     };
   constructor(private aRouter: ActivatedRoute,  private router: Router) {
-    this.id = Number(aRouter.snapshot.paramMap.get('id'));
+    this.id = String(aRouter.snapshot.paramMap.get('id'));
   }
 
   ngOnInit(): void {

@@ -69,7 +69,7 @@ export const routes: Routes = [
     loadComponent: () => import('./views/pages/error/error.component').then(c => c.ErrorComponent)
   },
   {
-    path: 'registro',
+    path: 'registrate',
     loadComponent: () => import('./views/pages/registro/registro.component').then(c => c.RegistroComponent)
   },
   

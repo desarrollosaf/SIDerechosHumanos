@@ -19,14 +19,14 @@ export class DocumentosComponent {
 
   persona: {  nombre: string, correo: string, telefono: string, curp: string, estatus: number } | null = null;
   constructor(){}
-  
+
   ngOnInit(): void {
     console.log('documentos')
     this.getUsuarioEstatus();
   }
 
   getUsuarioEstatus(){
-      const id_user = Number(this._userService.currentUserValue?.id);
+      const id_user = String(this._userService.currentUserValue?.id);
       this._documentoService.getDocumentosUser(id_user).subscribe({
       next: (response: any) => {
         this.persona = {

@@ -1,12 +1,12 @@
 import { Component, inject, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { DocumentoService } from '../../../service/documento.service';
+import { DocumentoService } from '../../../../service/documento.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
-import { UserService } from '../../../service/user.service';
+import { UserService } from '../../../../service/user.service';
 @Component({
   selector: 'app-detalle-validador',
   imports: [CommonModule, FormsModule, ReactiveFormsModule, MatSlideToggleModule, MatIconModule],

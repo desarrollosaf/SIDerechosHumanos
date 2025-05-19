@@ -15,11 +15,15 @@ Documentos.init({
         autoIncrement: true,
     },
     solicitudId: {
-        type: sequelize_1.DataTypes.INTEGER,
+        type: sequelize_1.DataTypes.UUID, // Aquí se usa UUID
         allowNull: false,
+        references: {
+            model: 'solicituds',
+            key: 'id',
+        },
     },
     tipoDocumento: {
-        type: sequelize_1.DataTypes.INTEGER, // Debe ser entero, referencia a TipoDocumentos
+        type: sequelize_1.DataTypes.INTEGER, // Entero, referencia a TipoDocumentos
         allowNull: false,
     },
     path: {
@@ -27,7 +31,7 @@ Documentos.init({
         allowNull: false,
     },
     estatus: {
-        type: sequelize_1.DataTypes.NUMBER,
+        type: sequelize_1.DataTypes.NUMBER, // Cambiado a INTEGER
         allowNull: true,
     },
     observaciones: {
@@ -39,6 +43,7 @@ Documentos.init({
     tableName: 'documentos',
     timestamps: true,
 });
-exports.default = Documentos;
+// Relaciones
 // Documentos.belongsTo(Solicitudes, { foreignKey: 'solicitudId', as: 'solicitud' });
-Documentos.belongsTo(tipodocumentos_1.default, { foreignKey: 'tipodocumento', as: 'tipo' });
+Documentos.belongsTo(tipodocumentos_1.default, { foreignKey: 'tipoDocumento', as: 'tipo' });
+exports.default = Documentos;

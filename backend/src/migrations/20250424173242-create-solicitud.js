@@ -4,21 +4,23 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('solicituds', {
       id: {
-        allowNull: false,
-        autoIncrement: true,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        allowNull: false,
       },
       userId: {
-        type: Sequelize.DataTypes.INTEGER,
+        type: Sequelize.UUID,
         references: {
           model: 'users',
           key: 'id'
         },
         allowNull: false,
+        onDelete: 'CASCADE', // Opcional, para borrar en cascada
+        onUpdate: 'CASCADE'  // Opcional, para actualizar en cascada
       },
       estatusId: {
-        type: Sequelize.DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         references: {
           model: 'estatussolicituds',
           key: 'id'

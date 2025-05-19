@@ -15,13 +15,13 @@ class Documentos extends Model<
   InferCreationAttributes<Documentos>
 > {
   declare id: CreationOptional<number>;
-  declare solicitudId: ForeignKey<number>;
+  declare solicitudId: ForeignKey<string>;  // UUID como string
   declare tipoDocumento: number;
   declare path: string;
   declare estatus: number | null;
   declare observaciones: string | null;
 
-  // ✅ Relación tipo, que es opcional
+  // Relación tipo, que es opcional
   declare tipo?: {
     valor: string;
   };
@@ -35,11 +35,15 @@ Documentos.init(
       autoIncrement: true,
     },
     solicitudId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,  // Aquí se usa UUID
       allowNull: false,
+      references: {
+        model: 'solicituds',
+        key: 'id',
+      },
     },
     tipoDocumento: {
-      type: DataTypes.INTEGER, // Debe ser entero, referencia a TipoDocumentos
+      type: DataTypes.INTEGER, // Entero, referencia a TipoDocumentos
       allowNull: false,
     },
     path: {
@@ -47,7 +51,7 @@ Documentos.init(
       allowNull: false,
     },
     estatus: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.NUMBER,  // Cambiado a INTEGER
       allowNull: true,
     },
     observaciones: {
@@ -62,6 +66,8 @@ Documentos.init(
   }
 );
 
-export default Documentos;
+// Relaciones
 // Documentos.belongsTo(Solicitudes, { foreignKey: 'solicitudId', as: 'solicitud' });
-Documentos.belongsTo(TipoDocumentos, {foreignKey: 'tipodocumento', as: 'tipo' });
+Documentos.belongsTo(TipoDocumentos, { foreignKey: 'tipoDocumento', as: 'tipo' });
+
+export default Documentos;

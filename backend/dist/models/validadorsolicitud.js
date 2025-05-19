@@ -15,16 +15,16 @@ ValidadorSolicitud.init({
         autoIncrement: true,
     },
     solicitudId: {
-        type: sequelize_1.DataTypes.INTEGER,
+        type: sequelize_1.DataTypes.UUID,
         allowNull: false,
         references: { model: "solicituds", key: "id" },
-        field: "solicitudId"
+        field: "solicitudId",
     },
     validadorId: {
-        type: sequelize_1.DataTypes.INTEGER,
+        type: sequelize_1.DataTypes.UUID,
         allowNull: false,
         references: { model: "users", key: "id" },
-        field: "validadorId"
+        field: "validadorId",
     },
 }, {
     sequelize: connection_1.default,
@@ -33,6 +33,12 @@ ValidadorSolicitud.init({
     timestamps: true,
 });
 // Relaciones
-//ValidadorSolicitud.belongsTo(Solicitud, { foreignKey: "id", as: "solicitud" });
-ValidadorSolicitud.belongsTo(user_1.default, { foreignKey: "validadorId", as: "validador" });
+// ValidadorSolicitud.belongsTo(Solicitud, {
+//   foreignKey: "solicitudId",
+//   as: "solicitud",
+// });
+ValidadorSolicitud.belongsTo(user_1.default, {
+    foreignKey: "validadorId",
+    as: "validador",
+});
 exports.default = ValidadorSolicitud;

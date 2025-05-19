@@ -8,11 +8,10 @@ const connection_1 = __importDefault(require("../database/connection"));
 const role_users_1 = __importDefault(require("./role_users"));
 class User extends sequelize_1.Model {
 }
-// Inicializamos el modelo
 User.init({
     id: {
-        type: sequelize_1.DataTypes.INTEGER,
-        autoIncrement: true,
+        type: sequelize_1.DataTypes.UUID,
+        defaultValue: sequelize_1.DataTypes.UUIDV4, // Sequelize genera el UUID
         allowNull: false,
         primaryKey: true,
     },
@@ -49,6 +48,7 @@ User.init({
         },
     ],
 });
-exports.default = User;
+// Relaciones
 User.hasOne(role_users_1.default, { foreignKey: 'user_id', as: 'rol_users' });
 role_users_1.default.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
+exports.default = User;

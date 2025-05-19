@@ -11,16 +11,17 @@ class Solicitudes extends sequelize_1.Model {
 }
 Solicitudes.init({
     id: {
-        type: sequelize_1.DataTypes.INTEGER,
-        autoIncrement: true,
+        type: sequelize_1.DataTypes.UUID,
+        defaultValue: sequelize_1.DataTypes.UUIDV4, // autogenera UUID
         primaryKey: true,
+        allowNull: false,
     },
     userId: {
-        type: sequelize_1.DataTypes.INTEGER,
+        type: sequelize_1.DataTypes.UUID,
         allowNull: false,
     },
     estatusId: {
-        type: sequelize_1.DataTypes.INTEGER,
+        type: sequelize_1.DataTypes.INTEGER, // Cambiar a UUID si el modelo estatus también lo usa
         allowNull: false,
     },
     ap_paterno: sequelize_1.DataTypes.STRING,
@@ -35,11 +36,9 @@ Solicitudes.init({
     sequelize: connection_1.default,
     tableName: 'solicituds',
     timestamps: true,
-    paranoid: true,
+    paranoid: true, // habilita soft deletes (deletedAt)
 });
+// Relaciones
+Solicitudes.hasMany(documentos_1.default, { foreignKey: 'solicitudId', as: 'documentos' });
+Solicitudes.hasOne(validadorsolicitud_1.default, { foreignKey: 'solicitudId', as: 'validasolicitud' });
 exports.default = Solicitudes;
-Solicitudes.hasOne(validadorsolicitud_1.default, { foreignKey: "solicitudId", as: "validasolicitud" });
-Solicitudes.hasMany(documentos_1.default, {
-    foreignKey: 'solicitudId',
-    as: 'documentos',
-});

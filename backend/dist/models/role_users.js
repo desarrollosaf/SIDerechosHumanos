@@ -16,12 +16,13 @@ RolUsers.init({
         primaryKey: true,
     },
     role_id: {
-        type: sequelize_1.DataTypes.INTEGER
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: true,
     },
     user_id: {
-        type: sequelize_1.DataTypes.INTEGER,
+        type: sequelize_1.DataTypes.UUID,
         allowNull: false,
-    }
+    },
 }, {
     sequelize: connection_1.default,
     tableName: 'rol_users',

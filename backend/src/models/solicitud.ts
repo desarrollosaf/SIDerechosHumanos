@@ -8,16 +8,15 @@ import {
 } from 'sequelize';
 import sequelize from '../database/connection';
 import Documentos from './documentos';
-import RolUsers from './role_users';
 import ValidadorSolicitud from './validadorsolicitud';
 
 class Solicitudes extends Model<
   InferAttributes<Solicitudes>,
   InferCreationAttributes<Solicitudes>
 > {
-  declare id: CreationOptional<number>;
-  declare userId: ForeignKey<number>;
-  declare estatusId: ForeignKey<number>;
+  declare id: CreationOptional<string>; // UUID es string
+  declare userId: ForeignKey<string>;    // UUID como string
+  declare estatusId: ForeignKey<number>; // Si estatusId sigue siendo INTEGER
   declare ap_paterno: string | null;
   declare ap_materno: string | null;
   declare nombres: string | null;
@@ -31,16 +30,17 @@ class Solicitudes extends Model<
 Solicitudes.init(
   {
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4, // autogenera UUID
       primaryKey: true,
+      allowNull: false,
     },
     userId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     estatusId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER, // Cambiar a UUID si el modelo estatus también lo usa
       allowNull: false,
     },
     ap_paterno: DataTypes.STRING,
@@ -56,17 +56,12 @@ Solicitudes.init(
     sequelize,
     tableName: 'solicituds',
     timestamps: true,
-    paranoid: true,
+    paranoid: true, // habilita soft deletes (deletedAt)
   }
 );
 
+// Relaciones
+Solicitudes.hasMany(Documentos, { foreignKey: 'solicitudId', as: 'documentos' });
+Solicitudes.hasOne(ValidadorSolicitud, { foreignKey: 'solicitudId', as: 'validasolicitud' });
+
 export default Solicitudes;
-
-
-Solicitudes.hasOne(ValidadorSolicitud, { foreignKey: "solicitudId", as: "validasolicitud" });
-
-Solicitudes.hasMany(Documentos, {
-  foreignKey: 'solicitudId',
-  as: 'documentos',
-});
-

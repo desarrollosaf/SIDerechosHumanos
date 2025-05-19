@@ -10,7 +10,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       solicitudId: {
-        type: Sequelize.INTEGER, 
+        type: Sequelize.UUID, 
         allowNull: false,
         references: {
           model: 'solicituds',
@@ -18,7 +18,7 @@ module.exports = {
         },
       },
       validadorId: {
-        type: Sequelize.DataTypes.INTEGER,
+        type: Sequelize.UUID,
         references: {
           model: 'users',
           key: 'id'

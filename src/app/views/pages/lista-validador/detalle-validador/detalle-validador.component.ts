@@ -8,9 +8,10 @@ import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators } 
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import Swal from 'sweetalert2';
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-detalle-validador',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatSlideToggleModule, MatIconModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatSlideToggleModule, MatIconModule, RouterModule],
   templateUrl: './detalle-validador.component.html',
   styleUrl: './detalle-validador.component.scss'
 })

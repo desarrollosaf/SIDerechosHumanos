@@ -3,14 +3,16 @@ import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators } 
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
-import { Documento } from '../../../interfaces/documento';
-import { UserService } from '../../../service/user.service';
-import { DocumentoService } from '../../../service/documento.service';
+import { Documento } from '../../../../interfaces/documento';
+import { UserService } from '../../../../service/user.service';
+import { DocumentoService } from '../../../../service/documento.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
+import { RouterModule } from '@angular/router';
+
 @Component({
   selector: 'app-add-edit-documentos',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
   templateUrl: './add-edit-documentos.component.html',
   styleUrl: './add-edit-documentos.component.scss'
 })

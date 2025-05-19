@@ -47,7 +47,7 @@ export const MENU: MenuItem[] = [
           },
           {
             label: 'Documentos',
-            link: '/add-documentos'
+            link: '/registro'
           }
         ]
       },

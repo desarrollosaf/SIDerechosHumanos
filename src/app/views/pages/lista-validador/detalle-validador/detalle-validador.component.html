@@ -3,7 +3,7 @@
       <li class="breadcrumb-item"><a routerLink=".">Solicitud</a></li>
       <li class="breadcrumb-item active" aria-current="page">Validacion</li>
     </ol>
-  </nav>
+</nav>
 <div class="container">
     <div class="row w-100 mx-0 auth-page">
         <div class="mx-auto">
@@ -71,7 +71,11 @@
                             <button type="submit" class="btn btn-primary submit"  (click)="enviarValidacion()">
                                 Enviar
                             </button>
+                            <a routerLink="/solicitud/tramite" class="btn btn-secondary">
+                                Cancelar
+                            </a>
                         </div>
+                       
                     </div>
                     <br>
                 </form>

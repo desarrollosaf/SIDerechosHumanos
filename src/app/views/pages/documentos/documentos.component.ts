@@ -19,7 +19,9 @@ export class DocumentosComponent {
 
   persona: {  nombre: string, correo: string, telefono: string, curp: string, estatus: number } | null = null;
   constructor(){}
+  
   ngOnInit(): void {
+    console.log('documentos')
     this.getUsuarioEstatus();
   }
 

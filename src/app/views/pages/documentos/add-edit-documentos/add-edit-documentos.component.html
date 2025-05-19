@@ -1,3 +1,10 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink=".">Registro</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Documentos</li>
+    </ol>
+</nav>
+
 <div class="container">
     <div class="row w-100 mx-0 auth-page">
         <div class="mx-auto">
@@ -433,6 +440,9 @@
                             <button [disabled]="formDoc.invalid" type="submit" class="btn btn-primary submit">
                                 Enviar
                             </button>
+                            <a routerLink="/registro/documentos" class="btn btn-secondary">
+                                Cancelar
+                            </a>
                         </div>
                     </div>
                     <br>

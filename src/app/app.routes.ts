@@ -55,14 +55,9 @@ export const routes: Routes = [
         canActivate : [ adminGuard ]
       },
       {
-        path: 'documentos',
-        loadComponent: () => import('./views/pages/documentos/documentos.component').then(c => c.DocumentosComponent)
+        path: 'registro',
+        loadChildren: () => import('./views/pages/documentos/documentos.route')
       },
-      {
-        path: 'add-documentos',
-        loadComponent: () => import('./views/pages/add-edit-documentos/add-edit-documentos.component').then(c => c.AddEditDocumentosComponent),
-        canActivate : [ statusGuard ]
-      }
     ]
   },
   {

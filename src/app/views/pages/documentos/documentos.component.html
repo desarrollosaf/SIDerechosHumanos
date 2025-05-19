@@ -22,6 +22,12 @@
                                     <td class="text-center">{{persona.curp}}</td>
                                     <td class="text-center">
                                         <div class="progress">
+                                            <div *ngIf="persona.estatus == 1" [routerLink]="['/registro/add-documentos']"
+                                                class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
+                                                placement="top" ngbTooltip="Pendiente" role="progressbar"
+                                                style="width: 100%">
+                                                <p style="color:black"><strong>Agregar</strong></p>
+                                            </div>
                                             <div *ngIf="persona.estatus == 2"
                                                 class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
                                                 placement="top" ngbTooltip="Pendiente" role="progressbar"

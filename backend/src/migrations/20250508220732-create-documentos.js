@@ -10,7 +10,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       solicitudId: {
-        type: Sequelize.INTEGER, // ✅ Debe ser INTEGER
+        type: Sequelize.UUID, // ✅ Debe ser INTEGER
         allowNull: false,
         references: {
           model: 'solicituds', // ✅ Nombre de la tabla relacionada

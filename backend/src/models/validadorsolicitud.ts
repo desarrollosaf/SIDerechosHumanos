@@ -1,4 +1,11 @@
-import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional, ForeignKey } from "sequelize";
+import {
+  Model,
+  DataTypes,
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+  ForeignKey,
+} from "sequelize";
 import sequelize from "../database/connection";
 import Solicitud from "./solicitud";
 import User from "./user";
@@ -8,8 +15,8 @@ class ValidadorSolicitud extends Model<
   InferCreationAttributes<ValidadorSolicitud>
 > {
   declare id: CreationOptional<number>;
-  declare solicitudId: ForeignKey<number>;
-  declare validadorId: ForeignKey<number>;
+  declare solicitudId: ForeignKey<string>; // UUID como string
+  declare validadorId: ForeignKey<string>; // UUID como string
 
   // Relaciones opcionales
   declare solicitud?: Solicitud;
@@ -24,16 +31,16 @@ ValidadorSolicitud.init(
       autoIncrement: true,
     },
     solicitudId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       references: { model: "solicituds", key: "id" },
-      field: "solicitudId"
+      field: "solicitudId",
     },
     validadorId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       references: { model: "users", key: "id" },
-      field: "validadorId"
+      field: "validadorId",
     },
   },
   {
@@ -45,7 +52,13 @@ ValidadorSolicitud.init(
 );
 
 // Relaciones
-//ValidadorSolicitud.belongsTo(Solicitud, { foreignKey: "id", as: "solicitud" });
-ValidadorSolicitud.belongsTo(User, { foreignKey: "validadorId", as: "validador" });
+// ValidadorSolicitud.belongsTo(Solicitud, {
+//   foreignKey: "solicitudId",
+//   as: "solicitud",
+// });
+ValidadorSolicitud.belongsTo(User, {
+  foreignKey: "validadorId",
+  as: "validador",
+});
 
 export default ValidadorSolicitud;

@@ -58,6 +58,10 @@ export const routes: Routes = [
         path: 'registro',
         loadChildren: () => import('./views/pages/documentos/documentos.route')
       },
+      {
+        path: 'validadores',
+        loadChildren: () => import('./views/pages/validadores/validadores.route')
+      },
     ]
   },
   {

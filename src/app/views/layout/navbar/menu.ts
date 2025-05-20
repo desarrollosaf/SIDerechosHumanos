@@ -37,7 +37,7 @@ export const MENU: MenuItem[] = [
   {
     label: 'Solicitud',
     icon: 'mail',
-    roles: ['Administrador', 'Usuario'],
+    roles: ['Usuario'],
     subMenus: [
       {
         subMenuItems: [
@@ -48,6 +48,26 @@ export const MENU: MenuItem[] = [
           {
             label: 'Documentos',
             link: '/registro'
+          }
+        ]
+      },
+      
+    ]
+  },
+  {
+    label: 'Validadores',
+    icon: 'file-text',
+    roles: ['Administrador'],
+    subMenus: [
+      {
+        subMenuItems: [
+          {
+            label: 'Usuarios',
+            isTitle: true,
+          },
+          {
+            label: 'Validadores',
+            link: '/validadores'
           }
         ]
       },

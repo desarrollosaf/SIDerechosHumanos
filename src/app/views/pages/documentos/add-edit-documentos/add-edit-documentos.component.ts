@@ -138,13 +138,13 @@ export class AddEditDocumentosComponent {
     this._documentoService.sendDocumentos(id_user).subscribe({
       next: (response: any) => {
         Swal.fire({
-          position: "center", // posición centrada
+          position: "center", 
           icon: "success",
           title: "Tu registro ha sido enviado.",
           showConfirmButton: false,
           timer: 3000
         });
-        this.router.navigate(['/documentos']);
+        this.router.navigate(['/registro/documentos']);
       },
       error: (e: HttpErrorResponse) => {
         if (e.error && e.error.msg) {

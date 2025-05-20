@@ -6,9 +6,21 @@
 </nav>
 
 <div class="container">
+    
     <div class="row w-100 mx-0 auth-page">
         <div class="mx-auto">
+            <div class="row">
+                <div class="col-md-12 grid-margin stretch-card">
+                  <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">Indicaciones</h4>
+                      <p class="text-secondary">Agregar documentos no mayor a 10 MB, todos los archivos se deben subir en formato PDF</p>
+                    </div>
+                  </div>
+                </div>
+            </div>
             <div class="card">
+              
                 <form [formGroup]="formDoc" (ngSubmit)="sendDoc()">
                     <div class="row">
 

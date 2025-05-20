@@ -1,0 +1,44 @@
+<div class="row">
+    <div class="col-md-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title">Registro de validadores</h6>
+           <form [formGroup]="formReg" (ngSubmit)="envio()" class="forms-sample">  
+              <div class="row">
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label class="form-label">CURP:*</label>
+                        <input formControlName="curp" type="text" class="form-control" placeholder="CURP"   maxlength="18"/>
+                        <small class="colorsm" *ngIf="formReg.get('curp')?.hasError('pattern')">
+                          <strong> CURP inválida o incompleta.</strong>
+                        </small>
+                        <div *ngIf="formReg.get('curp')?.invalid && formReg.get('curp')?.touched">
+                          <small class="colorsm" *ngIf="formReg.get('curp')?.hasError('required') && formReg.get('curp')?.touched">
+                            Este campo es <strong>requerido</strong>
+                          </small>
+                          <br/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="mb-3">
+                        <label class="form-label">Correo Electrónico:*</label>
+                        <input formControlName="correo" type="email" class="form-control" placeholder="Correo Electrónico" />
+                        <div *ngIf="formReg.get('correo')?.invalid &&formReg.get('correo')?.touched">
+                          <small class="colorsm" *ngIf="formReg.get('correo')?.hasError('required') &&formReg.get('correo')?.touched">Este campo es <strong>requerido</strong></small>
+                          <br/>
+                          <small class="colorsm" *ngIf="formReg.get('correo')?.hasError('email')">Por favor
+                            <strong>ingresa un correo válido.</strong></small>
+                        </div>
+                    </div>
+                </div>
+              </div>    
+            
+                <br>
+                <button type="submit" class="btn btn-primary me-2 submit" >Enviar</button>
+                <button type="button" class="btn btn-secondary" routerLink="/validadores">Cancelar</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>

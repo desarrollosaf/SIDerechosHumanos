@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { NgStyle } from '@angular/common';
 import {FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms'
 import { CommonModule } from '@angular/common';
 import {Registro} from '../../../interfaces/registro'
 import { HttpErrorResponse } from '@angular/common/http';
 import {RegistroService} from '../../../service/registro.service'
 import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-registro',
   imports: [CommonModule,FormsModule,ReactiveFormsModule

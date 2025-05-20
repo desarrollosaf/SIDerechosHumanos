@@ -40,10 +40,9 @@ export class CreateValidadorComponent {
   envio():void {
     if (this.formReg.valid) {
       console.log('Formulario válido, enviando...');
-      // Aquí haces tu lógica de envío (API, navegación, etc.)
+  
     } else {
-      console.log('Formulario inválido. Mostrando errores...');
-      this.formReg.markAllAsTouched(); // 👈 Fuerza a mostrar errores en campos no tocados
+      this.formReg.markAllAsTouched();
     }
   }
 

@@ -56,6 +56,7 @@ const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function*
             fs_1.default.unlinkSync(documentoPath);
         }
         documentoExistente.path = `storage/${usuario}/${archivo.filename}`;
+        documentoExistente.estatus = 2;
         yield documentoExistente.save();
         documentoGuardado = documentoExistente;
     }

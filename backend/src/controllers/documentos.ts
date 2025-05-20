@@ -49,7 +49,7 @@ export const saveDocumentos = async (req: Request, res: Response): Promise<any> 
             fs.unlinkSync(documentoPath);
         }
         documentoExistente.path = `storage/${usuario}/${archivo.filename}`;
-         documentoExistente.estatus = 2;
+         documentoExistente.estatus = 1;
         await documentoExistente.save();
         documentoGuardado = documentoExistente;
     } else {

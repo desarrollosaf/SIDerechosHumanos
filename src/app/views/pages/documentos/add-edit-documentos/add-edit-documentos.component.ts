@@ -22,6 +22,8 @@ export class AddEditDocumentosComponent {
   public _userService = inject(UserService);
   public _documentoService = inject(DocumentoService);
   archivosSubidos: { [key: string]: string } = {};
+  archivosRechazados: { [key: string]: number } = {};
+  observac: { [key: string]: string } = {};
   documentos: any;
 
   constructor(private fb: FormBuilder, private router: Router) {
@@ -112,14 +114,15 @@ export class AddEditDocumentosComponent {
     const id_user = String(this._userService.currentUserValue?.id);
     this._documentoService.getDocumentosUser(id_user).subscribe({
       next: (response: any) => {
-        console.log(response.estatusId);
           this.documentos = response.documentos;
           this.documentos.forEach((doc: any) => {
             if (doc) {
-              const archivoUrl = 'http://localhost:3001/' + doc.path;
-              this.archivosSubidos[doc.tipo?.valor] = archivoUrl;
-              this.formDoc.get(doc.tipo?.valor)?.clearValidators();
-              this.formDoc.get(doc.tipo?.valor)?.updateValueAndValidity();
+                this.archivosRechazados[doc.tipo?.valor] = doc.estatus;
+                this.observac[doc.tipo?.valor] = doc.observaciones;
+                const archivoUrl = 'http://localhost:3001/' + doc.path;
+                this.archivosSubidos[doc.tipo?.valor] = archivoUrl;
+                this.formDoc.get(doc.tipo?.valor)?.clearValidators();
+                this.formDoc.get(doc.tipo?.valor)?.updateValueAndValidity();
             }
           });  
       },

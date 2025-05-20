@@ -6,6 +6,8 @@ import fs from 'fs';
 import path from 'path';
 import RolUsers from '../models/role_users';
 import ValidadorSolicitud from '../models/validadorsolicitud';
+import User from '../models/user';
+import { sendEmail } from '../utils/mailer';
 
 
 export const saveDocumentos = async (req: Request, res: Response): Promise<any> => {
@@ -159,36 +161,74 @@ export const deleteDoc = async (req: Request, res: Response): Promise<any> => {
 }
 
 export const estatusDoc = async (req: Request, res: Response): Promise<any> => {
-    const userId = req.params.id; // 👈 aquí recuperas el ID de la URL
-    const documentos = req.body;
-  
-    console.log('User ID:', userId);
-    console.log('Documentos:', documentos);
-    return res.json('200')
-    /*
-    const solicitud: any = await Solicitudes.findOne({ where: { userId: usuario } });
-    const documentoExistente = await Documentos.findOne({
-        where: { solicitudId: solicitud.id },
+  try {
+    const userId = req.params.id;
+    const Documentos2 = req.body; 
+    const solicitud = await Solicitudes.findOne({
+    where: { userId },
         include: [
             {
-                model: TipoDocumentos,
-                as: 'tipo',
-                where: { valor: tipo },
-                attributes: [] 
-            }
-        ]
+            model: User,
+            as: 'usuario',
+            attributes: ['email'],
+            },
+        ],
     });
+    if (!solicitud) {
+      return res.status(404).json({ message: 'Solicitud no encontrada' });
+    }
+    const documentosExistentes = await Documentos.findAll({
+      where: { solicitudId: solicitud.id },
+      include: [{ model: TipoDocumentos, as: 'tipo' }]
+    });
+    const observados: { tipo: string; observaciones: string }[] = [];
+    for (const documentoExistente of documentosExistentes) {
+    const tipoValor = documentoExistente.tipo?.valor;
+    const documentoEntrada = Documentos2.find((doc: any) => doc.nombre === tipoValor);
+    if (documentoEntrada && tipoValor) {
+        documentoExistente.estatus = 3;
+        documentoExistente.observaciones = documentoEntrada.observaciones || '';
+        observados.push({ tipo: tipoValor, observaciones: documentoEntrada.observaciones || '' });
+    } else {
+        documentoExistente.estatus = 2;
+    }
+    await documentoExistente.save();
+    }
+    const usuario = (solicitud as any).usuario;
+    const emailDestino = usuario?.email;
 
-    if(documentoExistente){
-       documentoExistente.estatus = estatus; 
-        documentoExistente.observaciones = observaciones; 
-       await documentoExistente.save();
-      return res.json('200')
-    }else{
-      return res.status(404).json({
-            msg: `No existe el documento con el tipo y solicitud${usuario}`,
-        });
-    }*/
-}
+    if (!emailDestino) {
+    console.warn('No se encontró email del usuario');
+    } else {
+    if (observados.length > 0) {
+        const contenido = observados.map(
+        o => `- ${o.tipo}: ${o.observaciones}`
+        ).join('\n');
+
+        await sendEmail(
+        emailDestino, 
+        'Revisión de documentos',
+        `Se observaron los siguientes documentos:\n\n${contenido}`
+        );
+        solicitud.estatusId = 4;
+        await solicitud.save();
+
+    } else {
+        await sendEmail(
+        emailDestino, 
+        'Revisión de documentos',
+        'Todos tus documentos fueron revisados y están correctos.'
+        );
+        solicitud.estatusId = 3;
+        await solicitud.save();
+    }
+    }
+
+    return res.status(200).json({ message: 'Documentos actualizados correctamente.' });
+  } catch (error) {
+    console.error('Error al actualizar documentos:', error);
+    return res.status(500).json({ message: 'Error interno del servidor.' });
+  }
+};
 
 

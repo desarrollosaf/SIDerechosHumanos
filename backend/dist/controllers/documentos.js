@@ -20,6 +20,8 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const role_users_1 = __importDefault(require("../models/role_users"));
 const validadorsolicitud_1 = __importDefault(require("../models/validadorsolicitud"));
+const user_1 = __importDefault(require("../models/user"));
+const mailer_1 = require("../utils/mailer");
 const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const archivo = req.file;
     const { tipo, usuario } = req.body;
@@ -153,34 +155,64 @@ const deleteDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.deleteDoc = deleteDoc;
 const estatusDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const userId = req.params.id; // 👈 aquí recuperas el ID de la URL
-    const documentos = req.body;
-    console.log('User ID:', userId);
-    console.log('Documentos:', documentos);
-    return res.json('200');
-    /*
-    const solicitud: any = await Solicitudes.findOne({ where: { userId: usuario } });
-    const documentoExistente = await Documentos.findOne({
-        where: { solicitudId: solicitud.id },
-        include: [
-            {
-                model: TipoDocumentos,
-                as: 'tipo',
-                where: { valor: tipo },
-                attributes: []
-            }
-        ]
-    });
-
-    if(documentoExistente){
-       documentoExistente.estatus = estatus;
-        documentoExistente.observaciones = observaciones;
-       await documentoExistente.save();
-      return res.json('200')
-    }else{
-      return res.status(404).json({
-            msg: `No existe el documento con el tipo y solicitud${usuario}`,
+    var _a;
+    try {
+        const userId = req.params.id;
+        const Documentos2 = req.body;
+        const solicitud = yield solicitud_1.default.findOne({
+            where: { userId },
+            include: [
+                {
+                    model: user_1.default,
+                    as: 'usuario',
+                    attributes: ['email'],
+                },
+            ],
         });
-    }*/
+        if (!solicitud) {
+            return res.status(404).json({ message: 'Solicitud no encontrada' });
+        }
+        const documentosExistentes = yield documentos_1.default.findAll({
+            where: { solicitudId: solicitud.id },
+            include: [{ model: tipodocumentos_1.default, as: 'tipo' }]
+        });
+        const observados = [];
+        for (const documentoExistente of documentosExistentes) {
+            const tipoValor = (_a = documentoExistente.tipo) === null || _a === void 0 ? void 0 : _a.valor;
+            const documentoEntrada = Documentos2.find((doc) => doc.nombre === tipoValor);
+            if (documentoEntrada && tipoValor) {
+                documentoExistente.estatus = 3;
+                documentoExistente.observaciones = documentoEntrada.observaciones || '';
+                observados.push({ tipo: tipoValor, observaciones: documentoEntrada.observaciones || '' });
+            }
+            else {
+                documentoExistente.estatus = 2;
+            }
+            yield documentoExistente.save();
+        }
+        const usuario = solicitud.usuario;
+        const emailDestino = usuario === null || usuario === void 0 ? void 0 : usuario.email;
+        if (!emailDestino) {
+            console.warn('No se encontró email del usuario');
+        }
+        else {
+            if (observados.length > 0) {
+                const contenido = observados.map(o => `- ${o.tipo}: ${o.observaciones}`).join('\n');
+                yield (0, mailer_1.sendEmail)(emailDestino, 'Revisión de documentos', `Se observaron los siguientes documentos:\n\n${contenido}`);
+                solicitud.estatusId = 4;
+                yield solicitud.save();
+            }
+            else {
+                yield (0, mailer_1.sendEmail)(emailDestino, 'Revisión de documentos', 'Todos tus documentos fueron revisados y están correctos.');
+                solicitud.estatusId = 3;
+                yield solicitud.save();
+            }
+        }
+        return res.status(200).json({ message: 'Documentos actualizados correctamente.' });
+    }
+    catch (error) {
+        console.error('Error al actualizar documentos:', error);
+        return res.status(500).json({ message: 'Error interno del servidor.' });
+    }
 });
 exports.estatusDoc = estatusDoc;

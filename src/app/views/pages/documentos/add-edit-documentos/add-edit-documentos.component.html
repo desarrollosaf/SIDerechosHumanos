@@ -13,7 +13,7 @@
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Indicaciones</h4>
+                            <h4 class="card-title">Indicaciones6667</h4>
                             <p class="text-secondary">Agregar documentos no mayor a 10 MB, todos los archivos se deben
                                 subir en formato PDF</p>
                         </div>
@@ -25,7 +25,7 @@
                 <form [formGroup]="formDoc" (ngSubmit)="sendDoc()">
                     <div class="row">
                         <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="archivosRechazados['curp'] === 1 || archivosRechazados['curp'] === 4">
+                            *ngIf="controldv === 1 || archivosRechazados['curp'] === 2 || archivosRechazados['curp'] === 4 ">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">

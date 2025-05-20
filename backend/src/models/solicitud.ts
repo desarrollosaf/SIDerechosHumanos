@@ -9,6 +9,7 @@ import {
 import sequelize from '../database/connection';
 import Documentos from './documentos';
 import ValidadorSolicitud from './validadorsolicitud';
+import User from './user';
 
 class Solicitudes extends Model<
   InferAttributes<Solicitudes>,
@@ -25,6 +26,7 @@ class Solicitudes extends Model<
   declare curp: string | null;
   declare cedula_profesional: string | null;
   declare aviso_privacidad: boolean | null;
+  declare documentos?: Documentos[];
 }
 
 Solicitudes.init(
@@ -63,5 +65,6 @@ Solicitudes.init(
 // Relaciones
 Solicitudes.hasMany(Documentos, { foreignKey: 'solicitudId', as: 'documentos' });
 Solicitudes.hasOne(ValidadorSolicitud, { foreignKey: 'solicitudId', as: 'validasolicitud' });
+Solicitudes.belongsTo(User, { foreignKey: 'userId', as: 'usuario' });
 
 export default Solicitudes;

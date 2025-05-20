@@ -25,7 +25,7 @@
                 <form [formGroup]="formDoc" (ngSubmit)="sendDoc()">
                     <div class="row">
                         <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="controldv === 1 || archivosRechazados['curp'] === 2 || archivosRechazados['curp'] === 4 ">
+                            *ngIf=" !archivosRechazados['curp'] || archivosRechazados['curp'] === 1 || archivosRechazados['curp'] === 3 ">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
@@ -52,7 +52,7 @@
                                                 width="50" height="50" class="me-2" />
                                         </a>
                                     </div>
-                                    <div *ngIf=" archivosRechazados['curp'] === 4" class="mt-3">
+                                    <div *ngIf=" archivosRechazados['curp'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
                                         <textarea class="form-control"
                                             readonly>{{this.observac['curp']?.toLocaleUpperCase('es-ES') }}</textarea>
@@ -62,7 +62,7 @@
                         </div>
 
                         <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="archivosRechazados['ine'] === 1 || archivosRechazados['ine'] === 4">
+                            *ngIf="!archivosRechazados['ine'] || archivosRechazados['ine'] === 1 || archivosRechazados['ine'] === 3">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
@@ -90,7 +90,7 @@
                                                 width="50" height="50" class="me-2" />
                                         </a>
                                     </div>
-                                    <div *ngIf=" archivosRechazados['ine'] === 4" class="mt-3">
+                                    <div *ngIf=" archivosRechazados['ine'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
                                         <textarea class="form-control"
                                             readonly>{{this.observac['ine']?.toLocaleUpperCase('es-ES') }}</textarea>
@@ -100,7 +100,7 @@
                         </div>
 
                         <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="archivosRechazados['titulo_licenciatura'] === 1 || archivosRechazados['titulo_licenciatura'] === 4">
+                            *ngIf="!archivosRechazados['titulo_licenciatura'] || archivosRechazados['titulo_licenciatura'] === 1 || archivosRechazados['titulo_licenciatura'] === 3">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
@@ -127,7 +127,7 @@
                                                 width="50" height="50" class="me-2" />
                                         </a>
                                     </div>
-                                    <div *ngIf=" archivosRechazados['titulo_licenciatura'] === 4" class="mt-3">
+                                    <div *ngIf=" archivosRechazados['titulo_licenciatura'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
                                         <textarea class="form-control"
                                             readonly>{{this.observac['titulo_licenciatura']?.toLocaleUpperCase('es-ES') }}</textarea>
@@ -137,7 +137,7 @@
                         </div>
 
                         <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="archivosRechazados['acta_nacimiento'] === 1 || archivosRechazados['acta_nacimiento'] === 4">
+                            *ngIf="!archivosRechazados['acta_nacimiento'] || archivosRechazados['acta_nacimiento'] === 1 || archivosRechazados['acta_nacimiento'] === 3">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
@@ -162,7 +162,7 @@
                                                 width="50" height="50" class="me-2" />
                                         </a>
                                     </div>
-                                    <div *ngIf=" archivosRechazados['acta_nacimiento'] === 4" class="mt-3">
+                                    <div *ngIf=" archivosRechazados['acta_nacimiento'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
                                         <textarea class="form-control"
                                             readonly>{{this.observac['acta_nacimiento']?.toLocaleUpperCase('es-ES') }}</textarea>
@@ -172,7 +172,7 @@
                         </div>
 
                         <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="archivosRechazados['carta_ant_no_penales'] === 1 || archivosRechazados['carta_ant_no_penales'] === 4">
+                            *ngIf="!archivosRechazados['carta_ant_no_penales'] || archivosRechazados['carta_ant_no_penales'] === 1 || archivosRechazados['carta_ant_no_penales'] === 3">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
@@ -202,7 +202,7 @@
 
                                         </a>
                                     </div>
-                                    <div *ngIf=" archivosRechazados['carta_ant_no_penales'] === 4" class="mt-3">
+                                    <div *ngIf=" archivosRechazados['carta_ant_no_penales'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
                                         <textarea class="form-control"
                                             readonly>{{this.observac['carta_ant_no_penales']?.toLocaleUpperCase('es-ES') }}</textarea>
@@ -212,7 +212,7 @@
                         </div>
 
                         <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="archivosRechazados['carta_protesta1'] === 1 || archivosRechazados['carta_protesta1'] === 4">
+                            *ngIf="!archivosRechazados['carta_protesta1'] || archivosRechazados['carta_protesta1'] === 1 || archivosRechazados['carta_protesta1'] === 3">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
@@ -238,7 +238,7 @@
                                                 width="50" height="50" class="me-2" />
                                         </a>
                                     </div>
-                                    <div *ngIf=" archivosRechazados['carta_protesta1'] === 4" class="mt-3">
+                                    <div *ngIf=" archivosRechazados['carta_protesta1'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
                                         <textarea class="form-control"
                                             readonly>{{this.observac['carta_protesta1']?.toLocaleUpperCase('es-ES') }}</textarea>
@@ -248,7 +248,7 @@
                         </div>
 
                         <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="archivosRechazados['carta_protesta2'] === 1 || archivosRechazados['carta_protesta2'] === 4">
+                            *ngIf="!archivosRechazados['carta_protesta2'] || archivosRechazados['carta_protesta2'] === 1 || archivosRechazados['carta_protesta2'] === 3">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
@@ -275,7 +275,7 @@
                                                 width="50" height="50" class="me-2" />
                                         </a>
                                     </div>
-                                    <div *ngIf=" archivosRechazados['carta_protesta2'] === 4" class="mt-3">
+                                    <div *ngIf=" archivosRechazados['carta_protesta2'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
                                         <textarea class="form-control"
                                             readonly>{{this.observac['carta_protesta2']?.toLocaleUpperCase('es-ES') }}</textarea>
@@ -285,7 +285,7 @@
                         </div>
 
                         <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="archivosRechazados['carta_protesta3'] === 1 || archivosRechazados['carta_protesta3'] === 4">
+                            *ngIf="!archivosRechazados['carta_protesta3'] || archivosRechazados['carta_protesta3'] === 1 || archivosRechazados['carta_protesta3'] === 3">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
@@ -312,7 +312,7 @@
                                                 width="50" height="50" class="me-2" />
                                         </a>
                                     </div>
-                                    <div *ngIf=" archivosRechazados['carta_protesta3'] === 4" class="mt-3">
+                                    <div *ngIf=" archivosRechazados['carta_protesta3'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
                                         <textarea class="form-control"
                                             readonly>{{this.observac['carta_protesta3']?.toLocaleUpperCase('es-ES') }}</textarea>
@@ -322,7 +322,7 @@
                         </div>
 
                         <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="archivosRechazados['carta_protesta4'] === 1 || archivosRechazados['carta_protesta4'] === 4">
+                            *ngIf="!archivosRechazados['carta_protesta4'] || archivosRechazados['carta_protesta4'] === 1 || archivosRechazados['carta_protesta4'] === 3">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
@@ -350,7 +350,7 @@
                                                 width="50" height="50" class="me-2" />
                                         </a>
                                     </div>
-                                    <div *ngIf=" archivosRechazados['carta_protesta4'] === 4" class="mt-3">
+                                    <div *ngIf=" archivosRechazados['carta_protesta4'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
                                         <textarea class="form-control"
                                             readonly>{{this.observac['carta_protesta4']?.toLocaleUpperCase('es-ES') }}</textarea>
@@ -360,7 +360,7 @@
                         </div>
 
                         <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="archivosRechazados['carta_protesta5'] === 1 || archivosRechazados['carta_protesta5'] === 4">
+                            *ngIf="!archivosRechazados['carta_protesta5'] || archivosRechazados['carta_protesta5'] === 1 || archivosRechazados['carta_protesta5'] === 3">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
@@ -386,7 +386,7 @@
                                                 width="50" height="50" class="me-2" />
                                         </a>
                                     </div>
-                                    <div *ngIf=" archivosRechazados['carta_protesta5'] === 4" class="mt-3">
+                                    <div *ngIf=" archivosRechazados['carta_protesta5'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
                                         <textarea class="form-control"
                                             readonly>{{this.observac['carta_protesta5']?.toLocaleUpperCase('es-ES') }}</textarea>
@@ -396,7 +396,7 @@
                         </div>
 
                         <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="archivosRechazados['curriculum'] === 1 || archivosRechazados['curriculum'] === 4">
+                            *ngIf="!archivosRechazados['curriculum'] || archivosRechazados['curriculum'] === 1 || archivosRechazados['curriculum'] === 3">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="curriculum" style="text-align: justify;">
@@ -425,7 +425,7 @@
                                                 width="50" height="50" class="me-2" />
                                         </a>
                                     </div>
-                                    <div *ngIf=" archivosRechazados['curriculum'] === 4" class="mt-3">
+                                    <div *ngIf=" archivosRechazados['curriculum'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
                                         <textarea class="form-control"
                                             readonly>{{this.observac['curriculum']?.toLocaleUpperCase('es-ES') }}</textarea>
@@ -435,7 +435,7 @@
                         </div>
 
                         <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="archivosRechazados['propuesta_programa'] === 1 || archivosRechazados['propuesta_programa'] === 4">
+                            *ngIf="!archivosRechazados['propuesta_programa'] || archivosRechazados['propuesta_programa'] === 1 || archivosRechazados['propuesta_programa'] === 3">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="propuesta_programa" style="text-align: justify;">
@@ -465,7 +465,7 @@
                                                 width="50" height="50" class="me-2" />
                                         </a>
                                     </div>
-                                    <div *ngIf=" archivosRechazados['propuesta_programa'] === 4" class="mt-3">
+                                    <div *ngIf=" archivosRechazados['propuesta_programa'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
                                         <textarea class="form-control"
                                             readonly>{{this.observac['propuesta_programa']?.toLocaleUpperCase('es-ES') }}</textarea>
@@ -475,7 +475,7 @@
                         </div>
 
                         <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="archivosRechazados['copia_certificada'] === 1 || archivosRechazados['copia_certificada'] === 4">
+                            *ngIf="!archivosRechazados['copia_certificada'] || archivosRechazados['copia_certificada'] === 1 || archivosRechazados['copia_certificada'] === 3">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="copia_certificada" style="text-align: justify;">
@@ -500,7 +500,7 @@
                                                 width="50" height="50" class="me-2" />
                                         </a>
                                     </div>
-                                    <div *ngIf=" archivosRechazados['copia_certificada'] === 4" class="mt-3">
+                                    <div *ngIf=" archivosRechazados['copia_certificada'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
                                         <textarea class="form-control"
                                             readonly>{{this.observac['copia_certificada']?.toLocaleUpperCase('es-ES') }}</textarea>
@@ -508,7 +508,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="row mt-2">
                             <div class="col text-center">
                                 <div class="d-flex justify-content-center gap-2">

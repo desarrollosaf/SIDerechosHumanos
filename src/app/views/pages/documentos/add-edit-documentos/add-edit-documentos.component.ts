@@ -25,6 +25,7 @@ export class AddEditDocumentosComponent {
   archivosRechazados: { [key: string]: number } = {};
   observac: { [key: string]: string } = {};
   documentos: any;
+  controldv: number =1;
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.formDoc = this.fb.group({
@@ -111,19 +112,29 @@ export class AddEditDocumentosComponent {
   }
 
   getDocumUsuario() {
+      
     const id_user = String(this._userService.currentUserValue?.id);
     this._documentoService.getDocumentosUser(id_user).subscribe({
       next: (response: any) => {
+         console.log(response );
           this.documentos = response.documentos;
+
           this.documentos.forEach((doc: any) => {
+            console.log('lilo?');
             if (doc) {
+              console.log('entre a doc');
                 this.archivosRechazados[doc.tipo?.valor] = doc.estatus;
                 this.observac[doc.tipo?.valor] = doc.observaciones;
                 const archivoUrl = 'http://localhost:3001/' + doc.path;
                 this.archivosSubidos[doc.tipo?.valor] = archivoUrl;
                 this.formDoc.get(doc.tipo?.valor)?.clearValidators();
                 this.formDoc.get(doc.tipo?.valor)?.updateValueAndValidity();
+                this.controldv = 0;
+            }else{
+               console.log('no entre a doc');
+              this.controldv = 1;
             }
+         
           });  
       },
       error: (e: HttpErrorResponse) => {

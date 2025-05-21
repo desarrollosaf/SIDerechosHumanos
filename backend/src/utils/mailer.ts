@@ -13,14 +13,14 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export const sendEmail = async (to: string, subject: string, text: string) => {
+export const sendEmail = async (to: string, subject: string, html: string) => {
   
     try {
       await transporter.sendMail({
         from: `"SIDerechosHumanos" <${process.env.SMTP_USER}>`,
         to,
         subject,
-        text,
+        html,
       });
       console.log(`Correo enviado a: ${to}`);
     } catch (error) {

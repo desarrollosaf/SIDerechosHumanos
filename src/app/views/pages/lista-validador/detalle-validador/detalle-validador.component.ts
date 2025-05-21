@@ -168,11 +168,11 @@ export class DetalleValidadorComponent {
         estado: datos.estado,
         observaciones: datos.observaciones
       }));
-       this.isLoading = true;
+       //this.isLoading = true;
     console.log(documentosArray);
     this._documentoService.sendValidacion(documentosArray, this.id).subscribe({
       next: () => {
-        this.isLoading = false; 
+        //this.isLoading = false; 
         Swal.fire({
           position: 'center',
           icon: 'success',

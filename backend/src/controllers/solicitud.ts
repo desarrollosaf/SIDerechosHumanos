@@ -48,72 +48,80 @@ export const deleteRegistro = async (req: Request, res: Response): Promise<any> 
 }
 
 export const saveRegistro = async (req: Request, res: Response): Promise<any> => {
-    const { body } = req;
-  
-    function generateRandomPassword(length: number = 10): string {
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$!';
-      let password = '';
-      for (let i = 0; i < length; i++) {
-        password += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      return password;
-    }
-  
-    try {
-      const Upassword = generateRandomPassword(12);
-      const UpasswordHash = await bcrypt.hash(Upassword, 10);
-  
-      const newUser = await User.create({
-        name: body.curp,
-        email: body.correo,
-        password: UpasswordHash,
-        rol_users: {
-          role_id: 3,  
-        },
-      }, {
-        include: [{ model: RolUsers, as: 'rol_users' }],
-      });
-      console.log(newUser.id)
-      body.userId = newUser.id;
-      body.estatusId = 1;
-      console.log(body)
-      await Solicitudes.create(body);
-  
-      // Configurar el transporte del correo
-      const transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: Number(process.env.SMTP_PORT),
-        secure: false,
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASS,
-        },
-      });
-  
-      // Enviar el correo
-      await transporter.sendMail({
-        from: `"Registro" <${process.env.SMTP_USER}>`, 
-        to: body.correo,
-        subject: "Tus credenciales de acceso",
-        html: `
-          <h3>Hola ${body.nombres},</h3>
-          <p>Tu cuenta ha sido creada exitosamente. Aquí tienes tus credenciales:</p>
-          <ul>
-            <li><strong>Email:</strong> ${body.correo}</li>
-            <li><strong>Contraseña:</strong> ${Upassword}</li>
-          </ul>
-          <p>Por favor cambia tu contraseña al iniciar sesión.</p>
-        `,
-      });
-  
-      return res.json({ msg: `Agregado con éxito y correo enviado` });
+  const { body } = req;
 
-    } catch (error) {
-      
-      console.error(error);
-      return res.status(500).json({ msg: `Ocurrió un error al registrar` });
+  function generateRandomPassword(length: number = 10): string {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$!';
+    let password = '';
+    for (let i = 0; i < length; i++) {
+      password += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-  };
+    return password;
+  }
+
+  try {
+    const Upassword = generateRandomPassword(12);
+    const UpasswordHash = await bcrypt.hash(Upassword, 10);
+
+    const newUser = await User.create({
+      name: body.curp,
+      email: body.correo,
+      password: UpasswordHash,
+      rol_users: {
+        role_id: 3,  
+      },
+    }, {
+      include: [{ model: RolUsers, as: 'rol_users' }],
+    });
+    console.log(newUser.id)
+    body.userId = newUser.id;
+    body.estatusId = 1;
+    console.log(body)
+    await Solicitudes.create(body);
+    
+    (async () => {
+      try {
+        const transporter = nodemailer.createTransport({
+          host: process.env.SMTP_HOST,
+          port: Number(process.env.SMTP_PORT),
+          secure: false,
+          auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS,
+          },
+        });
+
+        await transporter.sendMail({
+          from: `"Registro" <${process.env.SMTP_USER}>`,
+          to: body.correo,
+          subject: "Tus credenciales de acceso",
+          html: `
+            <h3>Hola ${body.nombres},</h3>
+            <p>Tu cuenta ha sido creada exitosamente. Aquí tienes tus credenciales:</p>
+            <ul>
+              <li><strong>Email:</strong> ${body.correo}</li>
+              <li><strong>Contraseña:</strong> ${Upassword}</li>
+            </ul>
+            <p>Por favor cambia tu contraseña al iniciar sesión.</p>
+          `,
+        });
+
+        console.log('Correo enviado correctamente');
+      } catch (err) {
+        console.error('Error al enviar correo:', err);
+      }
+    })();
+
+    return res.json({ msg: `Agregado con éxito y correo enviado` });
+
+  } catch (error) {
+    
+    console.error(error);
+    return res.status(500).json({ msg: `Ocurrió un error al registrar` });
+
+  }
+
+};
 
   export const putRegistro = async (req: Request, res: Response): Promise<any> => {
       return res.status(404).json({

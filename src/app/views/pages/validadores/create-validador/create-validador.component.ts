@@ -37,7 +37,7 @@ export class CreateValidadorComponent {
     }
   }
 
-  envio():void {
+  envio():void {      
     if (this.formReg.valid) {
       console.log('Formulario válido, enviando...');
   

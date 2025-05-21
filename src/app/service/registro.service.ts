@@ -22,7 +22,7 @@ export class RegistroService {
     return this.http.post<string>(`${this.myAppUrl}${this.myAPIUrl}/create`,registro)
   }
 
-  getStatus(user: Number): Observable<void> {
+  getStatus(user: String): Observable<void> {
     return this.http.get<void>(`${this.myAppUrl}${this.myAPIUrl}/getestatus/${user}`)
   }
 

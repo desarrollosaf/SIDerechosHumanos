@@ -14,13 +14,13 @@ export const statusGuard: CanActivateFn = (route, state) => {
   const id = _userService.currentUserValue?.id;
 
  
-  return registroService.getStatus(Number(id)).pipe(
+  return registroService.getStatus(String(id)).pipe(
     map((response: any) => {
       if (response.data === 1 || response.data === 4) {
         return true;
 
       } else {
-        return router.createUrlTree(['/documentos']);
+        return router.createUrlTree(['/registro/documentos']);
       }
 
     }),

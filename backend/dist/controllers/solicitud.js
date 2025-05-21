@@ -86,31 +86,37 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         body.estatusId = 1;
         console.log(body);
         yield solicitud_1.default.create(body);
-        // Configurar el transporte del correo
-        const transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST,
-            port: Number(process.env.SMTP_PORT),
-            secure: false,
-            auth: {
-                user: process.env.SMTP_USER,
-                pass: process.env.SMTP_PASS,
-            },
-        });
-        // Enviar el correo
-        yield transporter.sendMail({
-            from: `"Registro" <${process.env.SMTP_USER}>`,
-            to: body.correo,
-            subject: "Tus credenciales de acceso",
-            html: `
-          <h3>Hola ${body.nombres},</h3>
-          <p>Tu cuenta ha sido creada exitosamente. Aquí tienes tus credenciales:</p>
-          <ul>
-            <li><strong>Email:</strong> ${body.correo}</li>
-            <li><strong>Contraseña:</strong> ${Upassword}</li>
-          </ul>
-          <p>Por favor cambia tu contraseña al iniciar sesión.</p>
-        `,
-        });
+        (() => __awaiter(void 0, void 0, void 0, function* () {
+            try {
+                const transporter = nodemailer.createTransport({
+                    host: process.env.SMTP_HOST,
+                    port: Number(process.env.SMTP_PORT),
+                    secure: false,
+                    auth: {
+                        user: process.env.SMTP_USER,
+                        pass: process.env.SMTP_PASS,
+                    },
+                });
+                yield transporter.sendMail({
+                    from: `"Registro" <${process.env.SMTP_USER}>`,
+                    to: body.correo,
+                    subject: "Tus credenciales de acceso",
+                    html: `
+            <h3>Hola ${body.nombres},</h3>
+            <p>Tu cuenta ha sido creada exitosamente. Aquí tienes tus credenciales:</p>
+            <ul>
+              <li><strong>Email:</strong> ${body.correo}</li>
+              <li><strong>Contraseña:</strong> ${Upassword}</li>
+            </ul>
+            <p>Por favor cambia tu contraseña al iniciar sesión.</p>
+          `,
+                });
+                console.log('Correo enviado correctamente');
+            }
+            catch (err) {
+                console.error('Error al enviar correo:', err);
+            }
+        }))();
         return res.json({ msg: `Agregado con éxito y correo enviado` });
     }
     catch (error) {

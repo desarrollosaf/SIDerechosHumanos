@@ -1,5 +1,5 @@
 import { Routes } from "@angular/router";
-
+import { statusGuard } from '../../../core/guards/status.guard'
 export default [
     { path: '', redirectTo: 'documentos', pathMatch: 'full' },
     {
@@ -8,6 +8,7 @@ export default [
     },
     {
         path: 'add-documentos',
-        loadComponent: () => import('./add-edit-documentos/add-edit-documentos.component').then(c => c.AddEditDocumentosComponent)
+        loadComponent: () => import('./add-edit-documentos/add-edit-documentos.component').then(c => c.AddEditDocumentosComponent),
+        canActivate : [ statusGuard ]
     },
 ] as Routes;

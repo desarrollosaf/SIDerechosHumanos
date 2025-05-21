@@ -508,6 +508,12 @@
                                 </div>
                             </div>
                         </div>
+                        <div *ngIf="isLoading" class="text-center my-3">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                        <p>Procesando solicitud...</p>
+                        </div>
                         <div class="row mt-2">
                             <div class="col text-center">
                                 <div class="d-flex justify-content-center gap-2">

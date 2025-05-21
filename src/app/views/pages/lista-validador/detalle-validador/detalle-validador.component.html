@@ -1,7 +1,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a routerLink=".">Solicitud</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Validacion</li>
+        <li class="breadcrumb-item"><a routerLink=".">Solicitud</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Validacion</li>
     </ol>
 </nav>
 <div class="container">
@@ -9,73 +9,82 @@
         <div class="mx-auto">
             <div class="row">
                 <div class="col-md-12 grid-margin stretch-card">
-                  <div class="card">
-                    <div class="card-body">
-                      <h4 class="card-title">Datos del solicitante</h4>
-                      <p class="text">Nombre completo: {{ solicitante?.nombres }} {{ solicitante?.ap_paterno }} {{ solicitante?.ap_materno }} <br>
-                        Curp: {{ solicitante?.curp }} <br>
-                        Cedula profesional: {{ solicitante?.cedula_profesional }} </p>
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Datos del solicitante</h4>
+                            <p class="text">Nombre completo: {{ solicitante?.nombres }} {{ solicitante?.ap_paterno }} {{
+                                solicitante?.ap_materno }} <br>
+                                Curp: {{ solicitante?.curp }} <br>
+                                Cedula profesional: {{ solicitante?.cedula_profesional }} </p>
+                        </div>
                     </div>
-                  </div>
                 </div>
             </div>
             <div class="card">
-                
                 <form>
                     <div class="row">
                         @for (doc of documentosRequeridos; track doc.clave) {
-                            <div class="col-md-12 grid-margin stretch-card" >
+                            @if (doc.estatus === 1 || doc.estatus === 3) {
+                                <ng-container *ngIf="doc.estatus === 1 || doc.estatus === 3">
+                            <div class="col-md-12 grid-margin stretch-card">
                                 <div class="card h-100">
                                     <div class="card-body">
                                         <div class="row align-items-start">
                                             <div class="col-md-4">
-                                                <p class="text-center"><strong>Tipo</strong></p>
-                                                <br>
-                                                <label class="form-label" style="text-align: justify;">
-                                                    {{ doc.label }}
-                                                </label>
+                                                <label class="form-label">{{ doc.label }}</label>
                                             </div>
+
                                             <div class="col-md-4 text-center">
-                                                <p class="text-center"><strong>Ver archivo</strong></p>
-                                                <br>
-                                                <div *ngIf="archivosSubidos[doc.clave]" class="mt-2">
+                                                <div *ngIf="archivosSubidos[doc.clave]">
                                                     <a [href]="archivosSubidos[doc.clave]" target="_blank"
                                                         class="d-flex justify-content-center text-decoration-none">
                                                         <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png"
-                                                            alt="PDF" width="50" height="50" class="me-2" />
+                                                            width="50" height="50" />
                                                     </a>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4 align text-center">
-                                                <p class="text-center"><strong>Validación</strong></p>
-                                                <br>
+
+                                            <div class="col-md-4 text-center">
                                                 <mat-slide-toggle [ngModelOptions]="{ standalone: true }"
-                                                    class="custom-toggle" [(ngModel)]="validarrechazar[doc.clave].estado"
+                                                    [(ngModel)]="validarrechazar[doc.clave].estado"
                                                     (ngModelChange)="onToggleChange(doc.clave)">
-                                                    <!-- <strong>{{ validarrechazar['curp'].estado ? 'Validado' : 'Rechazado'}}</strong> -->
                                                 </mat-slide-toggle>
                                             </div>
                                         </div>
+
                                         <div *ngIf="validarrechazar[doc.clave]?.estado === false" class="mt-3">
                                             <label>Motivo del rechazo:</label>
-                                            <textarea class="form-control" rows="3" [ngModelOptions]="{ standalone: true }"
+                                            <textarea class="form-control" rows="3"
+                                                [ngModelOptions]="{ standalone: true }"
                                                 [(ngModel)]="validarrechazar[doc.clave].observaciones"
-                                                placeholder="Escribe el motivo del rechazo...">
-                                            </textarea>
+                                                placeholder="Escribe el motivo del rechazo..."></textarea>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </ng-container>
+                              
+                            } 
+                        
                         }
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary submit"  (click)="enviarValidacion()">
-                                Enviar
-                            </button>
-                            <a routerLink="/solicitud/tramite" class="btn btn-secondary">
-                                Cancelar
-                            </a>
+                        <div *ngIf="isLoading" class="text-center my-3">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Cargando...</span>
                         </div>
-                       
+                        <p>Procesando solicitud...</p>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col text-center">
+                                <div class="d-flex justify-content-center gap-2">
+                                    <button type="submit" class="btn btn-primary submit" (click)="enviarValidacion()">
+                                        Enviar
+                                    </button>
+                                    <a routerLink="/solicitud/tramite" class="btn btn-secondary">
+                                        Cancelar
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <br>
                 </form>

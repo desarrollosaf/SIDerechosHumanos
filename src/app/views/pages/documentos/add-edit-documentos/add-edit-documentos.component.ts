@@ -25,7 +25,7 @@ export class AddEditDocumentosComponent {
   archivosRechazados: { [key: string]: number } = {};
   observac: { [key: string]: string } = {};
   documentos: any;
-
+  isLoading: boolean = false;
   constructor(private fb: FormBuilder, private router: Router) {
     this.formDoc = this.fb.group({
       curp: [null, Validators.required],
@@ -138,9 +138,11 @@ export class AddEditDocumentosComponent {
   }
 
   sendDoc() {
+    this.isLoading = true;
     const id_user = String(this._userService.currentUserValue?.id);
     this._documentoService.sendDocumentos(id_user).subscribe({
       next: (response: any) => {
+        this.isLoading = false; 
         Swal.fire({
           position: "center", 
           icon: "success",

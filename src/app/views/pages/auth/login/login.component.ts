@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute) {
     // Rol como observable a partir del usuario actual
     this.userRole$ = this._userService.currentUser$.pipe(
-      map(user => user?.email)
+      map(user => user?.rol_users?.role?.name)
     );
   }
 

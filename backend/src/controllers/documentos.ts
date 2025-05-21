@@ -207,20 +207,28 @@ export const estatusDoc = async (req: Request, res: Response): Promise<any> => {
         o => `- ${o.tipo}: ${o.observaciones}`
         ).join('\n');
 
-        await sendEmail(
-        emailDestino, 
-        'Revisión de documentos',
-        `Se observaron los siguientes documentos:\n\n${contenido}`
-        );
+
+        (async () => {
+            await sendEmail(
+                emailDestino, 
+                'Revisión de documentos',
+                `Se observaron los siguientes documentos:\n\n${contenido}`
+            );
+        })();
+
         solicitud.estatusId = 4;
         await solicitud.save();
 
     } else {
-        await sendEmail(
-        emailDestino, 
-        'Revisión de documentos',
-        'Todos tus documentos fueron revisados y están correctos.'
-        );
+        
+        (async () => {
+            await sendEmail(
+                emailDestino, 
+                'Revisión de documentos',
+                'Todos tus documentos fueron revisados y están correctos.'
+            );
+        })();
+
         solicitud.estatusId = 3;
         await solicitud.save();
     }

@@ -199,12 +199,16 @@ const estatusDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         else {
             if (observados.length > 0) {
                 const contenido = observados.map(o => `- ${o.tipo}: ${o.observaciones}`).join('\n');
-                yield (0, mailer_1.sendEmail)(emailDestino, 'Revisión de documentos', `Se observaron los siguientes documentos:\n\n${contenido}`);
+                (() => __awaiter(void 0, void 0, void 0, function* () {
+                    yield (0, mailer_1.sendEmail)(emailDestino, 'Revisión de documentos', `Se observaron los siguientes documentos:\n\n${contenido}`);
+                }))();
                 solicitud.estatusId = 4;
                 yield solicitud.save();
             }
             else {
-                yield (0, mailer_1.sendEmail)(emailDestino, 'Revisión de documentos', 'Todos tus documentos fueron revisados y están correctos.');
+                (() => __awaiter(void 0, void 0, void 0, function* () {
+                    yield (0, mailer_1.sendEmail)(emailDestino, 'Revisión de documentos', 'Todos tus documentos fueron revisados y están correctos.');
+                }))();
                 solicitud.estatusId = 3;
                 yield solicitud.save();
             }

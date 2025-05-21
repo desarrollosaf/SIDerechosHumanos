@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "homestead",
-    "password": "secret",
-    "database": "derechos_humanos",
-    "host": "192.168.10.10",
+    "username": "usr_derechos",
+    "password": "J7Zi5TD4qBctM9",
+    "database": "adminplem_derechos",
+    "host": "192.168.36.53",
     "dialect": "mysql"
   }
 }

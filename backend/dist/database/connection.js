@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
-const sequelize = new sequelize_1.Sequelize('derechos_humanos', 'homestead', 'secret', {
-    host: '192.168.10.10',
+const sequelize = new sequelize_1.Sequelize('adminplem_derechos', 'usr_derechos', 'J7Zi5TD4qBctM9', {
+    host: '192.168.36.53',
     dialect: 'mysql',
     define: {
         freezeTableName: true // evita que Sequelize pluralice

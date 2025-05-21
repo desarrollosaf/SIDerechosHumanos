@@ -25,13 +25,13 @@ const transporter = nodemailer.createTransport({
         pass: process.env.SMTP_PASS,
     },
 });
-const sendEmail = (to, subject, text) => __awaiter(void 0, void 0, void 0, function* () {
+const sendEmail = (to, subject, html) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield transporter.sendMail({
             from: `"SIDerechosHumanos" <${process.env.SMTP_USER}>`,
             to,
             subject,
-            text,
+            html,
         });
         console.log(`Correo enviado a: ${to}`);
     }

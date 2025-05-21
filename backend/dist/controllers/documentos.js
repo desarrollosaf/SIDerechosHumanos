@@ -191,28 +191,42 @@ const estatusDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             }
             yield documentoExistente.save();
         }
+        // Actualiza estatus
+        solicitud.estatusId = observados.length > 0 ? 4 : 3;
+        yield solicitud.save();
+        // ENVÍO ASÍNCRONO DEL CORREO
         const usuario = solicitud.usuario;
         const emailDestino = usuario === null || usuario === void 0 ? void 0 : usuario.email;
-        if (!emailDestino) {
-            console.warn('No se encontró email del usuario');
+        if (emailDestino) {
+            // Ejecuta sin bloquear
+            (() => __awaiter(void 0, void 0, void 0, function* () {
+                try {
+                    let htmlContent;
+                    if (observados.length > 0) {
+                        const listaObservados = observados.map(o => `<li><strong>${o.tipo}</strong>: ${o.observaciones}</li>`).join('');
+                        const contenido = `
+              <p>Se observaron los siguientes documentos:</p>
+              <ul>${listaObservados}</ul>
+            `;
+                        htmlContent = generarHtmlCorreo(contenido);
+                    }
+                    else {
+                        const contenido = `
+              <p>Todos tus documentos fueron revisados y están <strong>correctos</strong>.</p>
+            `;
+                        htmlContent = generarHtmlCorreo(contenido);
+                    }
+                    yield (0, mailer_1.sendEmail)(emailDestino, 'Revisión de documentos', htmlContent);
+                }
+                catch (correoError) {
+                    console.error('Error al enviar correo:', correoError);
+                }
+            }))();
         }
         else {
-            if (observados.length > 0) {
-                const contenido = observados.map(o => `- ${o.tipo}: ${o.observaciones}`).join('\n');
-                (() => __awaiter(void 0, void 0, void 0, function* () {
-                    yield (0, mailer_1.sendEmail)(emailDestino, 'Revisión de documentos', `Se observaron los siguientes documentos:\n\n${contenido}`);
-                }))();
-                solicitud.estatusId = 4;
-                yield solicitud.save();
-            }
-            else {
-                (() => __awaiter(void 0, void 0, void 0, function* () {
-                    yield (0, mailer_1.sendEmail)(emailDestino, 'Revisión de documentos', 'Todos tus documentos fueron revisados y están correctos.');
-                }))();
-                solicitud.estatusId = 3;
-                yield solicitud.save();
-            }
+            console.warn('No se encontró email del usuario');
         }
+        // Respondemos al cliente sin esperar el correo
         return res.status(200).json({ message: 'Documentos actualizados correctamente.' });
     }
     catch (error) {
@@ -221,3 +235,51 @@ const estatusDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.estatusDoc = estatusDoc;
+function generarHtmlCorreo(contenidoHtml) {
+    return `
+    <html>
+      <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+          }
+          .header {
+            background-color: #A9A9A9;
+            padding: 20px;
+            text-align: center;
+          }
+          .header img {
+            max-width: 150px;
+          }
+          .content {
+            padding: 20px;
+            color: #333;
+            font-size: 18px;
+            font-family: Arial, sans-serif;
+          }
+          .footer {
+            background-color: #eee;
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            color: #777;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <img src="https://congresoedomex.gob.mx/storage/images/IMAGOTIPOHorizontal.png" alt="Logo">
+        </div>
+        <div class="content">
+          ${contenidoHtml}
+        </div>
+        <div class="footer">
+          © ${new Date().getFullYear()} SIDerechosHumanos. Todos los derechos reservados.
+        </div>
+      </body>
+    </html>
+  `;
+}

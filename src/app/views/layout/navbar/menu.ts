@@ -4,7 +4,8 @@ export const MENU: MenuItem[] = [
   {
     label: 'Dashboard',
     icon: 'home',
-    link: '/dashboard'
+    link: '/dashboard',
+    roles: ['Administrador'],
   },
   {
     label: 'Bandeja de entrada',

@@ -2,7 +2,8 @@ import { Routes } from '@angular/router';
 import { BaseComponent } from './views/layout/base/base.component';
 import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
-import { statusGuard } from './core/guards/status.guard';
+import { roleGuard } from './core/guards/role.guard';
+import { DashboardComponent } from './views/pages/dashboard/dashboard.component'; 
 
 export const routes: Routes = [
   { path: 'auth', loadChildren: () => import('./views/pages/auth/auth.routes')},
@@ -11,10 +12,14 @@ export const routes: Routes = [
     component: BaseComponent,
     canActivateChild: [authGuard],
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: '', 
+        canActivate : [ roleGuard ],
+        component: DashboardComponent,
+      },
       {
         path: 'dashboard',
-        loadChildren: () => import('./views/pages/dashboard/dashboard.routes')
+        loadChildren: () => import('./views/pages/dashboard/dashboard.routes'),
+        //
       },
       {
         path: 'apps',

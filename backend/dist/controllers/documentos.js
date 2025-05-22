@@ -129,30 +129,30 @@ const envSolicitud = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.envSolicitud = envSolicitud;
 const deleteDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { tipo, usuario } = req.body;
-    const solicitud = yield solicitud_1.default.findOne({ where: { userId: usuario } });
-    const documentoExistente = yield documentos_1.default.findOne({
-        where: { solicitudId: solicitud.id },
-        include: [
-            {
-                model: tipodocumentos_1.default,
-                as: 'tipo',
-                where: { valor: tipo },
-                attributes: []
-            }
-        ]
-    });
-    if (documentoExistente) {
-        const documentoPath = path_1.default.resolve(documentoExistente.path);
-        if (fs_1.default.existsSync(documentoPath)) {
-            fs_1.default.unlinkSync(documentoPath);
-        }
-        return res.json('200');
-    }
-    else {
-        return res.status(404).json({
-            msg: `No existe el documento con el tipo y solicitud${usuario}`,
-        });
-    }
+    console.log(usuario);
+    // const solicitud: any = await Solicitudes.findOne({ where: { userId: usuario } });
+    // const documentoExistente = await Documentos.findOne({
+    //     where: { solicitudId: solicitud.id },
+    //     include: [
+    //         {
+    //             model: TipoDocumentos,
+    //             as: 'tipo',
+    //             where: { valor: tipo },
+    //             attributes: [] 
+    //         }
+    //     ]
+    // });
+    // if(documentoExistente){
+    //     const documentoPath = path.resolve(documentoExistente.path);
+    //     if (fs.existsSync(documentoPath)) {
+    //         fs.unlinkSync(documentoPath);
+    //     }
+    //   return res.json('200')
+    // }else{
+    //   return res.status(404).json({
+    //         msg: `No existe el documento con el tipo y solicitud${usuario}`,
+    //     });
+    // }
 });
 exports.deleteDoc = deleteDoc;
 const estatusDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

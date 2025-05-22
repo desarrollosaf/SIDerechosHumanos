@@ -135,31 +135,31 @@ export const envSolicitud = async (req: Request, res: Response): Promise<any> =>
 
 export const deleteDoc = async (req: Request, res: Response): Promise<any> => {
     const { tipo, usuario } = req.body;
-    
-    const solicitud: any = await Solicitudes.findOne({ where: { userId: usuario } });
-    const documentoExistente = await Documentos.findOne({
-        where: { solicitudId: solicitud.id },
-        include: [
-            {
-                model: TipoDocumentos,
-                as: 'tipo',
-                where: { valor: tipo },
-                attributes: [] 
-            }
-        ]
-    });
+    console.log(usuario);
+    // const solicitud: any = await Solicitudes.findOne({ where: { userId: usuario } });
+    // const documentoExistente = await Documentos.findOne({
+    //     where: { solicitudId: solicitud.id },
+    //     include: [
+    //         {
+    //             model: TipoDocumentos,
+    //             as: 'tipo',
+    //             where: { valor: tipo },
+    //             attributes: [] 
+    //         }
+    //     ]
+    // });
 
-    if(documentoExistente){
-        const documentoPath = path.resolve(documentoExistente.path);
-        if (fs.existsSync(documentoPath)) {
-            fs.unlinkSync(documentoPath);
-        }
-      return res.json('200')
-    }else{
-      return res.status(404).json({
-            msg: `No existe el documento con el tipo y solicitud${usuario}`,
-        });
-    }
+    // if(documentoExistente){
+    //     const documentoPath = path.resolve(documentoExistente.path);
+    //     if (fs.existsSync(documentoPath)) {
+    //         fs.unlinkSync(documentoPath);
+    //     }
+    //   return res.json('200')
+    // }else{
+    //   return res.status(404).json({
+    //         msg: `No existe el documento con el tipo y solicitud${usuario}`,
+    //     });
+    // }
 }
 
 export const estatusDoc = async (req: Request, res: Response): Promise<any> => {

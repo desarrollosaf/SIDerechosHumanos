@@ -154,6 +154,11 @@ export const deleteDoc = async (req: Request, res: Response): Promise<any> => {
         if (fs.existsSync(documentoPath)) {
             fs.unlinkSync(documentoPath);
         }
+      await Documentos.destroy({
+        where: {
+          tipoDocumento: documentoExistente.tipoDocumento  
+        }
+      });
       return res.json('200')
     }else{
       return res.status(404).json({

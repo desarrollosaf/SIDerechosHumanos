@@ -78,7 +78,7 @@
                                         EL INSTITUTO NACIONAL ELECTORAL)*:
                                     </label>
                                     <div class="mt-auto">
-                                        <input class="form-control" type="file" id="ine" accept="application/pdf"
+                                        <input #fileInputsRef curp class="form-control" type="file" id="ine" accept="application/pdf"
                                             (change)="onFile7($event, 'ine',7)">
                                     </div>
                                     <div *ngIf="formDoc.get('ine')?.hasError('required')">
@@ -92,7 +92,7 @@
                                             <a [href]="archivosSubidos['ine']" target="_blank"
                                                 class="d-flex align-items-center text-decoration-none">
                                                 <img src="assets/images/pdf.png"
-                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                                    alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
                                                 (click)="eliminarArchivo('ine')">
@@ -135,7 +135,7 @@
                                             <a [href]="archivosSubidos['titulo_licenciatura']" target="_blank"
                                                 class="d-flex align-items-center text-decoration-none">
                                                 <img src="assets/images/pdf.png"
-                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                                    alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
                                                 (click)="eliminarArchivo('titulo_licenciatura')">
@@ -176,7 +176,7 @@
                                             <a [href]="archivosSubidos['acta_nacimiento']" target="_blank"
                                                 class="d-flex align-items-center text-decoration-none">
                                                 <img src="assets/images/pdf.png"
-                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                                    alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
                                                 (click)="eliminarArchivo('acta_nacimiento')">
@@ -221,7 +221,7 @@
                                             <a [href]="archivosSubidos['carta_ant_no_penales']" target="_blank"
                                                 class="d-flex align-items-center text-decoration-none">
                                                 <img src="assets/images/pdf.png"
-                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                                    alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
                                                 (click)="eliminarArchivo('carta_ant_no_penales')">
@@ -262,7 +262,7 @@
                                             <a [href]="archivosSubidos['carta_protesta1']" target="_blank"
                                                 class="d-flex align-items-center text-decoration-none">
                                                 <img src="assets/images/pdf.png"
-                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                                    alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
                                                 (click)="eliminarArchivo('carta_protesta1')">
@@ -305,7 +305,7 @@
                                             <a [href]="archivosSubidos['carta_protesta2']" target="_blank"
                                                 class="d-flex align-items-center text-decoration-none">
                                                 <img src="assets/images/pdf.png"
-                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                                    alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
                                                 (click)="eliminarArchivo('carta_protesta2')">
@@ -349,7 +349,7 @@
                                             <a [href]="archivosSubidos['carta_protesta3']" target="_blank"
                                                 class="d-flex align-items-center text-decoration-none">
                                                 <img src="assets/images/pdf.png"
-                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                                    alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
                                                 (click)="eliminarArchivo('carta_protesta3')">
@@ -394,7 +394,7 @@
                                             <a [href]="archivosSubidos['carta_protesta4']" target="_blank"
                                                 class="d-flex align-items-center text-decoration-none">
                                                 <img src="assets/images/pdf.png"
-                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                                    alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
                                                 (click)="eliminarArchivo('carta_protesta4')">
@@ -436,7 +436,7 @@
                                             <a [href]="archivosSubidos['carta_protesta5']" target="_blank"
                                                 class="d-flex align-items-center text-decoration-none">
                                                 <img src="assets/images/pdf.png"
-                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                                    alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
                                                 (click)="eliminarArchivo('carta_protesta5')">
@@ -482,7 +482,7 @@
                                             <a [href]="archivosSubidos['curriculum']" target="_blank"
                                                 class="d-flex align-items-center text-decoration-none">
                                                 <img src="assets/images/pdf.png"
-                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                                    alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
                                                 (click)="eliminarArchivo('curriculum')">
@@ -529,7 +529,7 @@
                                             <a [href]="archivosSubidos['propuesta_programa']" target="_blank"
                                                 class="d-flex align-items-center text-decoration-none">
                                                 <img src="assets/images/pdf.png"
-                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                                    alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
                                                 (click)="eliminarArchivo('propuesta_programa')">
@@ -571,7 +571,7 @@
                                             <a [href]="archivosSubidos['copia_certificada']" target="_blank"
                                                 class="d-flex align-items-center text-decoration-none">
                                                 <img src="assets/images/pdf.png"
-                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                                    alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
                                                 (click)="eliminarArchivo('copia_certificada')">

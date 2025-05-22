@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, inject, QueryList, ViewChildren } from '@angular/core';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
@@ -16,7 +16,9 @@ import { RouterModule } from '@angular/router';
   templateUrl: './add-edit-documentos.component.html',
   styleUrl: './add-edit-documentos.component.scss'
 })
+
 export class AddEditDocumentosComponent {
+  @ViewChildren('fileInputsRef') fileInputsRef!: QueryList<ElementRef<HTMLInputElement>>;
   formDoc: FormGroup;
   files: { [key: string]: File } = {};
   public _userService = inject(UserService);
@@ -78,6 +80,10 @@ export class AddEditDocumentosComponent {
           control.reset();
           control.setValidators([Validators.required]);
           control.updateValueAndValidity();
+          }
+          const input = document.getElementById(tipoDoc) as HTMLInputElement;
+          if (input) {
+            input.value = '';
           }
       
         },

@@ -73,7 +73,7 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         where: { email: 'correo@ejemplo.com' }
     });
     if (solicitud) {
-        return res.status(500);
+        return res.json({ estatus: `400`, correo: solicitud.email });
     }
     try {
         const Upassword = generateRandomPassword(12);

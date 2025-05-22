@@ -51,22 +51,23 @@ export class AddEditDocumentosComponent {
   }
   eliminarArchivo(tipoDoc: string){
     const currntUsr = String(this._userService.currentUserValue?.id);
-      const documentosArray = [
-      { tipo: tipoDoc, usuario: currntUsr},
-      ];
+    ;
 
-       this._documentoService.deleteDocumento(documentosArray).subscribe({
-          next: (response: any) => {
-         console.log(response);
-          },
-          error: (e: HttpErrorResponse) => {
-            if (e.error && e.error.msg) {
-              console.error('Error del servidor:', e.error.msg);
-            } else {
-              console.error('Error desconocido:', e);
-            }
-          },
-        })
+      const datos = {
+        tipo: tipoDoc, usuario: currntUsr
+      };
+      this._documentoService.deleteDocumento(datos).subscribe({
+        next: (response: any) => {
+          console.log(response);
+        },
+        error: (e: HttpErrorResponse) => {
+        if (e.error && e.error.msg) {
+          console.error('Error del servidor:', e.error.msg);
+        } else {
+          console.error('Error desconocido:', e);
+        }
+        },
+      })
   }
   onFile7(event: Event, controlName: string, maxmb: number): void {
     const input = event.target as HTMLInputElement;

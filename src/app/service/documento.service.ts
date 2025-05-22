@@ -33,7 +33,7 @@ export class DocumentoService {
     return this.http.post<void>(`${this.myAppUrl}${this.myAPIUrl}/validadoc/${user}`, documentos);
   }
 
-  deleteDocumento(documentos: any[]): Observable<void> {
+  deleteDocumento(documentos: any): Observable<void> {
     return this.http.post<void>(`${this.myAppUrl}${this.myAPIUrl}/deleted`, documentos);
   }
 }

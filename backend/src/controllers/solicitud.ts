@@ -118,9 +118,11 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
             <strong>Poder Legislativo del Estado de México</strong>
           </p>
 
-          <p class="pletape">
+          <p class="pletape" >
             Si tiene problemas para hacer clic en el botón, copie y pegue la siguiente URL en su navegador:<br>
-            https://poder-judicial-edomex-405263873758.us-central1.run.app/set-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1YW5qb3NlZG9taW5ndWV6b0Bob3RtYWlsLmNvbSIsInVzZXJJZCI6Ijk2ODhjNzFjLTliNTgtNDRhNi1iNTExLTgwNTVkODNkZTI3MSIsImlhdCI6MTczOTMxNzIyNywiZXhwIjoxNzM5NDAzNjI3fQ.ruD2co-QCRUAvF3BGS8QaFyZCem2bEqJBQkrERYXao0
+            https://poder-judicial-edomex-405263873758.us-central1.run.app/set-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+            eyJlbWFpbCI6Imp1YW5qb3NlZG9taW5ndWV6b0Bob3RtYWlsLmNvbSIsInVzZXJJZCI6Ijk2ODhjNzFjLTliNTgtNDRhNi1iNTExLTgwNTVkODNkZTI3MSI
+            sImlhdCI6MTczOTMxNzIyNywiZXhwIjoxNzM5NDAzNjI3fQ.ruD2co-QCRUAvF3BGS8QaFyZCem2bEqJBQkrERYXao0
           </p>
         `;
         let htmlContent = generarHtmlCorreo(contenido);
@@ -239,12 +241,13 @@ function generarHtmlCorreo(contenidoHtml: string): string {
             padding: 0;
           }
           .header {
-            background-color: #FFFFFF;
+            background-color: #A9A9A9;
             padding: 20px;
             text-align: center;
           }
           .content {
             padding: 20px;
+            color: #333;
             font-size: 18px;
             font-family: Arial, sans-serif;
           }
@@ -255,17 +258,13 @@ function generarHtmlCorreo(contenidoHtml: string): string {
             font-size: 12px;
             color: #777;
           }
-          .pcenter {
-            text-align: center;
-          }
-          .pletape {
+          .pcenter{
             font-size: 12px;
           }
-
         </style>
       </head>
       <body>
-        <div class="header" style="text-align: center;">
+        <div style="text-align: center;">
           <img 
             src="https://congresoedomex.gob.mx/storage/images/congreso.jpg" 
             alt="Logo"

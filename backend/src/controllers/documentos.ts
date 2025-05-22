@@ -225,13 +225,57 @@ export const estatusDoc = async (req: Request, res: Response): Promise<any> => {
           let htmlContent: string;
 
           if (observados.length > 0) {
-            const listaObservados = observados.map(
-              o => `<li><strong>${o.tipo}</strong>: ${o.observaciones}</li>`
-            ).join('');
+            const tablaObservados = `
+            <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;">
+                <thead style="background-color: #f2f2f2;">
+                <tr>
+                    <th style="text-align: left;">Documento</th>
+                    <th style="text-align: left;">Observación</th>
+                </tr>
+                </thead>
+                <tbody>
+                ${observados.map(o => `
+                    <tr>
+                    <td>${o.tipo}</td>
+                    <td>${o.observaciones}</td>
+                    </tr>
+                `).join('')}
+                </tbody>
+            </table>
+            `;
 
             const contenido = `
-              <p>Se observaron los siguientes documentos:</p>
-              <ul>${listaObservados}</ul>
+              <h1 class="pcenter">OBSERVACIONES</h1>
+              <h3><trong>C.</strong> ${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno},</h3>
+              <p><strong>Folio:</strong>${solicitud.id}</p>
+              <p>Por este medio se le informa que, tras la revisión realizada en el portal
+               de registro respecto de su solicitud, se ha determinado que el registro es NO PROCEDENTE. <br>
+               
+               A continuación, se detallan las observaciones encontradas:</p>
+               <br>
+               ${tablaObservados}
+               <br>
+               <p>Es importante mencionarle que puede subsanar dichas observaciones en un plazo no mayor
+                a XXXX horas naturales contadas a partir de la recepción de este correo.
+                En caso de no realizarlo en dicho plazo, se considerará no cumplimentada
+                la acreditación de los requisitos de elegibilidad. <br>
+                
+                Para estos efectos, se habilitará la sección correspondiente en la página de
+                registro para que pueda cargar los documentos requeridos. Dichos campos estarán
+                disponibles solo durante doce horas, y posterior a ese tiempo,
+                se cerrarán nuevamente, sin posibilidad de modificación. <br>
+
+                Para enviar la documentación corregida, por favor, ingrese
+                a la cuenta registrada y diríjase al campo de documentación,
+                en donde podrá sustituir el archivo correspondiente. <br>
+                
+                Agradecemos su pronta atención a este asunto. Si tiene alguna duda o requiere asistencia
+                adicional, no dude en ponerse en contacto con nosotros.</p>
+                <p class="pcenter">
+                    Atentamente, <br>
+                    <strong>Poder Legislativo del Estado de México</strong>
+                </p>
+              
             `;
 
             htmlContent = generarHtmlCorreo(contenido);
@@ -280,9 +324,6 @@ function generarHtmlCorreo(contenidoHtml: string): string {
             padding: 20px;
             text-align: center;
           }
-          .header img {
-            max-width: 150px;
-          }
           .content {
             padding: 20px;
             color: #333;
@@ -296,11 +337,18 @@ function generarHtmlCorreo(contenidoHtml: string): string {
             font-size: 12px;
             color: #777;
           }
+          .pcenter{
+            text-align: center;
+          }
         </style>
       </head>
       <body>
-        <div class="header">
-          <img src="https://congresoedomex.gob.mx/storage/images/IMAGOTIPOHorizontal.png" alt="Logo">
+        <div style="text-align: center;">
+          <img 
+            src="https://congresoedomex.gob.mx/storage/images/congreso.jpg" 
+            alt="Logo"
+            style="display: block; margin: 0 auto; width: 300px; height: auto;"
+          >
         </div>
         <div class="content">
           ${contenidoHtml}

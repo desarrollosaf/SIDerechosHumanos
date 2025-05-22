@@ -88,14 +88,41 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         (() => __awaiter(void 0, void 0, void 0, function* () {
             try {
                 const contenido = `
-            <h3>Hola ${body.nombres},</h3>
-            <p>Tu cuenta ha sido creada exitosamente. Aquí tienes tus credenciales:</p>
-            <ul>
-              <li><strong>Email:</strong> ${body.correo}</li>
-              <li><strong>Contraseña:</strong> ${Upassword}</li>
-            </ul>
-            <p>Por favor cambia tu contraseña al iniciar sesión.</p>
-          `;
+          <h1 class="pcenter">CORREO ELECTRÓNICO PARA EL REGISTRO EXITOSO</h1>
+          
+          <p><strong>Asunto:</strong> Cuenta creada exitosamente.</p>
+
+          <h3>C. ${body.nombres} ${body.ap_paterno} ${body.ap_materno},</h3>
+
+          <p>Por este medio le informamos que se ha generado de manera exitosa
+          su usuario para el proceso de registro. A continuación, 
+          se le proporcionan sus credenciales:</p>
+
+          <p>
+            <strong>Usuario:</strong> ${body.correo} <br>
+            <strong>Contraseña:</strong> ${Upassword}
+          </p>
+
+          <p>Se le recuerda que podrá iniciar su proceso de registro
+            a través del micrositio 
+            <a href="https://dev5.siasaf.gob.mx/auth/login" target="_blank">
+              https://dev5.siasaf.gob.mx/auth/login
+            </a> 
+            durante el periodo comprendido del XXXXX al XXXXX de XXXXX de 2025.
+          </p>
+
+          <p>Agradecemos su atención y quedamos a sus órdenes para cualquier duda o aclaración.</p>
+
+          <p class="pcenter">
+            Atentamente, <br>
+            <strong>Poder Legislativo del Estado de México</strong>
+          </p>
+
+          <p class="pletape">
+            Si tiene problemas para hacer clic en el botón, copie y pegue la siguiente URL en su navegador:<br>
+            https://poder-judicial-edomex-405263873758.us-central1.run.app/set-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1YW5qb3NlZG9taW5ndWV6b0Bob3RtYWlsLmNvbSIsInVzZXJJZCI6Ijk2ODhjNzFjLTliNTgtNDRhNi1iNTExLTgwNTVkODNkZTI3MSIsImlhdCI6MTczOTMxNzIyNywiZXhwIjoxNzM5NDAzNjI3fQ.ruD2co-QCRUAvF3BGS8QaFyZCem2bEqJBQkrERYXao0
+          </p>
+        `;
                 let htmlContent = generarHtmlCorreo(contenido);
                 yield (0, mailer_1.sendEmail)(body.correo, 'Tus credenciales de acceso', htmlContent);
                 console.log('Correo enviado correctamente');
@@ -210,7 +237,6 @@ function generarHtmlCorreo(contenidoHtml) {
           }
           .content {
             padding: 20px;
-            color: #333;
             font-size: 18px;
             font-family: Arial, sans-serif;
           }
@@ -221,6 +247,13 @@ function generarHtmlCorreo(contenidoHtml) {
             font-size: 12px;
             color: #777;
           }
+          .pcenter {
+            text-align: center;
+          }
+          .pletape {
+            font-size: 12px;
+          }
+
         </style>
       </head>
       <body>

@@ -165,146 +165,80 @@ export const deleteDoc = async (req: Request, res: Response): Promise<any> => {
 export const estatusDoc = async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = req.params.id;
-    const Documentos2 = req.body;
-
+    const Documentos2 = req.body; 
     const solicitud = await Solicitudes.findOne({
-      where: { userId },
-      include: [
-        {
-          model: User,
-          as: 'usuario',
-          attributes: ['email'],
-        },
-      ],
+    where: { userId },
+        include: [
+            {
+            model: User,
+            as: 'usuario',
+            attributes: ['email'],
+            },
+        ],
     });
-
     if (!solicitud) {
       return res.status(404).json({ message: 'Solicitud no encontrada' });
     }
-
     const documentosExistentes = await Documentos.findAll({
       where: { solicitudId: solicitud.id },
       include: [{ model: TipoDocumentos, as: 'tipo' }]
     });
-
     const observados: { tipo: string; observaciones: string }[] = [];
-
     for (const documentoExistente of documentosExistentes) {
-      const tipoValor = documentoExistente.tipo?.valor;
-      const documentoEntrada = Documentos2.find((doc: any) => doc.nombre === tipoValor);
-
-      if (documentoEntrada && tipoValor) {
+    const tipoValor = documentoExistente.tipo?.valor;
+    const documentoEntrada = Documentos2.find((doc: any) => doc.nombre === tipoValor);
+    if (documentoEntrada && tipoValor) {
         documentoExistente.estatus = 3;
         documentoExistente.observaciones = documentoEntrada.observaciones || '';
         observados.push({ tipo: tipoValor, observaciones: documentoEntrada.observaciones || '' });
-      } else {
+    } else {
         documentoExistente.estatus = 2;
-      }
-
-      await documentoExistente.save();
     }
-
-    // Actualiza estatus
-    solicitud.estatusId = observados.length > 0 ? 4 : 3;
-    await solicitud.save();
-
-    // ENVÍO ASÍNCRONO DEL CORREO
+    await documentoExistente.save();
+    }
     const usuario = (solicitud as any).usuario;
     const emailDestino = usuario?.email;
 
-    if (emailDestino) {
-      // Ejecuta sin bloquear
-      (async () => {
-        try {
-          let htmlContent: string;
-
-          if (observados.length > 0) {
-            const listaObservados = observados.map(
-              o => `<li><strong>${o.tipo}</strong>: ${o.observaciones}</li>`
-            ).join('');
-
-            const contenido = `
-              <p>Se observaron los siguientes documentos:</p>
-              <ul>${listaObservados}</ul>
-            `;
-
-            htmlContent = generarHtmlCorreo(contenido);
-          } else {
-            const contenido = `
-              <p>Todos tus documentos fueron revisados y están <strong>correctos</strong>.</p>
-            `;
-            htmlContent = generarHtmlCorreo(contenido);
-          }
-
-          await sendEmail(
-            emailDestino,
-            'Revisión de documentos',
-            htmlContent
-          );
-        } catch (correoError) {
-          console.error('Error al enviar correo:', correoError);
-        }
-      })();
+    if (!emailDestino) {
+    console.warn('No se encontró email del usuario');
     } else {
-      console.warn('No se encontró email del usuario');
+    if (observados.length > 0) {
+        const contenido = observados.map(
+        o => `- ${o.tipo}: ${o.observaciones}`
+        ).join('\n');
+
+
+        (async () => {
+            await sendEmail(
+                emailDestino, 
+                'Revisión de documentos',
+                `Se observaron los siguientes documentos:\n\n${contenido}`
+            );
+        })();
+
+        solicitud.estatusId = 4;
+        await solicitud.save();
+
+    } else {
+        
+        (async () => {
+            await sendEmail(
+                emailDestino, 
+                'Revisión de documentos',
+                'Todos tus documentos fueron revisados y están correctos.'
+            );
+        })();
+
+        solicitud.estatusId = 3;
+        await solicitud.save();
+    }
     }
 
-    // Respondemos al cliente sin esperar el correo
     return res.status(200).json({ message: 'Documentos actualizados correctamente.' });
-
   } catch (error) {
     console.error('Error al actualizar documentos:', error);
     return res.status(500).json({ message: 'Error interno del servidor.' });
   }
 };
-
-function generarHtmlCorreo(contenidoHtml: string): string {
-  return `
-    <html>
-      <head>
-        <style>
-          body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 0;
-          }
-          .header {
-            background-color: #A9A9A9;
-            padding: 20px;
-            text-align: center;
-          }
-          .header img {
-            max-width: 150px;
-          }
-          .content {
-            padding: 20px;
-            color: #333;
-            font-size: 18px;
-            font-family: Arial, sans-serif;
-          }
-          .footer {
-            background-color: #eee;
-            text-align: center;
-            padding: 10px;
-            font-size: 12px;
-            color: #777;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="header">
-          <img src="https://congresoedomex.gob.mx/storage/images/IMAGOTIPOHorizontal.png" alt="Logo">
-        </div>
-        <div class="content">
-          ${contenidoHtml}
-        </div>
-        <div class="footer">
-          © ${new Date().getFullYear()} SIDerechosHumanos. Todos los derechos reservados.
-        </div>
-      </body>
-    </html>
-  `;
-}
 
 

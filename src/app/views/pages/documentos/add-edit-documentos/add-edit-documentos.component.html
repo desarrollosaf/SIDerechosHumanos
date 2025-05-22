@@ -13,7 +13,7 @@
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Indicaciones6667</h4>
+                            <h4 class="card-title">Indicaciones</h4>
                             <p class="text-secondary">Agregar documentos no mayor a 10 MB, todos los archivos se deben
                                 subir en formato PDF</p>
                         </div>
@@ -37,20 +37,24 @@
                                         <input class="form-control" type="file" id="curp" accept="application/pdf"
                                             (change)="onFile7($event, 'curp',7)">
                                     </div>
-
                                     <div *ngIf="formDoc.get('curp')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
                                     </div>
                                     <div *ngIf="formDoc.get('curp')?.hasError('fileSize')">
                                         <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
                                     </div>
-
                                     <div *ngIf="archivosSubidos['curp']" class="mt-2">
-                                        <a [href]="archivosSubidos['curp']" target="_blank"
-                                            class="d-flex align-items-center text-decoration-none">
-                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
-                                                width="50" height="50" class="me-2" />
-                                        </a>
+                                        <div class="d-flex justify-content-center align-items-center gap-3">
+                                            <a [href]="archivosSubidos['curp']" target="_blank"
+                                                class="d-flex align-items-center text-decoration-none">
+                                                <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png"
+                                                    alt="PDF" width="50" height="50" />
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                (click)="eliminarArchivo('curp')">
+                                                Eliminar
+                                            </button>
+                                        </div>
                                     </div>
                                     <div *ngIf=" archivosRechazados['curp'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
@@ -72,7 +76,6 @@
                                         EXPEDIDA POR
                                         EL INSTITUTO NACIONAL ELECTORAL)*:
                                     </label>
-
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="ine" accept="application/pdf"
                                             (change)="onFile7($event, 'ine',7)">
@@ -84,11 +87,17 @@
                                         <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
                                     </div>
                                     <div *ngIf="archivosSubidos['ine']" class="mt-2">
-                                        <a [href]="archivosSubidos['ine']" target="_blank"
-                                            class="d-flex align-items-center text-decoration-none">
-                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
-                                                width="50" height="50" class="me-2" />
-                                        </a>
+                                        <div class="d-flex justify-content-center align-items-center gap-3">
+                                            <a [href]="archivosSubidos['ine']" target="_blank"
+                                                class="d-flex align-items-center text-decoration-none">
+                                                <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png"
+                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                (click)="eliminarArchivo('ine')">
+                                                Eliminar
+                                            </button>
+                                        </div>
                                     </div>
                                     <div *ngIf=" archivosRechazados['ine'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
@@ -108,7 +117,6 @@
                                         estudios en
                                         materia de derechos humanos (TÍTULO DE LICENCIATURA EN DERECHO)*:
                                     </label>
-
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="titulo_licenciatura"
                                             accept="application/pdf"
@@ -121,11 +129,17 @@
                                         <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
                                     </div>
                                     <div *ngIf="archivosSubidos['titulo_licenciatura']" class="mt-2">
-                                        <a [href]="archivosSubidos['titulo_licenciatura']" target="_blank"
-                                            class="d-flex align-items-center text-decoration-none">
-                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
-                                                width="50" height="50" class="me-2" />
-                                        </a>
+                                        <div class="d-flex justify-content-center align-items-center gap-3">
+                                            <a [href]="archivosSubidos['titulo_licenciatura']" target="_blank"
+                                                class="d-flex align-items-center text-decoration-none">
+                                                <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png"
+                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                (click)="eliminarArchivo('titulo_licenciatura')">
+                                                Eliminar
+                                            </button>
+                                        </div>
                                     </div>
                                     <div *ngIf=" archivosRechazados['titulo_licenciatura'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
@@ -144,7 +158,6 @@
                                         Tener treinta y cinco años cumplidos, el día de su elección (ACTA DE
                                         NACIMIENTO)*:
                                     </label>
-
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="acta_nacimiento"
                                             accept="application/pdf" (change)="onFile7($event, 'acta_nacimiento',7)">
@@ -156,11 +169,17 @@
                                         <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
                                     </div>
                                     <div *ngIf="archivosSubidos['acta_nacimiento']" class="mt-2">
-                                        <a [href]="archivosSubidos['acta_nacimiento']" target="_blank"
-                                            class="d-flex align-items-center text-decoration-none">
-                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
-                                                width="50" height="50" class="me-2" />
-                                        </a>
+                                        <div class="d-flex justify-content-center align-items-center gap-3">
+                                            <a [href]="archivosSubidos['acta_nacimiento']" target="_blank"
+                                                class="d-flex align-items-center text-decoration-none">
+                                                <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png"
+                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                (click)="eliminarArchivo('acta_nacimiento')">
+                                                Eliminar
+                                            </button>
+                                        </div>
                                     </div>
                                     <div *ngIf=" archivosRechazados['acta_nacimiento'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
@@ -182,7 +201,6 @@
                                         FAMA PÚBLICA
                                         Y/O CARTA DE ANTECEDENTES NO PENALES)*:
                                     </label>
-
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="carta_ant_no_penales"
                                             accept="application/pdf"
@@ -195,12 +213,17 @@
                                         <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
                                     </div>
                                     <div *ngIf="archivosSubidos['carta_ant_no_penales']" class="mt-2">
-                                        <a [href]="archivosSubidos['carta_ant_no_penales']" target="_blank"
-                                            class="d-flex align-items-center text-decoration-none">
-                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
-                                                width="50" height="50" class="me-2" />
-
-                                        </a>
+                                        <div class="d-flex justify-content-center align-items-center gap-3">
+                                            <a [href]="archivosSubidos['carta_ant_no_penales']" target="_blank"
+                                                class="d-flex align-items-center text-decoration-none">
+                                                <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png"
+                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                (click)="eliminarArchivo('carta_ant_no_penales')">
+                                                Eliminar
+                                            </button>
+                                        </div>
                                     </div>
                                     <div *ngIf=" archivosRechazados['carta_ant_no_penales'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
@@ -210,7 +233,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="col-md-6 grid-margin stretch-card"
                             *ngIf="!archivosRechazados['carta_protesta1'] || archivosRechazados['carta_protesta1'] === 1 || archivosRechazados['carta_protesta1'] === 3">
                             <div class="card h-100">
@@ -220,7 +242,6 @@
                                         años de
                                         anticipación al día de su elección (CARTA BAJO PROTESTA DE DECIR VERDAD)*:
                                     </label>
-
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="carta_protesta1"
                                             accept="application/pdf" (change)="onFile7($event, 'carta_protesta1',7)">
@@ -232,11 +253,17 @@
                                         <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
                                     </div>
                                     <div *ngIf="archivosSubidos['carta_protesta1']" class="mt-2">
-                                        <a [href]="archivosSubidos['carta_protesta1']" target="_blank"
-                                            class="d-flex align-items-center text-decoration-none">
-                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
-                                                width="50" height="50" class="me-2" />
-                                        </a>
+                                        <div class="d-flex justify-content-center align-items-center gap-3">
+                                            <a [href]="archivosSubidos['carta_protesta1']" target="_blank"
+                                                class="d-flex align-items-center text-decoration-none">
+                                                <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png"
+                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                (click)="eliminarArchivo('carta_protesta1')">
+                                                Eliminar
+                                            </button>
+                                        </div>
                                     </div>
                                     <div *ngIf=" archivosRechazados['carta_protesta1'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
@@ -257,7 +284,6 @@
                                         en los tres años anteriores al día de su elección (CARTA BAJO PROTESTA DE DECIR
                                         VERDAD)*:
                                     </label>
-
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="carta_protesta2"
                                             accept="application/pdf" (change)="onFile7($event, 'carta_protesta2',7)">
@@ -269,11 +295,17 @@
                                         <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
                                     </div>
                                     <div *ngIf="archivosSubidos['carta_protesta2']" class="mt-2">
-                                        <a [href]="archivosSubidos['carta_protesta2']" target="_blank"
-                                            class="d-flex align-items-center text-decoration-none">
-                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
-                                                width="50" height="50" class="me-2" />
-                                        </a>
+                                        <div class="d-flex justify-content-center align-items-center gap-3">
+                                            <a [href]="archivosSubidos['carta_protesta2']" target="_blank"
+                                                class="d-flex align-items-center text-decoration-none">
+                                                <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png"
+                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                (click)="eliminarArchivo('carta_protesta2')">
+                                                Eliminar
+                                            </button>
+                                        </div>
                                     </div>
                                     <div *ngIf=" archivosRechazados['carta_protesta2'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
@@ -306,11 +338,17 @@
                                         <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
                                     </div>
                                     <div *ngIf="archivosSubidos['carta_protesta3']" class="mt-2">
-                                        <a [href]="archivosSubidos['carta_protesta3']" target="_blank"
-                                            class="d-flex align-items-center text-decoration-none">
-                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
-                                                width="50" height="50" class="me-2" />
-                                        </a>
+                                        <div class="d-flex justify-content-center align-items-center gap-3">
+                                            <a [href]="archivosSubidos['carta_protesta3']" target="_blank"
+                                                class="d-flex align-items-center text-decoration-none">
+                                                <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png"
+                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                (click)="eliminarArchivo('carta_protesta3')">
+                                                Eliminar
+                                            </button>
+                                        </div>
                                     </div>
                                     <div *ngIf=" archivosRechazados['carta_protesta3'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
@@ -344,11 +382,17 @@
                                         <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
                                     </div>
                                     <div *ngIf="archivosSubidos['carta_protesta4']" class="mt-2">
-                                        <a [href]="archivosSubidos['carta_protesta4']" target="_blank"
-                                            class="d-flex align-items-center text-decoration-none">
-                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
-                                                width="50" height="50" class="me-2" />
-                                        </a>
+                                        <div class="d-flex justify-content-center align-items-center gap-3">
+                                            <a [href]="archivosSubidos['carta_protesta4']" target="_blank"
+                                                class="d-flex align-items-center text-decoration-none">
+                                                <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png"
+                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                (click)="eliminarArchivo('carta_protesta4')">
+                                                Eliminar
+                                            </button>
+                                        </div>
                                     </div>
                                     <div *ngIf=" archivosRechazados['carta_protesta4'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
@@ -368,7 +412,6 @@
                                         de
                                         participar en el proceso de selección (CARTA)*:
                                     </label>
-
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="carta_protesta5"
                                             accept="application/pdf" (change)="onFile7($event, 'carta_protesta5',7)">
@@ -380,11 +423,17 @@
                                         <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
                                     </div>
                                     <div *ngIf="archivosSubidos['carta_protesta5']" class="mt-2">
-                                        <a [href]="archivosSubidos['carta_protesta5']" target="_blank"
-                                            class="d-flex align-items-center text-decoration-none">
-                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
-                                                width="50" height="50" class="me-2" />
-                                        </a>
+                                        <div class="d-flex justify-content-center align-items-center gap-3">
+                                            <a [href]="archivosSubidos['carta_protesta5']" target="_blank"
+                                                class="d-flex align-items-center text-decoration-none">
+                                                <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png"
+                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                (click)="eliminarArchivo('carta_protesta5')">
+                                                Eliminar
+                                            </button>
+                                        </div>
                                     </div>
                                     <div *ngIf=" archivosRechazados['carta_protesta5'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
@@ -419,11 +468,17 @@
                                         <small class="text-danger">El archivo no debe exceder los 50 MB.</small>
                                     </div>
                                     <div *ngIf="archivosSubidos['curriculum']" class="mt-2">
-                                        <a [href]="archivosSubidos['curriculum']" target="_blank"
-                                            class="d-flex align-items-center text-decoration-none">
-                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
-                                                width="50" height="50" class="me-2" />
-                                        </a>
+                                        <div class="d-flex justify-content-center align-items-center gap-3">
+                                            <a [href]="archivosSubidos['curriculum']" target="_blank"
+                                                class="d-flex align-items-center text-decoration-none">
+                                                <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png"
+                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                (click)="eliminarArchivo('curriculum')">
+                                                Eliminar
+                                            </button>
+                                        </div>
                                     </div>
                                     <div *ngIf=" archivosRechazados['curriculum'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
@@ -459,11 +514,17 @@
                                         <small class="text-danger">El archivo no debe exceder los 50 MB.</small>
                                     </div>
                                     <div *ngIf="archivosSubidos['propuesta_programa']" class="mt-2">
-                                        <a [href]="archivosSubidos['propuesta_programa']" target="_blank"
-                                            class="d-flex align-items-center text-decoration-none">
-                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
-                                                width="50" height="50" class="me-2" />
-                                        </a>
+                                        <div class="d-flex justify-content-center align-items-center gap-3">
+                                            <a [href]="archivosSubidos['propuesta_programa']" target="_blank"
+                                                class="d-flex align-items-center text-decoration-none">
+                                                <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png"
+                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                (click)="eliminarArchivo('propuesta_programa')">
+                                                Eliminar
+                                            </button>
+                                        </div>
                                     </div>
                                     <div *ngIf=" archivosRechazados['propuesta_programa'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
@@ -494,11 +555,17 @@
                                         <small class="text-danger">El archivo no debe exceder los 50 MB.</small>
                                     </div>
                                     <div *ngIf="archivosSubidos['copia_certificada']" class="mt-2">
-                                        <a [href]="archivosSubidos['copia_certificada']" target="_blank"
-                                            class="d-flex align-items-center text-decoration-none">
-                                            <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png" alt="PDF"
-                                                width="50" height="50" class="me-2" />
-                                        </a>
+                                        <div class="d-flex justify-content-center align-items-center gap-3">
+                                            <a [href]="archivosSubidos['copia_certificada']" target="_blank"
+                                                class="d-flex align-items-center text-decoration-none">
+                                                <img src="https://cdn-icons-png.flaticon.com/128/2200/2200055.png"
+                                                    alt="PDF" width="50" height="50" class="me-2" />
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                (click)="eliminarArchivo('copia_certificada')">
+                                                Eliminar
+                                            </button>
+                                        </div>
                                     </div>
                                     <div *ngIf=" archivosRechazados['copia_certificada'] === 3" class="mt-3">
                                         <label>Motivo del rechazo:</label>
@@ -509,10 +576,10 @@
                             </div>
                         </div>
                         <div *ngIf="isLoading" class="text-center my-3">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Cargando...</span>
-                        </div>
-                        <p>Procesando solicitud...</p>
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Cargando...</span>
+                            </div>
+                            <p>Procesando solicitud...</p>
                         </div>
                         <div class="row mt-2">
                             <div class="col text-center">

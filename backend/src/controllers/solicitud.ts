@@ -7,6 +7,7 @@ const nodemailer = require('nodemailer');
 import dotenv from "dotenv";
 import ValidadorSolicitud from '../models/validadorsolicitud'
 dotenv.config();
+import { sendEmail } from '../utils/mailer';
 
 
 export const getRegistros = async (req: Request, res: Response): Promise<any> => {
@@ -73,29 +74,13 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
     }, {
       include: [{ model: RolUsers, as: 'rol_users' }],
     });
-    console.log(newUser.id)
     body.userId = newUser.id;
     body.estatusId = 1;
-    console.log(body)
     await Solicitudes.create(body);
     
     (async () => {
       try {
-        const transporter = nodemailer.createTransport({
-          host: process.env.SMTP_HOST,
-          port: Number(process.env.SMTP_PORT),
-          secure: false,
-          auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASS,
-          },
-        });
-
-        await transporter.sendMail({
-          from: `"Registro" <${process.env.SMTP_USER}>`,
-          to: body.correo,
-          subject: "Tus credenciales de acceso",
-          html: `
+        const contenido = `
             <h3>Hola ${body.nombres},</h3>
             <p>Tu cuenta ha sido creada exitosamente. Aquí tienes tus credenciales:</p>
             <ul>
@@ -103,8 +88,13 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
               <li><strong>Contraseña:</strong> ${Upassword}</li>
             </ul>
             <p>Por favor cambia tu contraseña al iniciar sesión.</p>
-          `,
-        });
+          `;
+        let htmlContent = generarHtmlCorreo(contenido);
+        await sendEmail(
+                    body.correo,
+                    'Tus credenciales de acceso',
+                    htmlContent
+        );
 
         console.log('Correo enviado correctamente');
       } catch (err) {
@@ -201,6 +191,55 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
             msg: `No existe el id ${id}`,
         });
     }
+}
+
+function generarHtmlCorreo(contenidoHtml: string): string {
+  return `
+    <html>
+      <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+          }
+          .header {
+            background-color: #A9A9A9;
+            padding: 20px;
+            text-align: center;
+          }
+          .header img {
+            max-width: 150px;
+          }
+          .content {
+            padding: 20px;
+            color: #333;
+            font-size: 18px;
+            font-family: Arial, sans-serif;
+          }
+          .footer {
+            background-color: #eee;
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            color: #777;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <img src="https://congresoedomex.gob.mx/storage/images/IMAGOTIPOHorizontal.png" alt="Logo">
+        </div>
+        <div class="content">
+          ${contenidoHtml}
+        </div>
+        <div class="footer">
+          © ${new Date().getFullYear()} SIDerechosHumanos. Todos los derechos reservados.
+        </div>
+      </body>
+    </html>
+  `;
 }
 
 

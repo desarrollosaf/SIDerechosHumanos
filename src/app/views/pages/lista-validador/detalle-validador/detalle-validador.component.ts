@@ -158,7 +158,6 @@ export class DetalleValidadorComponent {
     const documentosVisibles = this.documentosRequeridos
       .filter(doc => doc.estatus === 1 || doc.estatus === 3)
       .map(doc => doc.clave);
-    console.log(this.validarrechazar);
     const documentosArray = Object.entries(this.validarrechazar)
       .filter(([clave, datos]) =>
         documentosVisibles.includes(clave) && datos.estado === false
@@ -169,7 +168,6 @@ export class DetalleValidadorComponent {
         observaciones: datos.observaciones
       }));
        //this.isLoading = true;
-    console.log(documentosArray);
     this._documentoService.sendValidacion(documentosArray, this.id).subscribe({
       next: () => {
         //this.isLoading = false; 

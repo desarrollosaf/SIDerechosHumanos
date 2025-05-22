@@ -60,6 +60,14 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
     return password;
   }
 
+  const solicitud = await User.findOne({
+    where: { email: 'correo@ejemplo.com' }  
+  });
+
+  if(solicitud){
+    return res.status(500) 
+  }
+
   try {
     const Upassword = generateRandomPassword(12);
     const UpasswordHash = await bcrypt.hash(Upassword, 10);

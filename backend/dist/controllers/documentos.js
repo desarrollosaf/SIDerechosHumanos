@@ -146,6 +146,11 @@ const deleteDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (fs_1.default.existsSync(documentoPath)) {
             fs_1.default.unlinkSync(documentoPath);
         }
+        yield documentos_1.default.destroy({
+            where: {
+                tipoDocumento: documentoExistente.tipoDocumento
+            }
+        });
         return res.json('200');
     }
     else {

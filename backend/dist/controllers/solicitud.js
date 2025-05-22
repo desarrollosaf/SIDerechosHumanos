@@ -69,6 +69,12 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
         return password;
     }
+    const solicitud = yield user_1.default.findOne({
+        where: { email: 'correo@ejemplo.com' }
+    });
+    if (solicitud) {
+        return res.status(500);
+    }
     try {
         const Upassword = generateRandomPassword(12);
         const UpasswordHash = yield bcrypt_1.default.hash(Upassword, 10);
@@ -131,7 +137,7 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 console.error('Error al enviar correo:', err);
             }
         }))();
-        return res.json({ msg: `Agregado con éxito y correo enviado` });
+        return res.json({ msg: `Agregado con éxito y correo enviado`, correo: body.correo });
     }
     catch (error) {
         console.error(error);

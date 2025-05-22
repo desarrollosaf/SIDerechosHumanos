@@ -5,7 +5,6 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
 import { UserService } from '../../../../service/user.service';
 import { User } from '../../../../interfaces/user';
 
@@ -20,6 +19,7 @@ import { User } from '../../../../interfaces/user';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
+
 export class LoginComponent implements OnInit {
 
   returnUrl: any;
@@ -32,21 +32,17 @@ export class LoginComponent implements OnInit {
   public _userService = inject(UserService);
 
   constructor(private router: Router, private route: ActivatedRoute) {
-    // Rol como observable a partir del usuario actual
     this.userRole$ = this._userService.currentUser$.pipe(
       map(user => user?.rol_users?.role?.name)
     );
   }
 
   ngOnInit(): void {
-    // Obtener returnUrl si viene como parámetro
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
-    
   }
 
   onLoggedin(form: NgForm) {
-    console.log('Intentando login con:', form.value.Uemail, form.value.Upassword);
 
     const user: User = {
       email: form.value.Uemail,

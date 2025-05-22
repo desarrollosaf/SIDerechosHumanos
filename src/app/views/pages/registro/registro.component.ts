@@ -76,12 +76,10 @@ export class RegistroComponent {
       cedula_profesional: this.formReg.value.cedula_profesional,
       aviso_privacidad: this.formReg.value.aviso_privacidad,
     }
-    console.log(registroval)
 
-  
     this._registroService.saveRegistro(registroval).subscribe({
       next: (response: any) => {
-        console.log(response);     
+        console.log(response.estatus);     
         Swal.fire({
           position: "center", // posición centrada
           icon: "success",
@@ -94,15 +92,29 @@ export class RegistroComponent {
       },
       error: (e: HttpErrorResponse) => {
         if (e.error && e.error.msg) {
-          console.error('Error del servidor:', e.error.msg);
-          // Aquí podrías usar un alert o mostrar en pantalla
+          Swal.fire({
+            position: "center", 
+            icon: "error",
+            title: e.error.msg+': '+e.error.correo,
+            showConfirmButton: false,
+            timer: 3000
+          });
+          this.router.navigate(['/']);
+          
         } else {
-          console.error('Error desconocido:', e);
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: 'Error desconocido: '+e,
+            showConfirmButton: false,
+            timer: 3000
+          });
+          this.router.navigate(['/']);
         }
       },
     }) 
 
-    console.log(registroval);
+
     // if (this.formReg.valid) {
     //   console.log('Formulario enviado:', this.formReg.value);
     // } else {

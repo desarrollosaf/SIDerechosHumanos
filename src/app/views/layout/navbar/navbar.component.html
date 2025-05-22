@@ -5,11 +5,11 @@
     
         <!--- Logo -->
         <a routerLink="/" class="navbar-brand">
-          Noble<span>UI</span>
+          <img src="https://congresoedomex.gob.mx/storage/images/IMAGOTIPOHorizontal.png" alt="logo">
         </a>
 
         <!-- <a routerLink="/" class="navbar-brand">
-          <img src="assets/images/logo.png" alt="logo">
+          <img src="https://congresoedomex.gob.mx/storage/images/IMAGOTIPOHorizontal.png" alt="logo">
         </a> -->
 
         <!-- Logo-mini for small screen devices (mobile/tablet) -->
@@ -156,7 +156,7 @@
                 <a href="" (click)="false">View all</a>
               </div>
             </div>
-          </li> -->
+          </li> 
           <li class="nav-item nav-notifications" ngbDropdown>
             <a class="nav-link" ngbDropdownToggle id="notificationDropdown">
               <i class="link-icon feather icon-bell"></i>
@@ -220,7 +220,7 @@
                 <a href="" (click)="false">View all</a>
               </div>
             </div>
-          </li>
+          </li>-->
           <li class="nav-item nav-profile" ngbDropdown>
             <a class="nav-link" ngbDropdownToggle id="profileDropdown">
               <img class="w-30px h-30px ms-1 rounded-circle" src="https://placehold.co/30x30" alt="profile">
@@ -231,33 +231,21 @@
                   <img class="w-80px h-80px rounded-circle" src="https://placehold.co/80x80" alt="">
                 </div>
                 <div class="text-center">
-                  <p class="tx-16 fw-bolder">Amiah Burton</p>
-                  <p class="fs-12px text-secondary">amiahburton&#64;gmail.com</p>
+                  <p class="tx-16 fw-bolder"></p>
+                  <p class="fs-12px text-secondary">{{ this.usuario }}</p>
                 </div>
               </div>
               <ul class="list-unstyled p-1">
                 <li>
-                  <a routerLink="/general/profile" class="dropdown-item py-2 d-flex ms-0">
-                    <i class="feather icon-user me-2 icon-md"></i>
-                    <span>Profile</span>
-                  </a>
-                </li>
-                <li>
                   <a href="" (click)="false" class="dropdown-item py-2 d-flex ms-0">
-                    <i class="feather icon-edit me-2 icon-md"></i>
-                    <span>Edit Profile</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="" (click)="false" class="dropdown-item py-2 d-flex ms-0">
-                    <i class="feather icon-repeat me-2 icon-md"></i>
-                    <span>Switch User</span>
+                    <i class="feather icon-edit me-2 icon-md"></i> 
+                    <span>Cambiar contraseña</span>
                   </a>
                 </li>
                 <li>
                   <a href="" (click)="onLogout($event)" class="dropdown-item py-2 d-flex ms-0">
                     <i class="feather icon-log-out me-2 icon-md"></i>
-                    <span>Log Out</span>
+                    <span>Cerrar sesión</span>
                   </a>
                 </li>
               </ul>

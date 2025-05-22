@@ -9,7 +9,6 @@ import { MenuItem } from './menu.model';
 import { SubMenus } from './menu.model';
 import { SubMenuItems } from './menu.model';
 import { FeatherIconDirective } from '../../../core/feather-icon/feather-icon.directive';
-
 import { UserService } from '../../../service/user.service';
 
 @Component({
@@ -32,6 +31,7 @@ export class NavbarComponent implements OnInit {
   menuItems: MenuItem[] = [];
   sub: SubMenus[] = [];
   subItem: SubMenuItems[] = [];
+  usuario: string | undefined;
 
   currentlyOpenedNavItem: HTMLElement | undefined;
   public _userService = inject(UserService);
@@ -42,14 +42,15 @@ export class NavbarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.themeModeService.currentTheme.subscribe( (theme) => {
+    this.themeModeService.currentTheme.subscribe( (theme) => { 
       this.currentTheme = theme;
       this.showActiveTheme(this.currentTheme);
     });
-    //console.log(this._userService.currentUserValue?.rol_users?.role?.name)
+
     const role = this._userService.currentUserValue?.rol_users?.role?.name;
     this.menuItems = MENU;
-
+    this.usuario = this._userService.currentUserValue?.email;
+    console.log(this.usuario)
     if (role) {
       this.menuItems = this.filterMenuByRole(MENU, role);
     } else {

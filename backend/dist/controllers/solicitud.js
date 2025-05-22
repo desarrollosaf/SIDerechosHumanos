@@ -21,6 +21,7 @@ const nodemailer = require('nodemailer');
 const dotenv_1 = __importDefault(require("dotenv"));
 const validadorsolicitud_1 = __importDefault(require("../models/validadorsolicitud"));
 dotenv_1.default.config();
+const mailer_1 = require("../utils/mailer");
 const getRegistros = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const listSolicitudes = yield solicitud_1.default.findAll();
     return res.json({
@@ -81,27 +82,12 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }, {
             include: [{ model: role_users_1.default, as: 'rol_users' }],
         });
-        console.log(newUser.id);
         body.userId = newUser.id;
         body.estatusId = 1;
-        console.log(body);
         yield solicitud_1.default.create(body);
         (() => __awaiter(void 0, void 0, void 0, function* () {
             try {
-                const transporter = nodemailer.createTransport({
-                    host: process.env.SMTP_HOST,
-                    port: Number(process.env.SMTP_PORT),
-                    secure: false,
-                    auth: {
-                        user: process.env.SMTP_USER,
-                        pass: process.env.SMTP_PASS,
-                    },
-                });
-                yield transporter.sendMail({
-                    from: `"Registro" <${process.env.SMTP_USER}>`,
-                    to: body.correo,
-                    subject: "Tus credenciales de acceso",
-                    html: `
+                const contenido = `
             <h3>Hola ${body.nombres},</h3>
             <p>Tu cuenta ha sido creada exitosamente. Aquí tienes tus credenciales:</p>
             <ul>
@@ -109,8 +95,9 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
               <li><strong>Contraseña:</strong> ${Upassword}</li>
             </ul>
             <p>Por favor cambia tu contraseña al iniciar sesión.</p>
-          `,
-                });
+          `;
+                let htmlContent = generarHtmlCorreo(contenido);
+                yield (0, mailer_1.sendEmail)(body.correo, 'Tus credenciales de acceso', htmlContent);
                 console.log('Correo enviado correctamente');
             }
             catch (err) {
@@ -202,3 +189,51 @@ const getestatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.getestatus = getestatus;
+function generarHtmlCorreo(contenidoHtml) {
+    return `
+    <html>
+      <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+          }
+          .header {
+            background-color: #A9A9A9;
+            padding: 20px;
+            text-align: center;
+          }
+          .header img {
+            max-width: 150px;
+          }
+          .content {
+            padding: 20px;
+            color: #333;
+            font-size: 18px;
+            font-family: Arial, sans-serif;
+          }
+          .footer {
+            background-color: #eee;
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            color: #777;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <img src="https://congresoedomex.gob.mx/storage/images/IMAGOTIPOHorizontal.png" alt="Logo">
+        </div>
+        <div class="content">
+          ${contenidoHtml}
+        </div>
+        <div class="footer">
+          © ${new Date().getFullYear()} SIDerechosHumanos. Todos los derechos reservados.
+        </div>
+      </body>
+    </html>
+  `;
+}

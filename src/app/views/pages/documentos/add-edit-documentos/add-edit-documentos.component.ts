@@ -58,7 +58,6 @@ export class AddEditDocumentosComponent {
       };
       this._documentoService.deleteDocumento(datos).subscribe({
         next: (response: any) => {
-          console.log(response);
           const Toast = Swal.mixin({
             toast: true,
             position: "top-end",

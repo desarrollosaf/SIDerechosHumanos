@@ -21,7 +21,6 @@ export class DocumentosComponent {
   constructor(){}
 
   ngOnInit(): void {
-    console.log('documentos')
     this.getUsuarioEstatus();
   }
 

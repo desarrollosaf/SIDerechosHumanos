@@ -254,13 +254,13 @@ function generarHtmlCorreo(contenidoHtml) {
         </style>
       </head>
       <body>
-       <div class="header">
-        <img 
-          src="https://congresoedomex.gob.mx/storage/images/congreso.jpg" 
-          alt="Logo"
-          style="display: block; margin: 0 auto; width: 300px; height: auto;"
-        >
-      </div>
+        <div class="header" style="text-align: center;">
+          <img 
+            src="https://congresoedomex.gob.mx/storage/images/congreso.jpg" 
+            alt="Logo"
+            style="display: block; margin: 0 auto; width: 300px; height: auto;"
+          >
+        </div>
         <div class="content">
           ${contenidoHtml}
         </div>

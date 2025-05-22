@@ -85,7 +85,7 @@ export class RegistroComponent {
         Swal.fire({
           position: "center", // posición centrada
           icon: "success",
-          title: "Tu registro ha sido enviado.",
+          title: "¡Solicitud registrada satisfactoriamente! Para continuar con el trámite, se han enviado a la cuenta de correo electrónico micorreo@hotmail.com las instrucciones para continuar con el proceso de registro. Si no encuentra el correo en la bandeja de entrada, verifique en el apartado de Correo no deseado o Spam.",
           showConfirmButton: false,
           timer: 3000
         });

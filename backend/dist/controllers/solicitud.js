@@ -131,7 +131,7 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 console.error('Error al enviar correo:', err);
             }
         }))();
-        return res.json({ msg: `Agregado con éxito y correo enviado` });
+        return res.json({ msg: `Agregado con éxito y correo enviado`, correo: body.correo });
     }
     catch (error) {
         console.error(error);

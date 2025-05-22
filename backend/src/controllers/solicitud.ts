@@ -63,7 +63,6 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
   try {
     const Upassword = generateRandomPassword(12);
     const UpasswordHash = await bcrypt.hash(Upassword, 10);
-
     const newUser = await User.create({
       name: body.curp,
       email: body.correo,
@@ -129,7 +128,7 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
       }
     })();
 
-    return res.json({ msg: `Agregado con éxito y correo enviado` });
+    return res.json({ msg: `Agregado con éxito y correo enviado`, correo: body.correo } );
 
   } catch (error) {
     

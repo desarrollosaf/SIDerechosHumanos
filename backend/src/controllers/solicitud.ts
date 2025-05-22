@@ -65,7 +65,7 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
   });
 
   if(solicitud){
-    return res.status(500) 
+    return res.json({ estatus: `400`, correo: solicitud.email } );
   }
 
   try {

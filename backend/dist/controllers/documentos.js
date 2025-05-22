@@ -228,28 +228,27 @@ const estatusDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             `;
                         const contenido = `
               <h1 class="pcenter">OBSERVACIONES</h1>
+              <p> Toluca de Lerdo, México; a X de febrero de 2025.</p>
               <h3><trong>C.</strong> ${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno},</h3>
-              <p><strong>Folio:</strong>${solicitud.id}</p>
+              <p><strong>Folio:</strong> ${solicitud.id.slice(0, 8)}</p>
               <p>Por este medio se le informa que, tras la revisión realizada en el portal
                de registro respecto de su solicitud, se ha determinado que el registro es NO PROCEDENTE. <br>
                
                A continuación, se detallan las observaciones encontradas:</p>
-               <br>
                ${tablaObservados}
-               <br>
                <p>Es importante mencionarle que puede subsanar dichas observaciones en un plazo no mayor
                 a XXXX horas naturales contadas a partir de la recepción de este correo.
                 En caso de no realizarlo en dicho plazo, se considerará no cumplimentada
-                la acreditación de los requisitos de elegibilidad. <br>
+                la acreditación de los requisitos de elegibilidad. <br><br>
                 
                 Para estos efectos, se habilitará la sección correspondiente en la página de
                 registro para que pueda cargar los documentos requeridos. Dichos campos estarán
                 disponibles solo durante doce horas, y posterior a ese tiempo,
-                se cerrarán nuevamente, sin posibilidad de modificación. <br>
+                se cerrarán nuevamente, sin posibilidad de modificación. <br><br>
 
                 Para enviar la documentación corregida, por favor, ingrese
                 a la cuenta registrada y diríjase al campo de documentación,
-                en donde podrá sustituir el archivo correspondiente. <br>
+                en donde podrá sustituir el archivo correspondiente. <br><br>
                 
                 Agradecemos su pronta atención a este asunto. Si tiene alguna duda o requiere asistencia
                 adicional, no dude en ponerse en contacto con nosotros.</p>

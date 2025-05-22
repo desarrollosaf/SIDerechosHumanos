@@ -61,7 +61,7 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
   }
 
   const solicitud = await User.findOne({
-    where: { email: 'correo@ejemplo.com' }  
+    where: { email: body.correo }  
   });
 
   if(solicitud){

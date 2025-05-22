@@ -30,11 +30,16 @@
                                 <div class="card h-100">
                                     <div class="card-body">
                                         <div class="row align-items-start">
+                                            
                                             <div class="col-md-4">
+                                                <p class="text-center"><strong>TIPO</strong></p>
+                                                <br>
                                                 <label class="form-label">{{ doc.label }}</label>
                                             </div>
 
                                             <div class="col-md-4 text-center">
+                                                <p class="text-center"><strong>DOCUMENTO</strong></p>
+                                                <br>
                                                 <div *ngIf="archivosSubidos[doc.clave]">
                                                     <a [href]="archivosSubidos[doc.clave]" target="_blank"
                                                         class="d-flex justify-content-center text-decoration-none">
@@ -45,6 +50,8 @@
                                             </div>
 
                                             <div class="col-md-4 text-center">
+                                                <p class="text-center"><strong>VALIDACIÓN</strong></p>
+                                                <br>
                                                 <mat-slide-toggle [ngModelOptions]="{ standalone: true }"
                                                     [(ngModel)]="validarrechazar[doc.clave].estado"
                                                     (ngModelChange)="onToggleChange(doc.clave)">
@@ -53,7 +60,7 @@
                                         </div>
 
                                         <div *ngIf="validarrechazar[doc.clave]?.estado === false" class="mt-3">
-                                            <label>Motivo del rechazo:</label>
+                                            <label><strong>Motivo del rechazo:</strong></label>
                                             <textarea class="form-control" rows="3"
                                                 [ngModelOptions]="{ standalone: true }"
                                                 [(ngModel)]="validarrechazar[doc.clave].observaciones"

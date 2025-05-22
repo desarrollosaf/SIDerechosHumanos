@@ -232,12 +232,9 @@ function generarHtmlCorreo(contenidoHtml: string): string {
             padding: 0;
           }
           .header {
-            background-color: #A9A9A9;
+            background-color: #FFFFFF;
             padding: 20px;
             text-align: center;
-          }
-          .header img {
-            max-width: 150px;
           }
           .content {
             padding: 20px;
@@ -261,9 +258,13 @@ function generarHtmlCorreo(contenidoHtml: string): string {
         </style>
       </head>
       <body>
-        <div class="header">
-          <img src="https://congresoedomex.gob.mx/storage/images/IMAGOTIPOHorizontal.png" alt="Logo">
-        </div>
+       <div class="header">
+        <img 
+          src="https://congresoedomex.gob.mx/storage/images/congreso.jpg" 
+          alt="Logo"
+          style="display: block; margin: 0 auto; width: 300px; height: auto;"
+        >
+      </div>
         <div class="content">
           ${contenidoHtml}
         </div>

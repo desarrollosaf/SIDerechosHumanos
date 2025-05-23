@@ -17,10 +17,11 @@
                                 Curp: {{ solicitante?.curp }} <br>
                                 Cedula profesional: {{ solicitante?.cedula_profesional }} </p>
                         </div>
-                         <div class="card-body" *ngIf="this.esAdmin">
-                            <h4 class="card-title">Reasignar solicitud</h4>
+                        <ngb-alert [dismissible]="false" [type]="'secondary'">
+                        <div class="card-body" *ngIf="this.esAdmin">
+                            <h4 class="card-title" style="color:black">Reasignar solicitud</h4>
                             <div class="form-group">
-                                <label for="validadorSelect"><strong>Selecciona un validador:</strong></label>
+                                <label for="validadorSelect" style="color:black"><strong>Selecciona un validador:</strong></label>
                                 <ng-select
                                 [items]="usuariosValidador"
                                 bindLabel="name"
@@ -31,6 +32,8 @@
                                 </ng-select>
                             </div>
                         </div>
+                        </ngb-alert>
+                        
                     </div>
                 </div>
             </div>

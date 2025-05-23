@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { CreateUser, LoginUser, ReadUser, getvalidadores } from "../controllers/user";
+import { CreateUser, LoginUser, ReadUser, getvalidadores, updatevalidador } from "../controllers/user";
 
 const router = Router();
 
@@ -8,6 +8,7 @@ router.post("/api/user/create", CreateUser)
 router.post("/api/user/register", CreateUser)
 router.post("/api/user/login", LoginUser)
 router.get("/api/user/getvalidadores", getvalidadores)
+router.get("/api/user/updatevalidador", updatevalidador)
 
 
 export default router

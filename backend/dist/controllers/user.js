@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSolicitudes = exports.getvalidadores = exports.LoginUser = exports.CreateUser = exports.ReadUser = void 0;
+exports.updatevalidador = exports.getvalidadores = exports.LoginUser = exports.CreateUser = exports.ReadUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_1 = __importDefault(require("../models/user"));
 const role_users_1 = __importDefault(require("../models/role_users"));
@@ -130,7 +130,7 @@ const getvalidadores = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.getvalidadores = getvalidadores;
-const getSolicitudes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const updatevalidador = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { usuario, solicitud } = req.body;
     const validasolicitudes = yield validadorsolicitud_1.default.findOne({
         where: { solicitudId: solicitud },
@@ -146,4 +146,4 @@ const getSolicitudes = (req, res) => __awaiter(void 0, void 0, void 0, function*
         });
     }
 });
-exports.getSolicitudes = getSolicitudes;
+exports.updatevalidador = updatevalidador;

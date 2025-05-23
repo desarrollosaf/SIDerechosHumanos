@@ -132,10 +132,15 @@ export const envSolicitud = async (req: Request, res: Response): Promise<any> =>
         })
     ).then((results) => results.sort((a, b) => a.count - b.count)[0].validador);
    
-    await ValidadorSolicitud.create({
-        solicitudId: solicitud.id,
-        validadorId: validadorConMenosSolicitudes.user_id,
-    });
+    
+    const existsolicitud: any = await ValidadorSolicitud.findOne({ where: { solicitudId: solicitud.id } });
+    if(!existsolicitud){
+      await ValidadorSolicitud.create({
+          solicitudId: solicitud.id,
+          validadorId: validadorConMenosSolicitudes.user_id,
+      });
+    }
+    
 
     solicitud.estatusId = 2;
     await solicitud.save();
@@ -163,11 +168,20 @@ export const deleteDoc = async (req: Request, res: Response): Promise<any> => {
         if (fs.existsSync(documentoPath)) {
             fs.unlinkSync(documentoPath);
         }
-      await Documentos.destroy({
-        where: {
-          tipoDocumento: documentoExistente.tipoDocumento  
-        }
-      });
+      const existsolicitud: any = await ValidadorSolicitud.findOne({ where:
+         { solicitudId: solicitud.id } });
+      
+      if(existsolicitud){
+        documentoExistente.path = '';
+        await documentoExistente.save();
+      }else{
+        await Documentos.destroy({
+          where: {
+            tipoDocumento: documentoExistente.tipoDocumento  
+          }
+        });
+      }
+      
       return res.json('200')
     }else{
       return res.status(404).json({

@@ -17,9 +17,24 @@
                                 Curp: {{ solicitante?.curp }} <br>
                                 Cedula profesional: {{ solicitante?.cedula_profesional }} </p>
                         </div>
+                         <div class="card-body" *ngIf="this.esAdmin">
+                            <h4 class="card-title">Reasignar solicitud</h4>
+                            <div class="form-group">
+                                <label for="validadorSelect"><strong>Selecciona un validador:</strong></label>
+                                <ng-select
+                                [items]="usuariosValidador"
+                                bindLabel="value"
+                                bindValue="id"
+                                placeholder="Selecciona un validador"
+                                [(ngModel)]="validadorSeleccionado"
+                                (change)="reasignarValidador($event)">
+                                </ng-select>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
             <div class="card">
                 <form>
                     <div class="row">

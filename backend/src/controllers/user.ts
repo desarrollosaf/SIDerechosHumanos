@@ -3,9 +3,9 @@ import bcrypt from 'bcrypt'
 import  User  from '../models/user'
 import  RolUsers  from '../models/role_users'
 import  Roles  from '../models/role'
-import { Op } from 'sequelize'
+import { Op } from 'sequelize'  
 import jwt from 'jsonwebtoken'
-
+import  ValidadorSolicitud  from '../models/validadorsolicitud'
 
 export const ReadUser = async (req: Request, res: Response): Promise<any> => {
     const listUser = await User.findAll();
@@ -129,4 +129,24 @@ export const getvalidadores = async (req: Request, res: Response): Promise<any> 
           data: user
       });
     }
+}
+
+export const getSolicitudes = async (req: Request, res: Response): Promise<any> => {
+      const { usuario, solicitud } = req.body;
+      
+      const validasolicitudes = await ValidadorSolicitud.findOne({
+        where: { solicitudId: solicitud },
+    });
+
+    if(validasolicitudes){
+        validasolicitudes.validadorId = usuario;
+        await solicitud.save();
+        return res.json("200");
+    }else{
+        return res.status(404).json({
+            msg: `No existe el id ${solicitud}`,
+        });
+    }
+    
+      
 }

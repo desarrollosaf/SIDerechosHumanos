@@ -15,7 +15,7 @@ export class UserService {
   public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor() {
-    this.myAppUrl = 'https://dev4.siasaf.gob.mx/'   //'http://localhost:3001/'
+    this.myAppUrl = 'http://localhost:3001/' //'https://dev4.siasaf.gob.mx/'   //'http://localhost:3001/'
     this.myAPIUrl = 'api/user';
 
     const storedUser = localStorage.getItem('currentUser');

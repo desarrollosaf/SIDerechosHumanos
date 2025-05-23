@@ -208,8 +208,7 @@ const estatusDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 try {
                     let htmlContent;
                     if (observados.length > 0) {
-                        const tablaObservados = `
-            <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;">
+                        const tablaObservados = `<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;">
                 <thead style="background-color: #f2f2f2;">
                 <tr>
                     <th style="text-align: left;">Documento</th>
@@ -224,11 +223,16 @@ const estatusDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                     </tr>
                 `).join('')}
                 </tbody>
-            </table>
-            `;
+            </table>`;
+                        const meses = [
+                            "enero", "febrero", "marzo", "abril", "mayo", "junio",
+                            "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+                        ];
+                        const hoy = new Date();
+                        const fechaFormateada = `Toluca de Lerdo, México; a ${hoy.getDate()} de ${meses[hoy.getMonth()]} de ${hoy.getFullYear()}.`;
                         const contenido = `
               <h1 class="pcenter">OBSERVACIONES</h1>
-              <p> Toluca de Lerdo, México; a X de febrero de 2025.</p>
+              <p  class="pderecha" >${fechaFormateada}</p>
               <h3><trong>C.</strong> ${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno},</h3>
               <p><strong>Folio:</strong> ${solicitud.id.slice(0, 8)}</p>
               <p>Por este medio se le informa que, tras la revisión realizada en el portal
@@ -316,6 +320,9 @@ function generarHtmlCorreo(contenidoHtml) {
           }
           .pcenter{
             text-align: center;
+          }
+          .pderecha{
+          text-align: right;
           }
         </style>
       </head>

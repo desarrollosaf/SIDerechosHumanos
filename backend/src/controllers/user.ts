@@ -109,3 +109,24 @@ export const LoginUser = async (req: Request, res: Response, next: NextFunction)
     
     return res.json({ token,user })
 }
+
+export const getvalidadores = async (req: Request, res: Response): Promise<any> => {
+    const user: any = await User.findAll({ 
+    attributes: ['id', 'name'], 
+        include: [
+            {
+            model: RolUsers,
+            as: 'rol_users',
+            where: { role_id: 2 },
+            attributes: [] 
+            }
+        ]
+    });
+
+    if(user){
+        return res.json({
+          msg: `List de exitosamente`,
+          data: user
+      });
+    }
+}

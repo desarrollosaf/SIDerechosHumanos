@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoginUser = exports.CreateUser = exports.ReadUser = void 0;
+exports.getvalidadores = exports.LoginUser = exports.CreateUser = exports.ReadUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_1 = __importDefault(require("../models/user"));
 const role_users_1 = __importDefault(require("../models/role_users"));
@@ -109,3 +109,23 @@ const LoginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
     return res.json({ token, user });
 });
 exports.LoginUser = LoginUser;
+const getvalidadores = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_1.default.findAll({
+        attributes: ['id', 'name'],
+        include: [
+            {
+                model: role_users_1.default,
+                as: 'rol_users',
+                where: { role_id: 2 },
+                attributes: []
+            }
+        ]
+    });
+    if (user) {
+        return res.json({
+            msg: `List de exitosamente`,
+            data: user
+        });
+    }
+});
+exports.getvalidadores = getvalidadores;

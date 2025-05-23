@@ -7,4 +7,5 @@ router.get("/api/user/read", user_1.ReadUser);
 router.post("/api/user/create", user_1.CreateUser);
 router.post("/api/user/register", user_1.CreateUser);
 router.post("/api/user/login", user_1.LoginUser);
+router.get("/api/user/getvalidadores", user_1.getvalidadores);
 exports.default = router;

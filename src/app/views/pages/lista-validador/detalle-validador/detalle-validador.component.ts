@@ -9,9 +9,11 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import Swal from 'sweetalert2';
 import { RouterModule } from '@angular/router';
+import { UserService } from '../../../../service/user.service';
+import { NgSelectModule } from '@ng-select/ng-select';
 @Component({
   selector: 'app-detalle-validador',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatSlideToggleModule, MatIconModule, RouterModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatSlideToggleModule, MatIconModule, RouterModule,NgSelectModule],
   templateUrl: './detalle-validador.component.html',
   styleUrl: './detalle-validador.component.scss'
 })
@@ -20,12 +22,15 @@ export class DetalleValidadorComponent {
   isLoading: boolean = false;
   public _documentoService = inject(DocumentoService);
   public _validadorService = inject(ValidadorService);
-
+  public _userService = inject(UserService);
 
   archivosSubidos: { [key: string]: string } = {};
   documentos: any;
   solicitante: any;
-
+  public currentUser: any;
+  public esAdmin: boolean = false;
+  public usuariosValidador: any[] = [];
+  validadorSeleccionado: string = '';
   documentosRequeridos: {
     clave: string;
     label: string;
@@ -110,18 +115,37 @@ export class DetalleValidadorComponent {
     };
   constructor(private aRouter: ActivatedRoute, private router: Router) {
     this.id = String(aRouter.snapshot.paramMap.get('id'));
+    this.currentUser = this._userService.currentUserValue;
+  this.esAdmin = this.currentUser.rol_users?.role?.name === 'Administrador';
   }
 
   ngOnInit(): void {
     this.getDocumUsuario();
   }
 
+
+  obtenerValidadores(){
+    this.usuariosValidador = [
+      {id: '1', value: 'PABLO NAHUM JIMENEZ'},
+      {id: '2', value: 'JORGE LUIS NAHUM JIMENEZ'},
+      {id: '3', value: 'POCHAS NAHUM JIMENEZ'},
+      {id: '4', value: 'MARTIN NAHUM JIMENEZ'},
+      {id: '5', value: 'CHEMA NAHUM JIMENEZ'},
+    ];
+  }
+
+
+  reasignarValidador(usuario: any){
+    const idSolicitud= this.solicitante.documentos[0]?.solicitudId;
+    const id = usuario?.id;
+    console.log(id);
+  }
+  
   getDocumUsuario() {
     this._documentoService.getDocumentosUser(this.id).subscribe({
       next: (response: any) => {
         this.solicitante = response;
         this.documentos = response.documentos;
-
         this.documentos.forEach((doc: any) => {
           const clave = doc.tipo?.valor;
           const archivoUrl = 'https://dev4.siasaf.gob.mx/' + doc.path;
@@ -138,6 +162,10 @@ export class DetalleValidadorComponent {
             estadoOriginal: doc.estatus === 1,
           };
         });
+        
+        if (this.esAdmin) {
+          this.obtenerValidadores();
+        } 
       },
       error: (e: HttpErrorResponse) => {
         console.error('Error:', e.error?.msg || e);

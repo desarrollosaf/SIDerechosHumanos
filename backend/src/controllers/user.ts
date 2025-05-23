@@ -188,8 +188,7 @@ export const saveValidador = async (req: Request, res: Response): Promise<any> =
       include: [{ model: RolUsers, as: 'rol_users' }],
     });
 
-    body.userId = newUser.id;
-    body.estatusId = 1;
+    body.user_id = newUser.id;
     await DatosUser.create(body);
     
     (async () => {
@@ -199,7 +198,7 @@ export const saveValidador = async (req: Request, res: Response): Promise<any> =
           
           <p><strong>Asunto:</strong> Cuenta creada exitosamente.</p>
 
-          <h3>C. ${body.nombres} ${body.ap_paterno} ${body.ap_materno},</h3>
+          <h3>C. ${body.nombre} ${body.apaterno} ${body.amaterno},</h3>
 
           <p>Por este medio le informamos que se ha generado de manera exitosa
           su usuario para que pueda validar las solicitudes. A continuación, 

@@ -17,20 +17,28 @@
                                 Curp: {{ solicitante?.curp }} <br>
                                 Cedula profesional: {{ solicitante?.cedula_profesional }} </p>
                         </div>
-                         <div class="card-body" *ngIf="this.esAdmin">
-                            <h4 class="card-title">Reasignar solicitud</h4>
-                            <div class="form-group">
-                                <label for="validadorSelect"><strong>Selecciona un validador:</strong></label>
-                                <ng-select
-                                [items]="usuariosValidador"
-                                bindLabel="name"
-                                bindValue="id"
-                                placeholder="Selecciona un validador"
-                                [(ngModel)]="validadorSeleccionado"
-                                (change)="reasignarValidador($event)">
-                                </ng-select>
-                            </div>
-                        </div>
+                        <div class="card-body" *ngIf="this.esAdmin">
+                            <ngb-alert [dismissible]="false" [type]="'success'">
+                                <p style="color:black"><strong>Validador asignado:</strong> {{validadorSol}}</p>
+                            </ngb-alert>
+                            <ngb-alert [dismissible]="false" [type]="'secondary'">
+                            
+                                <h4 class="card-title" style="color:black">Reasignar solicitud</h4>
+                                <div class="form-group">
+                                    <label for="validadorSelect" style="color:black"><strong>Selecciona un validador:</strong></label>
+                                    <ng-select
+                                    [items]="usuariosValidador"
+                                    bindLabel="name"
+                                    bindValue="id"
+                                    placeholder="Selecciona un validador"
+                                    [(ngModel)]="validadorSeleccionado"
+                                    (change)="reasignarValidador($event)">
+                                    </ng-select>
+                                </div>
+                        
+                            </ngb-alert>
+                         </div>
+                        
                     </div>
                 </div>
             </div>

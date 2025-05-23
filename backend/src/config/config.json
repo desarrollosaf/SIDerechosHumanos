@@ -3,7 +3,17 @@
     "username": "root",
     "password": "",
     "database": "derechos_humanos",
-    "host": "127.0.0.1",
+    "host": "localhost",
     "dialect": "mysql"
   }
 }
+
+// {
+//   "development": {
+//     "username": "usr_derechos",
+//     "password": "J7Zi5TD4qBctM9",
+//     "database": "adminplem_derechos",
+//     "host": "192.168.36.53",
+//     "dialect": "mysql"
+//   }
+// }

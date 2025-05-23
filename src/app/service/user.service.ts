@@ -50,5 +50,9 @@ export class UserService {
   getValidadores(): Observable<string>{
     return this.http.get<string>(`${this.myAppUrl}${this.myAPIUrl}/getvalidadores`);
   }
+
+  reasignarValidador(data: any): Observable<string> {
+    return this.http.post<string>(`${this.myAppUrl}${this.myAPIUrl}/updatevalidador`, data)
+  }
   
 }

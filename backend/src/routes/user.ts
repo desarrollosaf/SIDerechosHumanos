@@ -8,7 +8,7 @@ router.post("/api/user/create", CreateUser)
 router.post("/api/user/register", CreateUser)
 router.post("/api/user/login", LoginUser)
 router.get("/api/user/getvalidadores", getvalidadores)
-router.get("/api/user/updatevalidador", updatevalidador)
+router.post("/api/user/updatevalidador", updatevalidador)
 
 
 export default router

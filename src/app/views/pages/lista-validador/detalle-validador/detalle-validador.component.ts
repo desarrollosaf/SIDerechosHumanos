@@ -141,7 +141,18 @@ export class DetalleValidadorComponent {
     const idSolicitud= this.solicitante.documentos[0]?.solicitudId;
     const id = usuario?.id;
     if(id){
-      console.log(id);
+        const datos = {
+        usuario: id, solicitud: idSolicitud
+      };
+      console.log(datos);
+      this._userService.reasignarValidador(datos).subscribe({
+        next: (response: any) => {
+          console.log(response);
+        },
+        error: (e: HttpErrorResponse) => {
+          console.error('Error:', e.error?.msg || e);
+        }
+      });
     }else{
       Swal.fire({
         position: 'center',

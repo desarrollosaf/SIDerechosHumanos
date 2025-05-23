@@ -29,6 +29,7 @@ export class DetalleValidadorComponent {
   archivosSubidos: { [key: string]: string } = {};
   documentos: any;
   solicitante: any;
+  validadorSol: any;
   public currentUser: any;
   public esAdmin: boolean = false;
   public usuariosValidador: any[] = [];
@@ -129,15 +130,13 @@ export class DetalleValidadorComponent {
     this._userService.getValidadores().subscribe({
       next: (response: any) => {
         this.usuariosValidador= response.data;
-        console.log(response.data);
       },
       error: (e: HttpErrorResponse) => {
         console.error('Error:', e.error?.msg || e);
       }
     });
   }
-
-
+  
   reasignarValidador(usuario: any){
     const idSolicitud= this.solicitante.documentos[0]?.solicitudId;
     const id = usuario?.id;
@@ -145,9 +144,10 @@ export class DetalleValidadorComponent {
         const datos = {
         usuario: id, solicitud: idSolicitud
       };
-      console.log(datos);
       this._userService.reasignarValidador(datos).subscribe({
         next: (response: any) => {
+          const valida = usuario?.name;
+          this.validadorSol=valida;
           Swal.fire({
             position: 'center',
             icon: 'success',
@@ -176,18 +176,17 @@ export class DetalleValidadorComponent {
   getDocumUsuario() {
     this._documentoService.getDocumentosUser(this.id).subscribe({
       next: (response: any) => {
+        this.validadorSol= response.validasolicitud.validador.name;
         this.solicitante = response;
         this.documentos = response.documentos;
         this.documentos.forEach((doc: any) => {
           const clave = doc.tipo?.valor;
           const archivoUrl = 'https://dev4.siasaf.gob.mx/' + doc.path;
           this.archivosSubidos[clave] = archivoUrl;
-
           const index = this.documentosRequeridos.findIndex(d => d.clave === clave);
           if (index !== -1) {
             this.documentosRequeridos[index].estatus = doc.estatus;
           }
-
           this.validarrechazar[clave] = {
             estado: doc.estatus === 1,
             observaciones: doc.observaciones || '',

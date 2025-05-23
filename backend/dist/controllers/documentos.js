@@ -127,10 +127,13 @@ const envSolicitud = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const count = yield validadorsolicitud_1.default.count({ where: { validadorId: validador.user_id } });
         return { validador, count };
     }))).then((results) => results.sort((a, b) => a.count - b.count)[0].validador);
-    yield validadorsolicitud_1.default.create({
-        solicitudId: solicitud.id,
-        validadorId: validadorConMenosSolicitudes.user_id,
-    });
+    const existsolicitud = yield validadorsolicitud_1.default.findOne({ where: { solicitudId: solicitud.id } });
+    if (!existsolicitud) {
+        yield validadorsolicitud_1.default.create({
+            solicitudId: solicitud.id,
+            validadorId: validadorConMenosSolicitudes.user_id,
+        });
+    }
     solicitud.estatusId = 2;
     yield solicitud.save();
     return res.json("200");
@@ -155,11 +158,18 @@ const deleteDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (fs_1.default.existsSync(documentoPath)) {
             fs_1.default.unlinkSync(documentoPath);
         }
-        yield documentos_1.default.destroy({
-            where: {
-                tipoDocumento: documentoExistente.tipoDocumento
-            }
-        });
+        const existsolicitud = yield validadorsolicitud_1.default.findOne({ where: { solicitudId: solicitud.id } });
+        if (existsolicitud) {
+            documentoExistente.path = '';
+            yield documentoExistente.save();
+        }
+        else {
+            yield documentos_1.default.destroy({
+                where: {
+                    tipoDocumento: documentoExistente.tipoDocumento
+                }
+            });
+        }
         return res.json('200');
     }
     else {

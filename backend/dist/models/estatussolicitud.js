@@ -18,6 +18,10 @@ EstatusSolicitud.init({
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
     },
+    valor_real: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
+    },
     createdAt: {
         type: sequelize_1.DataTypes.DATE,
         allowNull: false,

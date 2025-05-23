@@ -7,6 +7,7 @@ class EstatusSolicitud extends Model<
 > {
   declare id: CreationOptional<number>;
   declare valor: string;
+   declare valor_real: string;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 }
@@ -20,6 +21,10 @@ EstatusSolicitud.init(
       allowNull: false,
     },
     valor: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    valor_real: {
       type: DataTypes.STRING,
       allowNull: false,
     },

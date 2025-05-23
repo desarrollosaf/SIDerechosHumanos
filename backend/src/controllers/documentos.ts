@@ -75,22 +75,31 @@ export const getDocumentos = async (req: Request, res: Response): Promise<any> =
     const { id } = req.params;
 
     const solicitudConDocumentos = await Solicitudes.findOne({
-        where: { userId: id },
-        include: [
+      where: { userId: id },
+      include: [
+        {
+          model: Documentos,
+          as: 'documentos',
+          include: [
             {
-            model: Documentos,
-            as: 'documentos',
-            include: [
-                {
-                model: TipoDocumentos,
-                as: 'tipo', 
-                attributes: ['valor'], 
-                }
-            ],
+              model: TipoDocumentos,
+              as: 'tipo',
+              attributes: ['valor'],
             },
-        ],
-        // attributes: ['id'],
-        logging: console.log,
+          ],
+        },
+        {
+          model: ValidadorSolicitud,
+          as: 'validasolicitud',
+          include: [
+            {
+              model: User,
+              as: 'validador',
+            },
+          ],
+        },
+      ],
+      logging: console.log,
     });
 
     if(solicitudConDocumentos){

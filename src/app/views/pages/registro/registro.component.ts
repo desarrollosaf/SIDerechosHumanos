@@ -100,9 +100,9 @@ export class RegistroComponent {
             timer: 3000
           });
           this.router.navigate(['/']);
-          
+
         } else {
-          Swal.fire({
+          Swal.fire({ 
             position: "center",
             icon: "error",
             title: 'Error desconocido: '+e,

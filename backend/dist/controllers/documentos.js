@@ -87,11 +87,20 @@ const getDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                         model: tipodocumentos_1.default,
                         as: 'tipo',
                         attributes: ['valor'],
-                    }
+                    },
+                ],
+            },
+            {
+                model: validadorsolicitud_1.default,
+                as: 'validasolicitud',
+                include: [
+                    {
+                        model: user_1.default,
+                        as: 'validador',
+                    },
                 ],
             },
         ],
-        // attributes: ['id'],
         logging: console.log,
     });
     if (solicitudConDocumentos) {

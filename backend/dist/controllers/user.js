@@ -137,7 +137,7 @@ const updatevalidador = (req, res) => __awaiter(void 0, void 0, void 0, function
     });
     if (validasolicitudes) {
         validasolicitudes.validadorId = usuario;
-        yield solicitud.save();
+        yield validasolicitudes.save();
         return res.json("200");
     }
     else {

@@ -133,14 +133,15 @@ export const getvalidadores = async (req: Request, res: Response): Promise<any> 
 
 export const updatevalidador = async (req: Request, res: Response): Promise<any> => {
       const { usuario, solicitud } = req.body;
-      
-      const validasolicitudes = await ValidadorSolicitud.findOne({
+
+    const validasolicitudes = await ValidadorSolicitud.findOne({
         where: { solicitudId: solicitud },
     });
+    
 
     if(validasolicitudes){
         validasolicitudes.validadorId = usuario;
-        await solicitud.save();
+        await validasolicitudes.save();
         return res.json("200");
     }else{
         return res.status(404).json({

@@ -23,6 +23,7 @@ export class DetalleValidadorComponent {
   public _documentoService = inject(DocumentoService);
   public _validadorService = inject(ValidadorService);
   public _userService = inject(UserService);
+  
 
   archivosSubidos: { [key: string]: string } = {};
   documentos: any;
@@ -116,29 +117,41 @@ export class DetalleValidadorComponent {
   constructor(private aRouter: ActivatedRoute, private router: Router) {
     this.id = String(aRouter.snapshot.paramMap.get('id'));
     this.currentUser = this._userService.currentUserValue;
-  this.esAdmin = this.currentUser.rol_users?.role?.name === 'Administrador';
+    this.esAdmin = this.currentUser.rol_users?.role?.name === 'Administrador';
   }
 
   ngOnInit(): void {
     this.getDocumUsuario();
   }
 
-
   obtenerValidadores(){
-    this.usuariosValidador = [
-      {id: '1', value: 'PABLO NAHUM JIMENEZ'},
-      {id: '2', value: 'JORGE LUIS NAHUM JIMENEZ'},
-      {id: '3', value: 'POCHAS NAHUM JIMENEZ'},
-      {id: '4', value: 'MARTIN NAHUM JIMENEZ'},
-      {id: '5', value: 'CHEMA NAHUM JIMENEZ'},
-    ];
+    this._userService.getValidadores().subscribe({
+      next: (response: any) => {
+        this.usuariosValidador= response.data;
+        console.log(response.data);
+      },
+      error: (e: HttpErrorResponse) => {
+        console.error('Error:', e.error?.msg || e);
+      }
+    });
   }
 
 
   reasignarValidador(usuario: any){
     const idSolicitud= this.solicitante.documentos[0]?.solicitudId;
     const id = usuario?.id;
-    console.log(id);
+    if(id){
+      console.log(id);
+    }else{
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: 'Debe seleccionar un validador.',
+        showConfirmButton: false,
+        timer: 3000
+      });
+    }
+  
   }
   
   getDocumUsuario() {

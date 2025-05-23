@@ -46,5 +46,9 @@ export class UserService {
     this.currentUserSubject.next(user);
     localStorage.setItem('currentUser', JSON.stringify(user));
   }
+
+  getValidadores(): Observable<string>{
+    return this.http.get<string>(`${this.myAppUrl}${this.myAPIUrl}/getvalidadores`);
+  }
   
 }

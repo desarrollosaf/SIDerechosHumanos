@@ -12,7 +12,7 @@ export class DocumentoService {
   private http = inject( HttpClient );
 
   constructor() {
-    this.myAppUrl = 'https://dev4.siasaf.gob.mx/'
+    this.myAppUrl = 'https://dev4.siasaf.gob.mx/'  //'http://localhost:3001/'
     this.myAPIUrl = 'api/documentos';
 
   }

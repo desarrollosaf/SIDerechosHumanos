@@ -11,9 +11,10 @@ import Swal from 'sweetalert2';
 import { RouterModule } from '@angular/router';
 import { UserService } from '../../../../service/user.service';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-detalle-validador',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatSlideToggleModule, MatIconModule, RouterModule,NgSelectModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatSlideToggleModule, MatIconModule, RouterModule,NgSelectModule,NgbAlertModule],
   templateUrl: './detalle-validador.component.html',
   styleUrl: './detalle-validador.component.scss'
 })
@@ -147,7 +148,14 @@ export class DetalleValidadorComponent {
       console.log(datos);
       this._userService.reasignarValidador(datos).subscribe({
         next: (response: any) => {
-          console.log(response);
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'La solicitud ha sido reasignada.',
+            showConfirmButton: false,
+            timer: 2000
+          });
+          this.validadorSeleccionado = '';
         },
         error: (e: HttpErrorResponse) => {
           console.error('Error:', e.error?.msg || e);
@@ -159,7 +167,7 @@ export class DetalleValidadorComponent {
         icon: 'warning',
         title: 'Debe seleccionar un validador.',
         showConfirmButton: false,
-        timer: 3000
+        timer: 2000
       });
     }
   

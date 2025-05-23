@@ -168,7 +168,6 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
 
   export const getSolicitudes = async (req: Request, res: Response): Promise<any> => {
       const { id, usuario } = req.body;
-      console.log('USUARIO ES: ', usuario);
       const user: any = await User.findOne({ 
         where: { id: usuario },
         include: [

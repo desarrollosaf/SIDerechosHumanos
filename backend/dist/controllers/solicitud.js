@@ -166,7 +166,6 @@ const putRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.putRegistro = putRegistro;
 const getSolicitudes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id, usuario } = req.body;
-    console.log('USUARIO ES: ', usuario);
     const user = yield user_1.default.findOne({
         where: { id: usuario },
         include: [

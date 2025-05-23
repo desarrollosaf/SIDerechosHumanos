@@ -12,12 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getvalidadores = exports.LoginUser = exports.CreateUser = exports.ReadUser = void 0;
+exports.getSolicitudes = exports.getvalidadores = exports.LoginUser = exports.CreateUser = exports.ReadUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_1 = __importDefault(require("../models/user"));
 const role_users_1 = __importDefault(require("../models/role_users"));
 const role_1 = __importDefault(require("../models/role"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const validadorsolicitud_1 = __importDefault(require("../models/validadorsolicitud"));
 const ReadUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const listUser = yield user_1.default.findAll();
     return res.json({
@@ -129,3 +130,20 @@ const getvalidadores = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.getvalidadores = getvalidadores;
+const getSolicitudes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { usuario, solicitud } = req.body;
+    const validasolicitudes = yield validadorsolicitud_1.default.findOne({
+        where: { solicitudId: solicitud },
+    });
+    if (validasolicitudes) {
+        validasolicitudes.validadorId = usuario;
+        yield solicitud.save();
+        return res.json("200");
+    }
+    else {
+        return res.status(404).json({
+            msg: `No existe el id ${solicitud}`,
+        });
+    }
+});
+exports.getSolicitudes = getSolicitudes;

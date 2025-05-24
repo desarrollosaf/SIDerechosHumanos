@@ -113,21 +113,33 @@ const LoginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
 });
 exports.LoginUser = LoginUser;
 const getvalidadores = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield user_1.default.findAll({
-        attributes: ['id', 'name'],
+    const userst = yield user_1.default.findAll({
+        attributes: ['id'],
         include: [
             {
                 model: role_users_1.default,
                 as: 'rol_users',
                 where: { role_id: 2 },
                 attributes: []
+            },
+            {
+                model: datos_user_1.default,
+                as: 'datos_user',
+                attributes: ['nombre', 'apaterno', 'amaterno']
             }
         ]
     });
-    if (user) {
+    const users = userst.map(user1 => {
+        var _a, _b, _c, _d, _e, _f;
+        return ({
+            id: user1.id,
+            nombre: `${(_b = (_a = user1.datos_user) === null || _a === void 0 ? void 0 : _a.nombre) !== null && _b !== void 0 ? _b : ''} ${(_d = (_c = user1.datos_user) === null || _c === void 0 ? void 0 : _c.apaterno) !== null && _d !== void 0 ? _d : ''} ${(_f = (_e = user1.datos_user) === null || _e === void 0 ? void 0 : _e.amaterno) !== null && _f !== void 0 ? _f : ''}`.trim()
+        });
+    });
+    if (users) {
         return res.json({
             msg: `List de exitosamente`,
-            data: user
+            data: users
         });
     }
 });
@@ -178,8 +190,7 @@ const saveValidador = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         }, {
             include: [{ model: role_users_1.default, as: 'rol_users' }],
         });
-        body.userId = newUser.id;
-        body.estatusId = 1;
+        body.user_id = newUser.id;
         yield datos_user_1.default.create(body);
         (() => __awaiter(void 0, void 0, void 0, function* () {
             try {
@@ -188,7 +199,7 @@ const saveValidador = (req, res) => __awaiter(void 0, void 0, void 0, function* 
           
           <p><strong>Asunto:</strong> Cuenta creada exitosamente.</p>
 
-          <h3>C. ${body.nombres} ${body.ap_paterno} ${body.ap_materno},</h3>
+          <h3>C. ${body.nombre} ${body.apaterno} ${body.amaterno},</h3>
 
           <p>Por este medio le informamos que se ha generado de manera exitosa
           su usuario para que pueda validar las solicitudes. A continuación, 

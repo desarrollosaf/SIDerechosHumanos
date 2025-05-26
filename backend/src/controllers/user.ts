@@ -332,3 +332,40 @@ export const deletevali = async (req: Request, res: Response): Promise<any> => {
     return res.status(500).json({ estatus: 500, msg: 'Error del servidor' });
   }
 };
+
+export const updatevalidador = async (req: Request, res: Response): Promise<any> => {
+  const { body } = req;
+  const { id } = req.params;
+
+  try {
+    const usuario = await User.findByPk(id);
+    if (!usuario) {
+      return res.status(404).json({ msg: 'Usuario no encontrado' });
+    }
+
+    await usuario.update({
+      name: body.curp,
+      email: body.correo,
+    });
+
+    const datosUsuario = await DatosUser.findOne({ where: { user_id: id } });
+
+    if (datosUsuario) {
+      await datosUsuario.update({
+        nombre: body.nombre,
+        apaterno: body.apaterno,
+        amaterno: body.amaterno,
+        direccion: body.direccion,
+        dependencia: body.dependencia,
+        departamento: body.departamento,
+        cargo: body.cargo,
+      });
+    } 
+
+     return res.status(200).json({ msg: 'Actualizado correctamente' });
+
+  } catch (error) {
+    console.error('Error al actualizar:', error);
+    return res.status(500).json({ msg: 'Ocurrió un error al actualizar' });
+  }
+};

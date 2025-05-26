@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deletevali = exports.saveValidador = exports.changevalidador = exports.getvalidadores = exports.LoginUser = exports.CreateUser = exports.ReadUser = void 0;
+exports.updatevalidador = exports.deletevali = exports.saveValidador = exports.changevalidador = exports.getvalidadores = exports.LoginUser = exports.CreateUser = exports.ReadUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_1 = __importDefault(require("../models/user"));
 const role_users_1 = __importDefault(require("../models/role_users"));
@@ -308,3 +308,35 @@ const deletevali = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.deletevali = deletevali;
+const updatevalidador = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { body } = req;
+    const { id } = req.params;
+    try {
+        const usuario = yield user_1.default.findByPk(id);
+        if (!usuario) {
+            return res.status(404).json({ msg: 'Usuario no encontrado' });
+        }
+        yield usuario.update({
+            name: body.curp,
+            email: body.correo,
+        });
+        const datosUsuario = yield datos_user_1.default.findOne({ where: { user_id: id } });
+        if (datosUsuario) {
+            yield datosUsuario.update({
+                nombre: body.nombre,
+                apaterno: body.apaterno,
+                amaterno: body.amaterno,
+                direccion: body.direccion,
+                dependencia: body.dependencia,
+                departamento: body.departamento,
+                cargo: body.cargo,
+            });
+        }
+        return res.status(200).json({ msg: 'Actualizado correctamente' });
+    }
+    catch (error) {
+        console.error('Error al actualizar:', error);
+        return res.status(500).json({ msg: 'Ocurrió un error al actualizar' });
+    }
+});
+exports.updatevalidador = updatevalidador;

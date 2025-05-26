@@ -6,12 +6,14 @@ import {
   CreationOptional,
 } from 'sequelize';
 import sequelize from '../database/connection';
-import RolUsers from './role_users';
+import RolUsers from './role_users'; 
 import { v4 as uuidv4 } from 'uuid';
+import DatosUser from './datos_user';
 
 class User extends Model<
   InferAttributes<User>,
   InferCreationAttributes<User>
+  
 > {
   declare id: CreationOptional<string>; // UUID como string
   declare name: string | null;
@@ -20,6 +22,7 @@ class User extends Model<
   declare password: string | null;
   declare remember_token: string | null;
   declare rol_users?: { role_id: number };
+  declare datos_user?: DatosUser;
 }
 
 User.init(
@@ -68,6 +71,8 @@ User.init(
 
 // Relaciones
 User.hasOne(RolUsers, { foreignKey: 'user_id', as: 'rol_users' });
+User.hasOne(DatosUser, { foreignKey: 'user_id', as: 'datos_user' });
 RolUsers.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
+
 
 export default User;

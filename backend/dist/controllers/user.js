@@ -114,16 +114,23 @@ const LoginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
 exports.LoginUser = LoginUser;
 const getvalidadores = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield user_1.default.findAll({
-        attributes: ['id', 'name'],
         include: [
             {
                 model: role_users_1.default,
                 as: 'rol_users',
                 where: { role_id: 2 },
                 attributes: []
+            },
+            {
+                model: datos_user_1.default,
+                as: 'datos_user',
             }
         ]
     });
+    // const user = userst.map(user1 => ({
+    // id: user1.id,
+    // nombre: `${user1.datos_user?.nombre ?? ''} ${user1.datos_user?.apaterno ?? ''} ${user1.datos_user?.amaterno ?? ''}`.trim()
+    // }));
     if (user) {
         return res.json({
             msg: `List de exitosamente`,
@@ -178,8 +185,7 @@ const saveValidador = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         }, {
             include: [{ model: role_users_1.default, as: 'rol_users' }],
         });
-        body.userId = newUser.id;
-        body.estatusId = 1;
+        body.user_id = newUser.id;
         yield datos_user_1.default.create(body);
         (() => __awaiter(void 0, void 0, void 0, function* () {
             try {
@@ -188,7 +194,7 @@ const saveValidador = (req, res) => __awaiter(void 0, void 0, void 0, function* 
           
           <p><strong>Asunto:</strong> Cuenta creada exitosamente.</p>
 
-          <h3>C. ${body.nombres} ${body.ap_paterno} ${body.ap_materno},</h3>
+          <h3>C. ${body.nombre} ${body.apaterno} ${body.amaterno},</h3>
 
           <p>Por este medio le informamos que se ha generado de manera exitosa
           su usuario para que pueda validar las solicitudes. A continuación, 

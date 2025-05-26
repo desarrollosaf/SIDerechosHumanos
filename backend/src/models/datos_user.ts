@@ -51,7 +51,6 @@ DatosUser.init(
   }
 );
 
-// Relaciones
-DatosUser.belongsTo(User, { foreignKey: 'user_id', as: 'usuario' });
-
 export default DatosUser;
+
+// DatosUser.belongsTo(User, { foreignKey: 'user_id', as: 'usuario' });

@@ -176,7 +176,7 @@ export class DetalleValidadorComponent {
   getDocumUsuario() {
     this._documentoService.getDocumentosUser(this.id).subscribe({
       next: (response: any) => {
-        this.validadorSol= response.validasolicitud.validador.name;
+        this.validadorSol= response.validasolicitud.validador.datos_user.nombre + ' ' + response.validasolicitud.validador.datos_user.apaterno + ' ' + response.validasolicitud.validador.datos_user.amaterno;
         this.solicitante = response;
         this.documentos = response.documentos;
         this.documentos.forEach((doc: any) => {

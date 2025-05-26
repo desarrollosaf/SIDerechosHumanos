@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import {FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../../../../service/user.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-create-validador',
@@ -11,7 +14,7 @@ import { CommonModule } from '@angular/common';
 })
 export class CreateValidadorComponent {
   formReg: FormGroup;
-
+ public _userService = inject(UserService);
   constructor(private fb: FormBuilder,private router: Router){
     this.formReg = this.fb.group({
       ap_paterno:['', Validators.required],
@@ -24,16 +27,34 @@ export class CreateValidadorComponent {
       ]],
     });
   }
-
-
   ngOnInit(): void {
   }
-
 
   envio():void {      
     if (this.formReg.valid) {
       console.log('Formulario válido, enviando...');
-  
+      const datos = {
+        apaterno: this.formReg.value.ap_paterno, 
+        amaterno: this.formReg.value.ap_materno,
+        nombre: this.formReg.value.nombres,
+        correo: this.formReg.value.correo,
+        curp: this.formReg.value.curp,
+      };
+      this._userService.saveValidador(datos).subscribe({
+        next: (response: any) => {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Validador regristrado",
+            showConfirmButton: false,
+            timer: 3000
+          });
+          this.formReg.reset();
+        },
+        error: (e: HttpErrorResponse) => {
+        console.error('Error:', e.error?.msg || e);
+        }
+      });
     } else {
       this.formReg.markAllAsTouched();
     }

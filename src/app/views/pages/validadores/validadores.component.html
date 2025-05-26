@@ -24,7 +24,7 @@
             [offset]="page" (page)="setPage($event)" [loadingIndicator]="loading">
             <ngx-datatable-column [headerClass]="'text-center'" [cellClass]="'text-center'" name="Nombre Completo">
               <ng-template let-row="row" ngx-datatable-cell-template>
-                {{ row.datos_user.nombre }} {{ row.datos_user.apaterno }} {{ row.datos_user.amaterno }}
+                {{ row.datos_user.nombre?.toLocaleUpperCase('es-ES') }} {{ row.datos_user.apaterno?.toLocaleUpperCase('es-ES') }} {{ row.datos_user.amaterno?.toLocaleUpperCase('es-ES') }}
               </ng-template>
             </ngx-datatable-column>
             <ngx-datatable-column [headerClass]="'text-center'" [cellClass]="'text-center'" name="Acciones"

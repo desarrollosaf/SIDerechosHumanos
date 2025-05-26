@@ -8,6 +8,7 @@ router.post("/api/user/create", user_1.CreateUser);
 router.post("/api/user/register", user_1.CreateUser);
 router.post("/api/user/login", user_1.LoginUser);
 router.get("/api/user/getvalidadores", user_1.getvalidadores);
-router.post("/api/user/updatevalidador", user_1.updatevalidador);
+router.post("/api/user/updatevalidador", user_1.changevalidador);
 router.post("/api/user/savevalidador", user_1.saveValidador);
+router.delete('/api/user/delete/:id', user_1.deletevali);
 exports.default = router;

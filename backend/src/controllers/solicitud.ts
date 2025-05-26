@@ -132,7 +132,7 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
           'Tus credenciales de acceso',
           htmlContent,
           [{
-            filename: 'Credenciales.pdf',
+            filename: 'oficio.pdf',
             content: await generarPDFBuffer({
               nombreCompleto: `${body.nombres} ${body.ap_paterno} ${body.ap_materno}`,
               correo: body.correo,

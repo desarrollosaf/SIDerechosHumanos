@@ -226,13 +226,15 @@ export const estatusDoc = async (req: Request, res: Response): Promise<any> => {
     const observados: { tipo: string; observaciones: string }[] = [];
 
     for (const documentoExistente of documentosExistentes) {
-      const tipoValor = documentoExistente.tipo?.valor;
+      const tipo1 = documentoExistente.tipo as TipoDocumentos;
+      const tipoValor = tipo1?.valor;
+      const doc = tipo1?.valor_real;
       const documentoEntrada = Documentos2.find((doc: any) => doc.nombre === tipoValor);
 
       if (documentoEntrada && tipoValor) {
         documentoExistente.estatus = 3;
         documentoExistente.observaciones = documentoEntrada.observaciones || '';
-        observados.push({ tipo: tipoValor, observaciones: documentoEntrada.observaciones || '' });
+        observados.push({ tipo: doc ?? '', observaciones: documentoEntrada.observaciones || '' });
       } else {
         documentoExistente.estatus = 2;
       }

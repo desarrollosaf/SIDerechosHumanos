@@ -10,7 +10,7 @@ router.post("/api/user/login", LoginUser)
 router.get("/api/user/getvalidadores", getvalidadores)
 router.post("/api/user/updatevalidador", changevalidador)
 router.post("/api/user/savevalidador", saveValidador)
-router.delete('/api/user/delete/:id', deletevali)
+router.post('/api/user/delete/:id', deletevali)
 
 
 export default router

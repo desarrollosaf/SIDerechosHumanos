@@ -12,6 +12,6 @@ export default [
       },
       {
         path: 'edit/:id',
-        loadComponent: () => import('./validadores.component').then(c => c.ValidadoresComponent)
+        loadComponent: () => import('./create-validador/create-validador.component').then(c => c.CreateValidadorComponent)
       }
 ] as Routes;

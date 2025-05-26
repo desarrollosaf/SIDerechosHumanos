@@ -26,8 +26,6 @@ export class ValidadoresComponent {
   pageSize: number = 10;
   filteredCount: number = 0;
   loading: boolean = true;
-  // rows = [];
-  // temp = [];
 
   @ViewChild('table') table: DatatableComponent
 
@@ -52,6 +50,14 @@ export class ValidadoresComponent {
     });
   }
 
+  editarUsuario(usuario: any){
+    console.log(usuario);
+
+  }
+
+  eliminarUsuario(usuario: any){
+    
+  }
 
   setPage(pageInfo: any) {
     this.page = pageInfo.offset;

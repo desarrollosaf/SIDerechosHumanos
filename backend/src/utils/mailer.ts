@@ -13,19 +13,23 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export const sendEmail = async (to: string, subject: string, html: string) => {
-  
-    try {
-      await transporter.sendMail({
-        from: `"SIDerechosHumanos" <${process.env.SMTP_USER}>`,
-        to,
-        subject,
-        html,
-      });
-      console.log(`Correo enviado a: ${to}`);
-    } catch (error) {
-      console.error('Error al enviar el correo:', error);
-      throw error;
-    }
-  
+export const sendEmail = async (
+  to: string,
+  subject: string,
+  html: string,
+  attachments: any[] = []  
+) => {
+  try {
+    await transporter.sendMail({
+      from: `"SIDerechosHumanos" <${process.env.SMTP_USER}>`,
+      to,
+      subject,
+      html,
+      attachments, 
+    });
+    console.log(`Correo enviado a: ${to}`);
+  } catch (error) {
+    console.error('Error al enviar el correo:', error);
+    throw error;
+  }
 };

@@ -13,6 +13,7 @@ class TipoDocumentos extends Model<
 > {
   declare id: CreationOptional<number>;
   declare valor: string | null;
+  declare valor_real: string | null;
 }
 
 TipoDocumentos.init(
@@ -24,6 +25,10 @@ TipoDocumentos.init(
       primaryKey: true,
     },
     valor: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    valor_real: {
       type: DataTypes.STRING(255),
       allowNull: true,
     },

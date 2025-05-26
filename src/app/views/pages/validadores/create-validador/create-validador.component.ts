@@ -14,7 +14,8 @@ import Swal from 'sweetalert2';
 })
 export class CreateValidadorComponent {
   formReg: FormGroup;
- public _userService = inject(UserService);
+  public validadoresList: any[] = [];
+  public _userService = inject(UserService);
   constructor(private fb: FormBuilder,private router: Router){
     this.formReg = this.fb.group({
       ap_paterno:['', Validators.required],
@@ -29,7 +30,6 @@ export class CreateValidadorComponent {
   }
   ngOnInit(): void {
   }
-
   envio():void {      
     if (this.formReg.valid) {
       console.log('Formulario válido, enviando...');

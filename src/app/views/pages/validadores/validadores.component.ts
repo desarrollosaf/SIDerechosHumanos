@@ -4,6 +4,7 @@ import { ColumnMode, DatatableComponent, NgxDatatableModule } from '@siemens/ngx
 import { UserService } from '../../../service/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -45,18 +46,42 @@ export class ValidadoresComponent {
         this.loading = false;
     },
     error: (e: HttpErrorResponse) => {
-    console.error('Error:', e.error?.msg || e);
+      console.error('Error:', e.error?.msg || e);
     }
     });
   }
 
-  editarUsuario(usuario: any){
-    console.log(usuario);
 
-  }
 
   eliminarUsuario(usuario: any){
-    
+    Swal.fire({
+      title: "¿Está seguro?",
+      text: "Se eliminará el registro del validador.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, eliminar!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._userService.deleteVallidador(usuario?.id).subscribe({
+          next: (response: any) => {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Correcto!",
+              text: "El validador fue eliminado.",
+              showConfirmButton: false,
+              timer: 2000
+            });
+            this.getValidadores()
+          },
+          error: (e: HttpErrorResponse) => {
+          console.error('Error:', e.error?.msg || e);
+          }
+        });
+      }
+    });
   }
 
   setPage(pageInfo: any) {

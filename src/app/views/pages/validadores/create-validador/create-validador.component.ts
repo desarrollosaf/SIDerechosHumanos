@@ -36,37 +36,80 @@ export class CreateValidadorComponent {
   ngOnInit(): void {
     if(this.id != null){
       this.operacion = 'Editar ';
-      console.log(this.operacion);
+      this.getValidador();
     }
+  }
+
+  getValidador(){
+    this._userService.getValidador(this.id).subscribe({
+    next: (response: any) => {
+      this.formReg.setValue({
+        ap_paterno: response.data.datos_user.apaterno,
+        ap_materno: response.data.datos_user.amaterno,
+        nombres: response.data.datos_user.nombre,
+        correo: response.data.email,
+        curp: response.data.name
+      })
+    },
+    error: (e: HttpErrorResponse) => {
+    console.error('Error:', e.error?.msg || e);
+    }
+    });
   }
   envio():void {      
     if (this.formReg.valid) {
-      console.log('Formulario válido, enviando...');
-      const datos = {
-        apaterno: this.formReg.value.ap_paterno, 
-        amaterno: this.formReg.value.ap_materno,
-        nombre: this.formReg.value.nombres,
-        correo: this.formReg.value.correo,
-        curp: this.formReg.value.curp,
-      };
-      this._userService.saveValidador(datos).subscribe({
+      if(this.id != null){
+        const datos = {
+          apaterno: this.formReg.value.ap_paterno, 
+          amaterno: this.formReg.value.ap_materno,
+          nombre: this.formReg.value.nombres,
+          correo: this.formReg.value.correo,
+          curp: this.formReg.value.curp,
+        };
+        this._userService.updateVallidador(this.id, datos).subscribe({
         next: (response: any) => {
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Validador regristrado",
-            showConfirmButton: false,
-            timer: 3000
-          });
-          this.formReg.reset();
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Datos actualizados correctamente",
+          showConfirmButton: false,
+          timer: 3000
+        });
+        this.router.navigate(['/validadores/usuarios']); 
         },
         error: (e: HttpErrorResponse) => {
-        console.error('Error:', e.error?.msg || e);
+          console.error('Error:', e.error?.msg || e);
         }
-      });
-    } else {
+        });
+
+      }else{
+        const datos = {
+          apaterno: this.formReg.value.ap_paterno, 
+          amaterno: this.formReg.value.ap_materno,
+          nombre: this.formReg.value.nombres,
+          correo: this.formReg.value.correo,
+          curp: this.formReg.value.curp,
+        };
+        this._userService.saveValidador(datos).subscribe({
+          next: (response: any) => {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Validador regristrado",
+              showConfirmButton: false,
+              timer: 3000
+            });
+            this.formReg.reset();
+          },
+          error: (e: HttpErrorResponse) => {
+            console.error('Error:', e.error?.msg || e);
+          }
+        });
+      }
+    }else {
       this.formReg.markAllAsTouched();
     }
   }
+  
 
 }

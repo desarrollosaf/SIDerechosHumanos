@@ -58,5 +58,18 @@ export class UserService {
    saveValidador(registro: any): Observable<string> {
       return this.http.post<string>(`${this.myAppUrl}${this.myAPIUrl}/savevalidador`,registro)
     }
+
+
+  getValidador(id: any ): Observable<string>{
+    return this.http.get<string>(`${this.myAppUrl}${this.myAPIUrl}/getvalidador/${id}`);
+  }
+
+  updateVallidador(id: any, registro: any ): Observable<string>{
+    return this.http.put<string>(`${this.myAppUrl}${this.myAPIUrl}/updatedatos/${id}`,registro);
+  }
+
+  deleteVallidador(id: any): Observable<string>{
+    return this.http.get<string>(`${this.myAppUrl}${this.myAPIUrl}/delete/${id}`);
+  }
   
 }

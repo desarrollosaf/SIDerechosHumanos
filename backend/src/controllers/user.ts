@@ -141,7 +141,7 @@ export const getvalidadores = async (req: Request, res: Response): Promise<any> 
     }
 }
 
-export const updatevalidador = async (req: Request, res: Response): Promise<any> => {
+export const changevalidador = async (req: Request, res: Response): Promise<any> => {
       const { usuario, solicitud } = req.body;
 
     const validasolicitudes = await ValidadorSolicitud.findOne({
@@ -300,3 +300,35 @@ function generarHtmlCorreo(contenidoHtml: string): string {
     </html>
   `;
 }
+
+
+
+export const deletevali = async (req: Request, res: Response): Promise<any> => {
+  const { id } = req.params
+
+  try {
+    const tieneSolicitudes = await ValidadorSolicitud.findOne({
+      where: { validadorId: id },
+      attributes: ['id'], 
+    });
+
+    if (tieneSolicitudes) {
+      return res.status(400).json({
+        estatus: 400,
+        msg: "Este validador tiene solicitudes asignadas",
+      });
+    }
+
+    await Promise.all([
+      RolUsers.destroy({ where: { user_id: id } }),
+      DatosUser.destroy({ where: { user_id: id } }),
+      User.destroy({ where: { id } }),
+    ]);
+
+    return res.status(200).json({ estatus: 200, msg: 'Validador eliminado correctamente' });
+
+  } catch (error) {
+    console.error('Error al eliminar validador:', error);
+    return res.status(500).json({ estatus: 500, msg: 'Error del servidor' });
+  }
+};

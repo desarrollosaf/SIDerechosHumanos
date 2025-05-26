@@ -6,7 +6,8 @@ import fs from 'fs';
 import path from 'path';
 import RolUsers from '../models/role_users';
 import ValidadorSolicitud from '../models/validadorsolicitud';
-import User from '../models/user';
+import User from '../models/user';   
+import DatosUser from '../models/datos_user'; 
 import { sendEmail } from '../utils/mailer';
 
 
@@ -95,6 +96,12 @@ export const getDocumentos = async (req: Request, res: Response): Promise<any> =
             {
               model: User,
               as: 'validador',
+              include: [
+                {
+                  model: DatosUser,
+                  as: 'datos_user',
+                }
+              ]
             },
           ],
         },

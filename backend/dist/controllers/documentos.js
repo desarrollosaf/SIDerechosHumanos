@@ -21,6 +21,7 @@ const path_1 = __importDefault(require("path"));
 const role_users_1 = __importDefault(require("../models/role_users"));
 const validadorsolicitud_1 = __importDefault(require("../models/validadorsolicitud"));
 const user_1 = __importDefault(require("../models/user"));
+const datos_user_1 = __importDefault(require("../models/datos_user"));
 const mailer_1 = require("../utils/mailer");
 const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const archivo = req.file;
@@ -97,6 +98,12 @@ const getDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                     {
                         model: user_1.default,
                         as: 'validador',
+                        include: [
+                            {
+                                model: datos_user_1.default,
+                                as: 'datos_user',
+                            }
+                        ]
                     },
                 ],
             },

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.saveValidador = exports.updatevalidador = exports.getvalidadores = exports.LoginUser = exports.CreateUser = exports.ReadUser = void 0;
+exports.deletevali = exports.saveValidador = exports.changevalidador = exports.getvalidadores = exports.LoginUser = exports.CreateUser = exports.ReadUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_1 = __importDefault(require("../models/user"));
 const role_users_1 = __importDefault(require("../models/role_users"));
@@ -139,7 +139,7 @@ const getvalidadores = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.getvalidadores = getvalidadores;
-const updatevalidador = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const changevalidador = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { usuario, solicitud } = req.body;
     const validasolicitudes = yield validadorsolicitud_1.default.findOne({
         where: { solicitudId: solicitud },
@@ -155,7 +155,7 @@ const updatevalidador = (req, res) => __awaiter(void 0, void 0, void 0, function
         });
     }
 });
-exports.updatevalidador = updatevalidador;
+exports.changevalidador = changevalidador;
 const saveValidador = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { body } = req;
     function generateRandomPassword(length = 10) {
@@ -282,3 +282,29 @@ function generarHtmlCorreo(contenidoHtml) {
     </html>
   `;
 }
+const deletevali = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const tieneSolicitudes = yield validadorsolicitud_1.default.findOne({
+            where: { validadorId: id },
+            attributes: ['id'],
+        });
+        if (tieneSolicitudes) {
+            return res.status(400).json({
+                estatus: 400,
+                msg: "Este validador tiene solicitudes asignadas",
+            });
+        }
+        yield Promise.all([
+            role_users_1.default.destroy({ where: { user_id: id } }),
+            datos_user_1.default.destroy({ where: { user_id: id } }),
+            user_1.default.destroy({ where: { id } }),
+        ]);
+        return res.status(200).json({ estatus: 200, msg: 'Validador eliminado correctamente' });
+    }
+    catch (error) {
+        console.error('Error al eliminar validador:', error);
+        return res.status(500).json({ estatus: 500, msg: 'Error del servidor' });
+    }
+});
+exports.deletevali = deletevali;

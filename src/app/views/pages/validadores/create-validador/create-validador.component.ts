@@ -17,7 +17,7 @@ export class CreateValidadorComponent {
   public validadoresList: any[] = [];
   public _userService = inject(UserService);
   id:any;
-  operacion: string = 'Registrar';
+  operacion: string = 'Registrar ';
  
   constructor(private fb: FormBuilder,private router: Router,  private  aRouter: ActivatedRoute){
     this.formReg = this.fb.group({

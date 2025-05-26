@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatevalidador = exports.deletevali = exports.saveValidador = exports.changevalidador = exports.getvalidadores = exports.LoginUser = exports.CreateUser = exports.ReadUser = void 0;
+exports.getvalidador = exports.updatevalidador = exports.deletevali = exports.saveValidador = exports.changevalidador = exports.getvalidadores = exports.LoginUser = exports.CreateUser = exports.ReadUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_1 = __importDefault(require("../models/user"));
 const role_users_1 = __importDefault(require("../models/role_users"));
@@ -340,3 +340,27 @@ const updatevalidador = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.updatevalidador = updatevalidador;
+const getvalidador = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const user = yield user_1.default.findOne({
+        where: { id: id },
+        include: [
+            {
+                model: role_users_1.default,
+                as: 'rol_users',
+                attributes: []
+            },
+            {
+                model: datos_user_1.default,
+                as: 'datos_user',
+            }
+        ]
+    });
+    if (user) {
+        return res.json({
+            msg: `List de exitosamente`,
+            data: user
+        });
+    }
+});
+exports.getvalidador = getvalidador;

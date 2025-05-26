@@ -369,3 +369,28 @@ export const updatevalidador = async (req: Request, res: Response): Promise<any>
     return res.status(500).json({ msg: 'Ocurrió un error al actualizar' });
   }
 };
+
+export const getvalidador = async (req: Request, res: Response): Promise<any> => {
+  const { id } = req.params;
+    const user = await User.findOne({
+        where: { id: id },
+        include: [
+            {
+            model: RolUsers,
+            as: 'rol_users',
+            attributes: []
+            },
+            {
+            model: DatosUser,
+            as: 'datos_user',
+            }
+        ]
+    });
+
+    if(user){
+        return res.json({
+          msg: `List de exitosamente`,
+          data: user
+      });
+    }
+}

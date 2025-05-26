@@ -12,9 +12,6 @@ module.exports = {
       valor: {
         type: Sequelize.STRING
       },
-      valor_real: {
-        type: Sequelize.STRING
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

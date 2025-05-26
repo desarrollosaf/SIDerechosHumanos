@@ -27,17 +27,22 @@
                                 <div class="form-group">
                                     <label for="validadorSelect" style="color:black"><strong>Selecciona un validador:</strong></label>
                                     <ng-select
-                                    [items]="usuariosValidador"
-                                    bindLabel="name"
-                                    bindValue="id"
-                                    placeholder="Selecciona un validador"
-                                    [(ngModel)]="validadorSeleccionado"
-                                    (change)="reasignarValidador($event)">
+                                        [items]="usuariosValidador"
+                                        bindLabel="datos_user.nombre"
+                                        bindValue="datos_user.user_id"
+                                        placeholder="Selecciona un validador"
+                                        [(ngModel)]="validadorSeleccionado"
+                                        (change)="reasignarValidador($event)">
+                                        <ng-template ng-label-tmp let-item="item">
+                                            {{ item.datos_user?.user_id }}
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item">
+                                            {{ item.datos_user?.nombre }} {{ item.datos_user?.apaterno }} {{ item.datos_user?.amaterno }}
+                                        </ng-template>
                                     </ng-select>
                                 </div>
-                        
                             </ngb-alert>
-                         </div>
+                        </div>
                         
                     </div>
                 </div>

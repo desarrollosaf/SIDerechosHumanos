@@ -146,7 +146,7 @@ export class DetalleValidadorComponent {
       };
       this._userService.reasignarValidador(datos).subscribe({
         next: (response: any) => {
-          const valida = usuario?.name;
+          const valida = usuario?.datos_user?.nombre + ' ' + usuario?.datos_user?.apaterno + ' ' + usuario?.datos_user?.amaterno;
           this.validadorSol=valida;
           Swal.fire({
             position: 'center',

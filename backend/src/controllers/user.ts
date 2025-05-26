@@ -113,8 +113,7 @@ export const LoginUser = async (req: Request, res: Response, next: NextFunction)
 }
 
 export const getvalidadores = async (req: Request, res: Response): Promise<any> => {
-    const userst = await User.findAll({
-        attributes: ['id'],
+    const user = await User.findAll({
         include: [
             {
             model: RolUsers,
@@ -125,20 +124,19 @@ export const getvalidadores = async (req: Request, res: Response): Promise<any> 
             {
             model: DatosUser,
             as: 'datos_user',
-            attributes: ['nombre', 'apaterno', 'amaterno']
             }
         ]
     });
 
-    const users = userst.map(user1 => ({
-    id: user1.id,
-    nombre: `${user1.datos_user?.nombre ?? ''} ${user1.datos_user?.apaterno ?? ''} ${user1.datos_user?.amaterno ?? ''}`.trim()
-    }));
+    // const user = userst.map(user1 => ({
+    // id: user1.id,
+    // nombre: `${user1.datos_user?.nombre ?? ''} ${user1.datos_user?.apaterno ?? ''} ${user1.datos_user?.amaterno ?? ''}`.trim()
+    // }));
 
-    if(users){
+    if(user){
         return res.json({
           msg: `List de exitosamente`,
-          data: users
+          data: user
       });
     }
 }

@@ -113,8 +113,7 @@ const LoginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
 });
 exports.LoginUser = LoginUser;
 const getvalidadores = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const userst = yield user_1.default.findAll({
-        attributes: ['id'],
+    const user = yield user_1.default.findAll({
         include: [
             {
                 model: role_users_1.default,
@@ -125,21 +124,17 @@ const getvalidadores = (req, res) => __awaiter(void 0, void 0, void 0, function*
             {
                 model: datos_user_1.default,
                 as: 'datos_user',
-                attributes: ['nombre', 'apaterno', 'amaterno']
             }
         ]
     });
-    const users = userst.map(user1 => {
-        var _a, _b, _c, _d, _e, _f;
-        return ({
-            id: user1.id,
-            nombre: `${(_b = (_a = user1.datos_user) === null || _a === void 0 ? void 0 : _a.nombre) !== null && _b !== void 0 ? _b : ''} ${(_d = (_c = user1.datos_user) === null || _c === void 0 ? void 0 : _c.apaterno) !== null && _d !== void 0 ? _d : ''} ${(_f = (_e = user1.datos_user) === null || _e === void 0 ? void 0 : _e.amaterno) !== null && _f !== void 0 ? _f : ''}`.trim()
-        });
-    });
-    if (users) {
+    // const user = userst.map(user1 => ({
+    // id: user1.id,
+    // nombre: `${user1.datos_user?.nombre ?? ''} ${user1.datos_user?.apaterno ?? ''} ${user1.datos_user?.amaterno ?? ''}`.trim()
+    // }));
+    if (user) {
         return res.json({
             msg: `List de exitosamente`,
-            data: users
+            data: user
         });
     }
 });

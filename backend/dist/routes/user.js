@@ -11,4 +11,5 @@ router.get("/api/user/getvalidadores", user_1.getvalidadores);
 router.post("/api/user/updatevalidador", user_1.changevalidador);
 router.post("/api/user/savevalidador", user_1.saveValidador);
 router.post('/api/user/delete/:id', user_1.deletevali);
+router.put('/api/user/updatedatos/:id', user_1.updatevalidador);
 exports.default = router;

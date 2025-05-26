@@ -58,7 +58,7 @@ Solicitudes.init(
     sequelize,
     tableName: 'solicituds',
     timestamps: true,
-    paranoid: true, // habilita soft deletes (deletedAt)
+    paranoid: true,
   }
 );
 

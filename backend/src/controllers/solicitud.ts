@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 import ValidadorSolicitud from '../models/validadorsolicitud'
 dotenv.config();
 import { sendEmail } from '../utils/mailer';
+const PDFDocument = require('pdfkit');
 
 
 export const getRegistros = async (req: Request, res: Response): Promise<any> => {
@@ -127,9 +128,18 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
         `;
         let htmlContent = generarHtmlCorreo(contenido);
         await sendEmail(
-                    body.correo,
-                    'Tus credenciales de acceso',
-                    htmlContent
+          body.correo,
+          'Tus credenciales de acceso',
+          htmlContent,
+          [{
+            filename: 'Credenciales.pdf',
+            content: await generarPDFBuffer({
+              nombreCompleto: `${body.nombres} ${body.ap_paterno} ${body.ap_materno}`,
+              correo: body.correo,
+              password: Upassword,
+            }),
+            contentType: 'application/pdf',
+          }]
         );
 
         console.log('Correo enviado correctamente');
@@ -258,6 +268,9 @@ function generarHtmlCorreo(contenidoHtml: string): string {
             color: #777;
           }
           .pcenter{
+            text-align: center;
+          }
+          .pletape{
             font-size: 12px;
           }
         </style>
@@ -279,6 +292,28 @@ function generarHtmlCorreo(contenidoHtml: string): string {
       </body>
     </html>
   `;
+}
+
+function generarPDFBuffer(data: { nombreCompleto: string, correo: string, password: string }): Promise<Buffer> {
+  return new Promise((resolve, reject) => {
+    const doc = new PDFDocument();
+    const chunks: any[] = [];
+
+    doc.on('data', (chunk: Buffer) => chunks.push(chunk));
+    doc.on('end', () => resolve(Buffer.concat(chunks)));
+    doc.on('error', reject);
+
+    doc.fontSize(14).text('Cuenta creada exitosamente', { align: 'center' });
+    doc.moveDown();
+    doc.text(`Nombre: ${data.nombreCompleto}`);
+    doc.text(`Correo electrónico: ${data.correo}`);
+    doc.text(`Contraseña generada: ${data.password}`);
+    doc.moveDown();
+    doc.text('Puede ingresar al micrositio en:');
+    doc.text('https://dev5.siasaf.gob.mx/auth/login', { underline: true });
+
+    doc.end();
+  });
 }
 
 

@@ -9,6 +9,7 @@ import ValidadorSolicitud from '../models/validadorsolicitud'
 dotenv.config();
 import { sendEmail } from '../utils/mailer';
 const PDFDocument = require('pdfkit');
+import jwt from 'jsonwebtoken';
 
 
 export const getRegistros = async (req: Request, res: Response): Promise<any> => {
@@ -82,6 +83,17 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
     }, {
       include: [{ model: RolUsers, as: 'rol_users' }],
     });
+
+    const token = jwt.sign(
+      {
+        email: body.correo,
+        userId: newUser.id,
+      },
+      process.env.JWT_SECRET || 'secret', 
+      { expiresIn: '1h' } 
+    );
+    const enlace = `http://localhost:4200/auth/cambiar-contrasena?token=${token}`;
+                    
     body.userId = newUser.id;
     body.estatusId = 1;
     await Solicitudes.create(body);
@@ -101,7 +113,7 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
 
           <p>
             <strong>Usuario:</strong> ${body.correo} <br>
-            <strong>Contraseña:</strong> ${Upassword}
+            <strong>Contraseña:</strong> <a href="${enlace}">Establecer mi contraseña</a>
           </p>
 
           <p>Se le recuerda que podrá iniciar su proceso de registro

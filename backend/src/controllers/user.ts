@@ -8,6 +8,7 @@ import jwt from 'jsonwebtoken'
 import  ValidadorSolicitud  from '../models/validadorsolicitud'
 import { sendEmail } from '../utils/mailer';
 import  DatosUser  from '../models/datos_user'
+import { JwtPayload } from 'jsonwebtoken';
 
 export const ReadUser = async (req: Request, res: Response): Promise<any> => {
     const listUser = await User.findAll();
@@ -394,3 +395,36 @@ export const getvalidador = async (req: Request, res: Response): Promise<any> =>
       });
     }
 }
+
+export const validatoken = async (req: Request, res: Response): Promise<any> => {
+    const { token  } = req.params;
+    try {
+      const payload = jwt.verify(token, process.env.JWT_SECRET || 'secret');
+      res.json({ valid: true, payload });
+    } catch (err) {
+      res.status(400).json({ valid: false, error: 'Token inválido o expirado' });
+    }
+}
+
+export const updatepassword = async (req: Request, res: Response): Promise<any> => {
+  const { token, newPassword } = req.body;
+
+  try {
+    interface MyPayload extends JwtPayload {
+      userId: number;
+    }
+
+    const payload = jwt.verify(token, process.env.JWT_SECRET!) as MyPayload;
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await User.update(
+      { password: hashedPassword },
+      { where: { id: payload.userId } }
+    );
+
+    res.json({ msg: 'Contraseña actualizada correctamente' });
+  } catch (err) {
+    res.status(400).json({ error: 'Token inválido o expirado' });
+  }
+};

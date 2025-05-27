@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getvalidador = exports.updatevalidador = exports.deletevali = exports.saveValidador = exports.changevalidador = exports.getvalidadores = exports.LoginUser = exports.CreateUser = exports.ReadUser = void 0;
+exports.updatepassword = exports.validatoken = exports.getvalidador = exports.updatevalidador = exports.deletevali = exports.saveValidador = exports.changevalidador = exports.getvalidadores = exports.LoginUser = exports.CreateUser = exports.ReadUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_1 = __importDefault(require("../models/user"));
 const role_users_1 = __importDefault(require("../models/role_users"));
@@ -364,3 +364,27 @@ const getvalidador = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.getvalidador = getvalidador;
+const validatoken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { token } = req.params;
+    try {
+        const payload = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET || 'secret');
+        res.json({ valid: true, payload });
+    }
+    catch (err) {
+        res.status(400).json({ valid: false, error: 'Token inválido o expirado' });
+    }
+});
+exports.validatoken = validatoken;
+const updatepassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { token, newPassword } = req.body;
+    try {
+        const payload = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
+        const hashedPassword = yield bcrypt_1.default.hash(newPassword, 10);
+        yield user_1.default.update({ password: hashedPassword }, { where: { id: payload.userId } });
+        res.json({ msg: 'Contraseña actualizada correctamente' });
+    }
+    catch (err) {
+        res.status(400).json({ error: 'Token inválido o expirado' });
+    }
+});
+exports.updatepassword = updatepassword;

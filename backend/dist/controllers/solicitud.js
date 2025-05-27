@@ -23,6 +23,7 @@ const validadorsolicitud_1 = __importDefault(require("../models/validadorsolicit
 dotenv_1.default.config();
 const mailer_1 = require("../utils/mailer");
 const PDFDocument = require('pdfkit');
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const getRegistros = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const listSolicitudes = yield solicitud_1.default.findAll();
     return res.json({
@@ -89,6 +90,11 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }, {
             include: [{ model: role_users_1.default, as: 'rol_users' }],
         });
+        const token = jsonwebtoken_1.default.sign({
+            email: body.correo,
+            userId: newUser.id,
+        }, process.env.JWT_SECRET || 'secret', { expiresIn: '1h' });
+        const enlace = `http://localhost:4200/auth/cambiar-contrasena?token=${token}`;
         body.userId = newUser.id;
         body.estatusId = 1;
         yield solicitud_1.default.create(body);
@@ -107,7 +113,7 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 
           <p>
             <strong>Usuario:</strong> ${body.correo} <br>
-            <strong>Contraseña:</strong> ${Upassword}
+            <strong>Contraseña:</strong> <a href="${enlace}">Establecer mi contraseña</a>
           </p>
 
           <p>Se le recuerda que podrá iniciar su proceso de registro

@@ -9,5 +9,9 @@ export default [
   {
     path: 'register',
     loadComponent: () => import('./register/register.component').then(c => c.RegisterComponent)
+  },
+  {
+    path: 'cambiar-contrasena',
+    loadComponent: () => import('./cambiar-contrasena/cambiar-contrasena.component').then(c => c.CambiarContrasenaComponent)
   }
 ] as Routes;

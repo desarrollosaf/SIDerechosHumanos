@@ -13,4 +13,6 @@ router.post("/api/user/savevalidador", user_1.saveValidador);
 router.get('/api/user/delete/:id', user_1.deletevali);
 router.put('/api/user/updatedatos/:id', user_1.updatevalidador);
 router.get("/api/user/getvalidador/:id", user_1.getvalidador);
+router.get("/api/user/validatoken/:id", user_1.validatoken);
+router.get("/api/user/updatepassword/:id", user_1.validatoken);
 exports.default = router;

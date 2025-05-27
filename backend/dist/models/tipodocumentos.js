@@ -18,6 +18,10 @@ TipoDocumentos.init({
         type: sequelize_1.DataTypes.STRING(255),
         allowNull: true,
     },
+    valor_real: {
+        type: sequelize_1.DataTypes.STRING(255),
+        allowNull: true,
+    },
 }, {
     sequelize: connection_1.default,
     tableName: 'tipodocumentos',

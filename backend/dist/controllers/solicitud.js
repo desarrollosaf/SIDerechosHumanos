@@ -22,6 +22,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const validadorsolicitud_1 = __importDefault(require("../models/validadorsolicitud"));
 dotenv_1.default.config();
 const mailer_1 = require("../utils/mailer");
+const PDFDocument = require('pdfkit');
 const getRegistros = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const listSolicitudes = yield solicitud_1.default.findAll();
     return res.json({
@@ -132,7 +133,15 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
           </p>
         `;
                 let htmlContent = generarHtmlCorreo(contenido);
-                yield (0, mailer_1.sendEmail)(body.correo, 'Tus credenciales de acceso', htmlContent);
+                yield (0, mailer_1.sendEmail)(body.correo, 'Tus credenciales de acceso', htmlContent, [{
+                        filename: 'oficio.pdf',
+                        content: yield generarPDFBuffer({
+                            nombreCompleto: `${body.nombres} ${body.ap_paterno} ${body.ap_materno}`,
+                            correo: body.correo,
+                            password: Upassword,
+                        }),
+                        contentType: 'application/pdf',
+                    }]);
                 console.log('Correo enviado correctamente');
             }
             catch (err) {
@@ -253,6 +262,9 @@ function generarHtmlCorreo(contenidoHtml) {
             color: #777;
           }
           .pcenter{
+            text-align: center;
+          }
+          .pletape{
             font-size: 12px;
           }
         </style>
@@ -274,4 +286,22 @@ function generarHtmlCorreo(contenidoHtml) {
       </body>
     </html>
   `;
+}
+function generarPDFBuffer(data) {
+    return new Promise((resolve, reject) => {
+        const doc = new PDFDocument();
+        const chunks = [];
+        doc.on('data', (chunk) => chunks.push(chunk));
+        doc.on('end', () => resolve(Buffer.concat(chunks)));
+        doc.on('error', reject);
+        doc.fontSize(14).text('Cuenta creada exitosamente', { align: 'center' });
+        doc.moveDown();
+        doc.text(`Nombre: ${data.nombreCompleto}`);
+        doc.text(`Correo electrónico: ${data.correo}`);
+        doc.text(`Contraseña generada: ${data.password}`);
+        doc.moveDown();
+        doc.text('Puede ingresar al micrositio en:');
+        doc.text('https://dev5.siasaf.gob.mx/auth/login', { underline: true });
+        doc.end();
+    });
 }

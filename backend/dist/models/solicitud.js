@@ -37,7 +37,7 @@ Solicitudes.init({
     sequelize: connection_1.default,
     tableName: 'solicituds',
     timestamps: true,
-    paranoid: true, // habilita soft deletes (deletedAt)
+    paranoid: true,
 });
 // Relaciones
 Solicitudes.hasMany(documentos_1.default, { foreignKey: 'solicitudId', as: 'documentos' });

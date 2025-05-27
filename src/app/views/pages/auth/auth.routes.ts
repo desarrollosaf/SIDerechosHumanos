@@ -13,5 +13,9 @@ export default [
   {
     path: 'cambiar-contrasena',
     loadComponent: () => import('./cambiar-contrasena/cambiar-contrasena.component').then(c => c.CambiarContrasenaComponent)
+  },
+  {
+    path: 'restaurar-contrasena',
+    loadComponent: () => import('./restaurar-contrasena/restaurar-contrasena.component').then(c => c.RestaurarContrasenaComponent)
   }
 ] as Routes;

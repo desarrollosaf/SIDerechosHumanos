@@ -187,7 +187,6 @@ const deleteDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.deleteDoc = deleteDoc;
 const estatusDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     try {
         const userId = req.params.id;
         const Documentos2 = req.body;
@@ -210,12 +209,14 @@ const estatusDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         });
         const observados = [];
         for (const documentoExistente of documentosExistentes) {
-            const tipoValor = (_a = documentoExistente.tipo) === null || _a === void 0 ? void 0 : _a.valor;
+            const tipo1 = documentoExistente.tipo;
+            const tipoValor = tipo1 === null || tipo1 === void 0 ? void 0 : tipo1.valor;
+            const doc = tipo1 === null || tipo1 === void 0 ? void 0 : tipo1.valor_real;
             const documentoEntrada = Documentos2.find((doc) => doc.nombre === tipoValor);
             if (documentoEntrada && tipoValor) {
                 documentoExistente.estatus = 3;
                 documentoExistente.observaciones = documentoEntrada.observaciones || '';
-                observados.push({ tipo: tipoValor, observaciones: documentoEntrada.observaciones || '' });
+                observados.push({ tipo: doc !== null && doc !== void 0 ? doc : '', observaciones: documentoEntrada.observaciones || '' });
             }
             else {
                 documentoExistente.estatus = 2;

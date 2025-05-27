@@ -71,5 +71,11 @@ export class UserService {
   deleteVallidador(id: any): Observable<string>{
     return this.http.get<string>(`${this.myAppUrl}${this.myAPIUrl}/delete/${id}`);
   }
-  
+
+  validaToken(id: any): Observable<string>{
+    return this.http.get<string>(`${this.myAppUrl}${this.myAPIUrl}/validatoken/${id}`);
+  }
+  updatePassword(data: any): Observable<string>{
+    return this.http.post<string>(`${this.myAppUrl}${this.myAPIUrl}/updatepassword`,data);
+  }
 }

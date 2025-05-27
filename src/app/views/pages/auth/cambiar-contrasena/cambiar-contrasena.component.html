@@ -34,7 +34,6 @@
                             <i class="feather" [ngClass]="showPassword2 ? 'icon-eye-off' : 'icon-eye'"></i>
                         </button>                
                     </div>
-
                     <small class="colorwr" *ngIf="formPassword.get('password2')?.hasError('pattern')">
                         <strong> La contraseña debe contener al menos un número, una letra mayúscula y una minúscula, un
                             caracter especial, y una longitud mayor o igual a 8 caracteres.<br />La contraseña no puede

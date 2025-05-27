@@ -397,18 +397,18 @@ export const getvalidador = async (req: Request, res: Response): Promise<any> =>
 }
 
 export const validatoken = async (req: Request, res: Response): Promise<any> => {
-    const { token  } = req.params;
+    const { id  } = req.params;
+    console.log(id);
     try {
-      const payload = jwt.verify(token, process.env.JWT_SECRET || 'secret');
+      const payload = jwt.verify(id, process.env.JWT_SECRET || 'secret');
       res.json({ valid: true, payload });
     } catch (err) {
-      res.status(400).json({ valid: false, error: 'Token inválido o expirado' });
+      res.json({ valid: false, error: 'Token inválido o expirado' });
     }
 }
 
 export const updatepassword = async (req: Request, res: Response): Promise<any> => {
   const { token, newPassword } = req.body;
-
   try {
     interface MyPayload extends JwtPayload {
       userId: number;

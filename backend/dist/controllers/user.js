@@ -365,13 +365,14 @@ const getvalidador = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 });
 exports.getvalidador = getvalidador;
 const validatoken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { token } = req.params;
+    const { id } = req.params;
+    console.log(id);
     try {
-        const payload = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET || 'secret');
+        const payload = jsonwebtoken_1.default.verify(id, process.env.JWT_SECRET || 'secret');
         res.json({ valid: true, payload });
     }
     catch (err) {
-        res.status(400).json({ valid: false, error: 'Token inválido o expirado' });
+        res.json({ valid: false, error: 'Token inválido o expirado' });
     }
 });
 exports.validatoken = validatoken;

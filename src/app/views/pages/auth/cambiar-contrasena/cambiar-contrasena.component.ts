@@ -1,8 +1,11 @@
 import { NgStyle } from '@angular/common';
-import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import {FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import { UserService } from '../../../../service/user.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-cambiar-contrasena',
   imports: [NgStyle, CommonModule, FormsModule,ReactiveFormsModule],
@@ -12,19 +15,44 @@ import {FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators} fr
 export class CambiarContrasenaComponent {
   showPassword1: boolean = false;
   showPassword2: boolean = false;
-
+  token: string = '';
   formPassword: FormGroup;
-  constructor(private fb: FormBuilder){
+    public _userService = inject(UserService);
+  constructor(private fb: FormBuilder, private  aRouter: ActivatedRoute,private router: Router){
     this.formPassword = this.fb.group({
       password1:['', [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]],
       password2:['', [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]],
       },{ validators: [this.matchPasswords]}
     );
+
+    
   }
 
   ngOnInit(): void {
+    this.aRouter.queryParams.subscribe(params => {
+      this.token = params['token'] || '';
+    });
+    this.validaTkn();
   }
-
+  validaTkn(){
+    this._userService.validaToken(this.token).subscribe({
+    next: (response: any) => {
+      if(response.valid != true){
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Token inválido o expirado",
+          showConfirmButton: false,
+          timer: 3000
+        });
+        this.router.navigate(['/auth/login']); 
+      }
+    },
+    error: (e: HttpErrorResponse) => {
+      console.error('Error:', e.error?.msg || e);
+    }
+    });
+  }
   togglePassword(field: number): void {
     if (field === 1) {
       this.showPassword1 = !this.showPassword1;
@@ -40,11 +68,28 @@ export class CambiarContrasenaComponent {
   }
 
   cambiarContrasena(){
-    if (this.formPassword.valid) {
-      console.log('Formulario enviado:', this.formPassword.value);
-    } else {
-      console.log('Formulario no válido');
-    }
+
+    const datos = {
+    newPassword: this.formPassword.value.password1, 
+    token: this.token
+    };
+    console.log(datos);
+    this._userService.updatePassword(datos).subscribe({
+      next: (response: any) => {
+         Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Contraseña cambiada correctamente.",
+          showConfirmButton: false,
+          timer: 3000
+        });
+        this.router.navigate(['/auth/login']); 
+      },
+      error: (e: HttpErrorResponse) => {
+        console.error('Error:', e.error?.msg || e);
+      }
+    });
+    
   }
 }
 

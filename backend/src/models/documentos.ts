@@ -35,7 +35,7 @@ Documentos.init(
       autoIncrement: true,
     },
     solicitudId: {
-      type: DataTypes.UUID,  // Aquí se usa UUID
+      type: DataTypes.UUID,  
       allowNull: false,
       references: {
         model: 'solicituds',
@@ -43,7 +43,7 @@ Documentos.init(
       },
     },
     tipoDocumento: {
-      type: DataTypes.INTEGER, // Entero, referencia a TipoDocumentos
+      type: DataTypes.INTEGER, 
       allowNull: false,
     },
     path: {
@@ -51,7 +51,7 @@ Documentos.init(
       allowNull: false,
     },
     estatus: {
-      type: DataTypes.NUMBER,  // Cambiado a INTEGER
+      type: DataTypes.NUMBER, 
       allowNull: true,
     },
     observaciones: {

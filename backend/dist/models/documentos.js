@@ -15,7 +15,7 @@ Documentos.init({
         autoIncrement: true,
     },
     solicitudId: {
-        type: sequelize_1.DataTypes.UUID, // Aquí se usa UUID
+        type: sequelize_1.DataTypes.UUID,
         allowNull: false,
         references: {
             model: 'solicituds',
@@ -23,7 +23,7 @@ Documentos.init({
         },
     },
     tipoDocumento: {
-        type: sequelize_1.DataTypes.INTEGER, // Entero, referencia a TipoDocumentos
+        type: sequelize_1.DataTypes.INTEGER,
         allowNull: false,
     },
     path: {
@@ -31,7 +31,7 @@ Documentos.init({
         allowNull: false,
     },
     estatus: {
-        type: sequelize_1.DataTypes.NUMBER, // Cambiado a INTEGER
+        type: sequelize_1.DataTypes.NUMBER,
         allowNull: true,
     },
     observaciones: {

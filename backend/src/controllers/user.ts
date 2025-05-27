@@ -4,11 +4,13 @@ import  User  from '../models/user'
 import  RolUsers  from '../models/role_users'
 import  Roles  from '../models/role'
 import { Op } from 'sequelize'  
-import jwt from 'jsonwebtoken'
+// import jwt from 'jsonwebtoken'
 import  ValidadorSolicitud  from '../models/validadorsolicitud'
 import { sendEmail } from '../utils/mailer';
 import  DatosUser  from '../models/datos_user'
-import { JwtPayload } from 'jsonwebtoken';
+// import { JwtPayload } from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
 export const ReadUser = async (req: Request, res: Response): Promise<any> => {
     const listUser = await User.findAll();
@@ -400,7 +402,7 @@ export const validatoken = async (req: Request, res: Response): Promise<any> => 
     const { id  } = req.params;
     console.log(id);
     try {
-      const payload = jwt.verify(id, process.env.JWT_SECRET || 'secret');
+      const payload = jwt.verify(id, process.env.JWT_SECRET!);
       res.json({ valid: true, payload });
     } catch (err) {
       res.json({ valid: false, error: 'Token inválido o expirado' });
@@ -410,12 +412,7 @@ export const validatoken = async (req: Request, res: Response): Promise<any> => 
 export const updatepassword = async (req: Request, res: Response): Promise<any> => {
   const { token, newPassword } = req.body;
   try {
-    interface MyPayload extends JwtPayload {
-      userId: number;
-    }
-
-    const payload = jwt.verify(token, process.env.JWT_SECRET!) as MyPayload;
-
+    const payload = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload & { userId: string };
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     await User.update(

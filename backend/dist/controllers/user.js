@@ -17,10 +17,12 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_1 = __importDefault(require("../models/user"));
 const role_users_1 = __importDefault(require("../models/role_users"));
 const role_1 = __importDefault(require("../models/role"));
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+// import jwt from 'jsonwebtoken'
 const validadorsolicitud_1 = __importDefault(require("../models/validadorsolicitud"));
 const mailer_1 = require("../utils/mailer");
 const datos_user_1 = __importDefault(require("../models/datos_user"));
+// import { JwtPayload } from 'jsonwebtoken';
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const ReadUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const listUser = yield user_1.default.findAll();
     return res.json({
@@ -368,7 +370,7 @@ const validatoken = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const { id } = req.params;
     console.log(id);
     try {
-        const payload = jsonwebtoken_1.default.verify(id, process.env.JWT_SECRET || 'secret');
+        const payload = jsonwebtoken_1.default.verify(id, process.env.JWT_SECRET);
         res.json({ valid: true, payload });
     }
     catch (err) {

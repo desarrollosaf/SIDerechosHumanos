@@ -89,8 +89,8 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
         email: body.correo,
         userId: newUser.id,
       },
-      process.env.JWT_SECRET || 'secret', 
-      { expiresIn: '1h' } 
+      process.env.JWT_SECRET || 'sUP3r_s3creT_ClavE-4321!', 
+      { expiresIn: '5m' } 
     );
     const enlace = `http://localhost:4200/auth/cambiar-contrasena?token=${token}`;
                     
@@ -133,9 +133,8 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
 
           <p class="pletape" >
             Si tiene problemas para hacer clic en el botón, copie y pegue la siguiente URL en su navegador:<br>
-            https://poder-judicial-edomex-405263873758.us-central1.run.app/set-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
-            eyJlbWFpbCI6Imp1YW5qb3NlZG9taW5ndWV6b0Bob3RtYWlsLmNvbSIsInVzZXJJZCI6Ijk2ODhjNzFjLTliNTgtNDRhNi1iNTExLTgwNTVkODNkZTI3MSI
-            sImlhdCI6MTczOTMxNzIyNywiZXhwIjoxNzM5NDAzNjI3fQ.ruD2co-QCRUAvF3BGS8QaFyZCem2bEqJBQkrERYXao0
+            ${enlace}
+
           </p>
         `;
         let htmlContent = generarHtmlCorreo(contenido);

@@ -12,17 +12,14 @@ import {FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators} fr
 export class CambiarContrasenaComponent {
   showPassword1: boolean = false;
   showPassword2: boolean = false;
-  passwordsNoCoinciden: boolean = false;
 
   formPassword: FormGroup;
   constructor(private fb: FormBuilder){
     this.formPassword = this.fb.group({
       password1:['', [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]],
       password2:['', [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)]],
-    },{ validators: [this.matchPasswords]
-
-
-     });
+      },{ validators: [this.matchPasswords]}
+    );
   }
 
   ngOnInit(): void {
@@ -36,14 +33,18 @@ export class CambiarContrasenaComponent {
     }
   }
 
-   matchPasswords(group: FormGroup) {
-    
+  matchPasswords(group: FormGroup) {
     const pass = group.get('password1')?.value;
-    console.log(pass);
     const confirm = group.get('password2')?.value;
-    return pass === confirm ? null : { passwordsNoCoinciden: true };
+    return pass === confirm ? null : { noMatch: true };
   }
 
-
+  cambiarContrasena(){
+    if (this.formPassword.valid) {
+      console.log('Formulario enviado:', this.formPassword.value);
+    } else {
+      console.log('Formulario no válido');
+    }
+  }
 }
 

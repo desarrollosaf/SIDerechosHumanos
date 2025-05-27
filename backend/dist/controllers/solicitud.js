@@ -93,7 +93,7 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const token = jsonwebtoken_1.default.sign({
             email: body.correo,
             userId: newUser.id,
-        }, process.env.JWT_SECRET || 'secret', { expiresIn: '1h' });
+        }, process.env.JWT_SECRET || 'sUP3r_s3creT_ClavE-4321!', { expiresIn: '5m' });
         const enlace = `http://localhost:4200/auth/cambiar-contrasena?token=${token}`;
         body.userId = newUser.id;
         body.estatusId = 1;
@@ -133,9 +133,8 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 
           <p class="pletape" >
             Si tiene problemas para hacer clic en el botón, copie y pegue la siguiente URL en su navegador:<br>
-            https://poder-judicial-edomex-405263873758.us-central1.run.app/set-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
-            eyJlbWFpbCI6Imp1YW5qb3NlZG9taW5ndWV6b0Bob3RtYWlsLmNvbSIsInVzZXJJZCI6Ijk2ODhjNzFjLTliNTgtNDRhNi1iNTExLTgwNTVkODNkZTI3MSI
-            sImlhdCI6MTczOTMxNzIyNywiZXhwIjoxNzM5NDAzNjI3fQ.ruD2co-QCRUAvF3BGS8QaFyZCem2bEqJBQkrERYXao0
+            ${enlace}
+
           </p>
         `;
                 let htmlContent = generarHtmlCorreo(contenido);

@@ -93,7 +93,7 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const token = jsonwebtoken_1.default.sign({
             email: body.correo,
             userId: newUser.id,
-        }, process.env.JWT_SECRET || 'sUP3r_s3creT_ClavE-4321!', { expiresIn: '5m' });
+        }, process.env.JWT_SECRET || 'sUP3r_s3creT_ClavE-4321!', { expiresIn: '2d' });
         const enlace = `http://localhost:4200/auth/cambiar-contrasena?token=${token}`;
         body.userId = newUser.id;
         body.estatusId = 1;

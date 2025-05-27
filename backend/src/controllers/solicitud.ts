@@ -90,7 +90,7 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
         userId: newUser.id,
       },
       process.env.JWT_SECRET || 'sUP3r_s3creT_ClavE-4321!', 
-      { expiresIn: '5m' } 
+      { expiresIn: '2d' } 
     );
     const enlace = `http://localhost:4200/auth/cambiar-contrasena?token=${token}`;
                     

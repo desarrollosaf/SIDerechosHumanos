@@ -41,6 +41,22 @@ export class RestaurarContrasenaComponent {
     const datos = {
     correo: this.formRestaura.value.correo
     };
+    this._userService.resetPassword(datos).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        // Swal.fire({
+        //   position: "center",
+        //   icon: "success",
+        //   title: "Solicitud de cambio de contraseña correcta, por favor, revise su email.",
+        //   showConfirmButton: false,
+        //   timer: 3000
+        // });
+        // this.router.navigate(['/auth/login']); 
+      },
+      error: (e: HttpErrorResponse) => {
+      console.error('Error:', e.error?.msg || e);
+      }
+    });
 
   }
 

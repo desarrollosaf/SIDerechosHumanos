@@ -92,7 +92,7 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
       process.env.JWT_SECRET || 'sUP3r_s3creT_ClavE-4321!', 
       { expiresIn: '2d' } 
     );
-    const enlace = `http://localhost:4200/auth/cambiar-contrasena?token=${token}`;
+    const enlace = `https://dev5.siasaf.gob.mx/auth/cambiar-contrasena?token=${token}`;
                     
     body.userId = newUser.id;
     body.estatusId = 1;

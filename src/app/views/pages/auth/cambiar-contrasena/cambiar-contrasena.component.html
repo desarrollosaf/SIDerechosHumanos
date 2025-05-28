@@ -7,7 +7,7 @@
                     <label for="password1" class="form-label">Contraseña</label>
                     <div class="input-group">
                         <input formControlName="password1" [type]="showPassword1 ? 'text' : 'password'"
-                            class="form-control" id="password1" placeholder="Contraseña">
+                            class="form-control" id="password1" placeholder="Contraseña"  autocomplete="new-password">
                         <button type="button" class="btn btn-outline-secondary" (click)="togglePassword(1)">
                             <i class="feather" [ngClass]="showPassword1 ? 'icon-eye-off' : 'icon-eye'"></i>
                         </button>
@@ -29,7 +29,7 @@
                     <label for="password2" class="form-label">Confirmar contraseña</label>
                     <div class="input-group">
                         <input formControlName="password2" [type]="showPassword2 ? 'text' : 'password'"
-                            class="form-control" id="password2" placeholder="Confirmar contraseña">
+                            class="form-control" id="password2" placeholder="Confirmar contraseña"  autocomplete="new-password">
                         <button type="button" class="btn btn-outline-secondary" (click)="togglePassword(2)">
                             <i class="feather" [ngClass]="showPassword2 ? 'icon-eye-off' : 'icon-eye'"></i>
                         </button>                

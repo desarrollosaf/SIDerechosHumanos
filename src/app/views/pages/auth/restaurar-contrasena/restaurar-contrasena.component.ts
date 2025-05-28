@@ -6,6 +6,7 @@ import {FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators} fr
 import { UserService } from '../../../../service/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-restaurar-contrasena',
@@ -17,7 +18,7 @@ export class RestaurarContrasenaComponent {
   formRestaura: FormGroup;
   public _userService = inject(UserService);
 
-  constructor(private fb: FormBuilder, private  aRouter: ActivatedRoute,private router: Router){
+  constructor(private fb: FormBuilder, private  aRouter: ActivatedRoute,private router: Router,private location: Location){
     this.formRestaura = this.fb.group({
       correo:['', [Validators.required, Validators.email]],
       confirmEmail: ['', [Validators.required, Validators.email]],
@@ -37,6 +38,13 @@ export class RestaurarContrasenaComponent {
   }
 
   olvideContrasena(){
+    const datos = {
+    correo: this.formRestaura.value.correo
+    };
 
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 }

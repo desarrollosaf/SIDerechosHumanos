@@ -76,7 +76,7 @@ export class CambiarContrasenaComponent {
     console.log(datos);
     this._userService.updatePassword(datos).subscribe({
       next: (response: any) => {
-         Swal.fire({
+          Swal.fire({
           position: "center",
           icon: "success",
           title: "Contraseña cambiada correctamente.",

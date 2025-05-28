@@ -35,7 +35,14 @@
                     </div>
                 </div>
                 <div class="text-start">
-                    <button [disabled]="formRestaura.invalid" type="submit" class="btn btn-primary">Enviar</button>
+                    <div>
+                        <button  [disabled]="formRestaura.invalid" type="submit" class="btn btn-primary me-2 mb-2 mb-md-0" >
+                            Enviar
+                        </button>
+                        <a type="button" class="btn btn-outline-secondary btn-icon-text mb-2 mb-md-0" (click)="goBack()">
+                            Cancelar
+                        </a>
+                    </div>
                 </div>
             </form>
         </div>

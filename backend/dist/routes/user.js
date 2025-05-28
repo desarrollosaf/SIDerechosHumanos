@@ -15,4 +15,5 @@ router.put('/api/user/updatedatos/:id', user_1.updatevalidador);
 router.get("/api/user/getvalidador/:id", user_1.getvalidador);
 router.get("/api/user/validatoken/:id", user_1.validatoken);
 router.post("/api/user/updatepassword/", user_1.updatepassword);
+router.post("/api/user/resetpassword/", user_1.resetpassword);
 exports.default = router;

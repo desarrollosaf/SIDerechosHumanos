@@ -119,7 +119,7 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
           <p>Se le recuerda que podrá iniciar su proceso de registro
             a través del micrositio 
             <a href="https://dev5.siasaf.gob.mx/auth/login" target="_blank">
-              https://dev5.siasaf.gob.mx/auth/login
+              https://dev5.siasaf.gob.mx/auth/login   
             </a> 
             durante el periodo comprendido del XXXXX al XXXXX de XXXXX de 2025.
           </p>

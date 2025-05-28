@@ -79,9 +79,9 @@ export class CambiarContrasenaComponent {
           Swal.fire({
           position: "center",
           icon: "success",
-          title: "Contraseña cambiada correctamente.",
+          title: "Se ha enviado a la cuenta de correo electrónico el enlace para cambio de contraseña. Si no encuentra el correo en la bandeja de entrada, verifique en el apartado de Correo no deseado o Spam.",
           showConfirmButton: false,
-          timer: 3000
+          timer: 4000
         });
         this.router.navigate(['/auth/login']); 
       },

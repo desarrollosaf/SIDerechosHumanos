@@ -431,7 +431,6 @@ export const updatepassword = async (req: Request, res: Response): Promise<any> 
 
 export const resetpassword = async (req: Request, res: Response): Promise<any> => {
   const { correo } = req.body;
-
   const usuario = await User.findOne({
     where: { email: correo }  
   });

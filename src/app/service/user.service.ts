@@ -15,7 +15,7 @@ export class UserService {
   public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor() {
-    this.myAppUrl = 'https://dev4.siasaf.gob.mx/' //'https://dev4.siasaf.gob.mx/'   //'http://localhost:3001/'
+    this.myAppUrl = 'http://localhost:3001/' //'https://dev4.siasaf.gob.mx/'   //'http://localhost:3001/'
     this.myAPIUrl = 'api/user';
 
     const storedUser = localStorage.getItem('currentUser');
@@ -77,5 +77,8 @@ export class UserService {
   }
   updatePassword(data: any): Observable<string>{
     return this.http.post<string>(`${this.myAppUrl}${this.myAPIUrl}/updatepassword`,data);
+  }
+  resetPassword(data: any): Observable<string>{
+    return this.http.post<string>(`${this.myAppUrl}${this.myAPIUrl}/resetpassword`,data);
   }
 }

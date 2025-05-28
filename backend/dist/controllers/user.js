@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatepassword = exports.validatoken = exports.getvalidador = exports.updatevalidador = exports.deletevali = exports.saveValidador = exports.changevalidador = exports.getvalidadores = exports.LoginUser = exports.CreateUser = exports.ReadUser = void 0;
+exports.resetpassword = exports.updatepassword = exports.validatoken = exports.getvalidador = exports.updatevalidador = exports.deletevali = exports.saveValidador = exports.changevalidador = exports.getvalidadores = exports.LoginUser = exports.CreateUser = exports.ReadUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_1 = __importDefault(require("../models/user"));
 const role_users_1 = __importDefault(require("../models/role_users"));
@@ -262,6 +262,9 @@ function generarHtmlCorreo(contenidoHtml) {
             color: #777;
           }
           .pcenter{
+            text-align: center;
+          }
+          .pletape{
             font-size: 12px;
           }
         </style>
@@ -391,3 +394,57 @@ const updatepassword = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.updatepassword = updatepassword;
+const resetpassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { correo } = req.body;
+    const usuario = yield user_1.default.findOne({
+        where: { email: correo }
+    });
+    if (usuario) {
+        try {
+            const token = jsonwebtoken_1.default.sign({
+                email: correo,
+                userId: usuario.id,
+            }, process.env.JWT_SECRET || 'sUP3r_s3creT_ClavE-4321!', { expiresIn: '2d' });
+            const enlace = `http://localhost:4200/auth/cambiar-contrasena?token=${token}`;
+            (() => __awaiter(void 0, void 0, void 0, function* () {
+                try {
+                    const contenido = `
+          <h1 class="pcenter">REESTABLECER CONTRASEÑA </h1>
+
+          <p><strong>Correo:</strong> ${correo} ,</p>
+
+          <p>Hemos recibido una solicitud para restablecer la contraseña de su cuenta. Para establecer una nueva contraseña, haga clic en el siguiente enlace:</p>
+
+          <p>
+           <a href="${enlace}">Restablecer mi contraseña</a>
+          </p>
+          <p class="pcenter">
+            Atentamente, <br>
+            <strong>Poder Legislativo del Estado de México</strong>
+          </p>
+          <p>Si no solicitó este cambio, ignore este mensaje.</p>
+          <p class="pletape" >
+            Si tiene problemas para hacer clic en el botón, copie y pegue la siguiente URL en su navegador:<br>
+            ${enlace}
+          </p>
+        `;
+                    let htmlContent = generarHtmlCorreo(contenido);
+                    yield (0, mailer_1.sendEmail)(correo, 'Restablecer contraseña', htmlContent);
+                    console.log('Correo enviado correctamente');
+                }
+                catch (err) {
+                    console.error('Error al enviar correo:', err);
+                }
+            }))();
+            return res.json({ valid: true, msg: `enviado correctamente`, correo: correo });
+        }
+        catch (error) {
+            console.error(error);
+            return res.status(400).json({ msg: `Ocurrió un error al registrar` });
+        }
+    }
+    else {
+        return res.json({ valid: false, estatus: `400`, correo: correo });
+    }
+});
+exports.resetpassword = resetpassword;

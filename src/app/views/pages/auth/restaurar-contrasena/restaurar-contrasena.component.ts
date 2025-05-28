@@ -43,21 +43,31 @@ export class RestaurarContrasenaComponent {
     };
     this._userService.resetPassword(datos).subscribe({
       next: (response: any) => {
-        console.log(response);
-        // Swal.fire({
-        //   position: "center",
-        //   icon: "success",
-        //   title: "Solicitud de cambio de contraseña correcta, por favor, revise su email.",
-        //   showConfirmButton: false,
-        //   timer: 3000
-        // });
-        // this.router.navigate(['/auth/login']); 
+        console.log(response.valid);
+        if(response.valid == true){
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Se ha enviado a la cuenta de correo electrónico el enlace para cambio de contraseña. Si no encuentra el correo en la bandeja de entrada, verifique en el apartado de Correo no deseado o Spam.",
+            showConfirmButton: false,
+            timer: 4000
+          });
+          this.router.navigate(['/auth/login']); 
+        }else{
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Correo no válido, favor de verificar.",
+            showConfirmButton: false,
+            timer: 3000
+          });
+          this.formRestaura.reset();
+        } 
       },
       error: (e: HttpErrorResponse) => {
       console.error('Error:', e.error?.msg || e);
       }
     });
-
   }
 
   goBack(): void {

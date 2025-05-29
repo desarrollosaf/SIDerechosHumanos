@@ -14,8 +14,24 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Indicaciones</h4>
-                            <p class="text-secondary">Agregar documentos no mayor a 10 MB, todos los archivos se deben
-                                subir en formato PDF</p>
+                            <p class="text-secondary">
+                                <strong>Formato:</strong> Todos los archivos deberán estar en formato PDF, legibles y sin restricciones de contraseña.
+                            </p>
+                            <p class="text-secondary mt-2">
+                                <strong>Tamaño máximo:</strong> Cada documento no deberá exceder los 10 MB de tamaño.
+                            </p>
+                            <p class="text-secondary mt-2">
+                               <strong>Nomenclatura:</strong>  Se recomienda nombrar los archivos de forma clara y estructurada, incluyendo el nombre del solicitante y el tipo de documento (ejemplo: JuanPerez_Identificación.pdf).
+                            </p>
+                            <p class="text-secondary mt-2">
+                                <strong>Legibilidad:</strong> Verifique que los documentos sean completamente legibles, sin cortes, borrosidad o contenido faltante.
+                            </p>
+                            <p class="text-secondary mt-2">
+                                <strong>Contenido completo:</strong> Asegúrese de que el documento contenga todas las páginas requeridas y esté debidamente firmado, en su caso.
+                            </p>
+                            <p class="text-secondary mt-2">
+                               <strong>Compatibilidad:</strong>  Asegúrese de que el archivo no esté dañado o corrupto; se recomienda abrirlo antes de cargarlo para verificar su integridad.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -29,9 +45,8 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
-                                        Ser
-                                        mexicano por nacimiento en pleno goce y
-                                        ejercicio de sus derechos políticos y civiles (CURP)*:
+                                        <strong>Ser mexicano por nacimiento, en pleno goce y ejercicio de sus derechos políticos y civiles.</strong>
+                                        <p>Documento requerido: Clave Única de Registro de Población (CURP)*:</p>
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="curp" accept="application/pdf"
@@ -71,11 +86,8 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
-                                        Tener residencia efectiva en el territorio del Estado de México no menor de
-                                        cinco años
-                                        anteriores al día de su elección (CREDENCIAL PARA VOTAR CON FOTOGRAFÍA VIGENTE,
-                                        EXPEDIDA POR
-                                        EL INSTITUTO NACIONAL ELECTORAL)*:
+                                        <strong>Acreditar residencia efectiva en el territorio del Estado de México por un periodo no menor a cinco años anteriores al día de su elección.</strong>
+                                        <p>Documento requerido: Credencial para votar con fotografía vigente, expedida por el Instituto Nacional Electoral (INE)*:</p>
                                     </label>
                                     <div class="mt-auto">
                                         <input #fileInputsRef curp class="form-control" type="file" id="ine" accept="application/pdf"
@@ -115,9 +127,8 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
-                                        Tener preferentemente título de licenciado en derecho, así como experiencia o
-                                        estudios en
-                                        materia de derechos humanos (TÍTULO DE LICENCIATURA EN DERECHO)*:
+                                        <strong>Contar preferentemente con título de Licenciatura en Derecho, así como experiencia o estudios en materia de derechos humanos.</strong>
+                                        <p>Documento requerido: Título de Licenciatura en Derecho*:</p>
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="titulo_licenciatura"
@@ -158,8 +169,8 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
-                                        Tener treinta y cinco años cumplidos, el día de su elección (ACTA DE
-                                        NACIMIENTO)*:
+                                        <strong>Tener treinta y cinco años cumplidos al día de la elección.</strong>
+                                        <p>Documento requerido: Acta de nacimiento*:</p>
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="acta_nacimiento"
@@ -199,11 +210,8 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
-                                        Gozar de buena fama pública y no haber sido condenado mediante sentencia
-                                        ejecutoriada, por
-                                        delito intencional (CARTA BAJO PROTESTA DE DECIR VERDAD DE QUE SE GOZA DE BUENA
-                                        FAMA PÚBLICA
-                                        Y/O CARTA DE ANTECEDENTES NO PENALES)*:
+                                        <strong>Gozar de buena fama pública y no haber sido condenado mediante sentencia ejecutoriada por delito intencional.</strong>
+                                        <p>Documento requerido: Carta bajo protesta de decir verdad y/o carta de antecedentes no penales*:</p>
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="carta_ant_no_penales"
@@ -243,9 +251,8 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
-                                        No ser ministro de culto, excepto que se haya separado de su ministerio con tres
-                                        años de
-                                        anticipación al día de su elección (CARTA BAJO PROTESTA DE DECIR VERDAD)*:
+                                        <strong>No ser ministro de culto, salvo que se haya separado de dicho ministerio con al menos tres años de anticipación al día de su elección.</strong>
+                                        <p>Documento requerido: Carta bajo protesta de decir verdad*:</p>
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="carta_protesta1"
@@ -285,10 +292,8 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
-                                        No haber desempeñado cargo directivo en algún partido, asociación u organización
-                                        política,
-                                        en los tres años anteriores al día de su elección (CARTA BAJO PROTESTA DE DECIR
-                                        VERDAD)*:
+                                        <strong>No haber desempeñado cargo directivo en partido político, asociación u organización política en los tres años anteriores a la elección.</strong>
+                                        <p>Documento requerido: Carta bajo protesta de decir verdad*:</p>
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="carta_protesta2"
@@ -328,11 +333,8 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
-                                        No haber sido sancionado en el desempeño de empleo, cargo o comisión en el
-                                        servicio público
-                                        federal, estatal o municipal, con motivo de alguna recomendación emitida por
-                                        organismos
-                                        públicos de derechos humanos (CARTA BAJO PROTESTA DE DECIR VERDAD)*:
+                                         <strong>No haber sido sancionado en el ejercicio de funciones públicas por recomendaciones de organismos públicos de derechos humanos.</strong>
+                                        <p>Documento requerido: Carta bajo protesta de decir verdad*:</p>
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="carta_protesta3"
@@ -372,11 +374,8 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
-                                        No haber sido objeto de sanción de inhabilitación o destitución administrativas
-                                        para el
-                                        desempeño de empleo, cargo o comisión en el servicio público, mediante
-                                        resolución que haya
-                                        causado estado (CARTA BAJO PROTESTA DE DECIR VERDAD)*:
+                                        <strong>No haber sido objeto de sanción de inhabilitación o destitución administrativas mediante resolución firme.</strong>
+                                        <p>Documento requerido: Carta bajo protesta de decir verdad</p>
                                     </label>
 
                                     <div class="mt-auto">
@@ -417,9 +416,8 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
-                                        Carta firmada por la persona aspirante, en donde manifiesten su voluntad expresa
-                                        de
-                                        participar en el proceso de selección (CARTA)*:
+                                        <strong>Carta firmada en la que la persona aspirante manifieste su voluntad expresa de participar en el proceso de selección.</strong>
+                                        <p>Documento requerido: Carta de manifestación de voluntad*:</p>
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="carta_protesta5"
@@ -459,13 +457,8 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="curriculum" style="text-align: justify;">
-                                        Currículum Vitae en el que se señale su experiencia laboral, formación
-                                        académica;
-                                        especialización en derechos humanos; experiencia profesional en el ámbito de la
-                                        protección,
-                                        observancia, promoción, estudio y divulgación de los derechos humanos; y, en su
-                                        caso,
-                                        publicaciones en materias relacionadas con los derechos humanos (CURRICULUM)*:
+                                         <strong>Currículum vitae con detalle de experiencia laboral, formación académica, especialización y/o publicaciones en materia de derechos humanos.</strong>
+                                        <p>Documento requerido: Currículum Vitae*:</p>
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="curriculum" accept="application/pdf"
@@ -505,13 +498,8 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="propuesta_programa" style="text-align: justify;">
-                                        Propuesta de programa de trabajo y una descripción de las razones que justifican
-                                        su
-                                        idoneidad para ocupar la titularidad de la Comisión Estatal, con una extensión
-                                        máxima de
-                                        diez cuartillas, con letra tipo Arial, tamaño número 12 e interlineado 1.5
-                                        (PROPUESTA DEL
-                                        PROGRAMA)*:
+                                        <strong>Propuesta de programa de trabajo y justificación de idoneidad para ocupar el cargo.</strong>
+                                        <p>Documento requerido: Propuesta (máximo 10 cuartillas, Arial 12, interlineado 1.5)*:</p>
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="propuesta_programa"
@@ -552,9 +540,8 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="copia_certificada" style="text-align: justify;">
-                                        Copia certificada de los documentos con los que acredite su nacionalidad,
-                                        ciudadanía y
-                                        edad; así como de título(s) o grados académicos (COPIAS CERTIFICADAS)*:
+                                        <strong>Copia certificada de documentos que acrediten nacionalidad, ciudadanía, edad y grado(s) académico(s).</strong>
+                                        <p>Documento requerido: Copias certificadas correspondientes*:</p>
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="copia_certificada"

@@ -50,6 +50,13 @@ module.exports = {
       },
       aviso_privacidad: {
         type: Sequelize.BOOLEAN
+      }, 
+      fecha_envio: {
+        type: Sequelize.DATE
+        
+      },
+      fecha_validacion: {
+        type: Sequelize.DATE
       },
       createdAt: {
         allowNull: false,

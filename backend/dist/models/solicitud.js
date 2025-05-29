@@ -13,7 +13,7 @@ class Solicitudes extends sequelize_1.Model {
 Solicitudes.init({
     id: {
         type: sequelize_1.DataTypes.UUID,
-        defaultValue: sequelize_1.DataTypes.UUIDV4, // autogenera UUID
+        defaultValue: sequelize_1.DataTypes.UUIDV4,
         primaryKey: true,
         allowNull: false,
     },
@@ -22,7 +22,7 @@ Solicitudes.init({
         allowNull: false,
     },
     estatusId: {
-        type: sequelize_1.DataTypes.INTEGER, // Cambiar a UUID si el modelo estatus también lo usa
+        type: sequelize_1.DataTypes.INTEGER,
         allowNull: false,
     },
     ap_paterno: sequelize_1.DataTypes.STRING,
@@ -33,6 +33,9 @@ Solicitudes.init({
     curp: sequelize_1.DataTypes.STRING,
     cedula_profesional: sequelize_1.DataTypes.STRING,
     aviso_privacidad: sequelize_1.DataTypes.BOOLEAN,
+    fecha_envio: sequelize_1.DataTypes.DATE,
+    fecha_validacion: sequelize_1.DataTypes.DATE,
+    deletedAt: sequelize_1.DataTypes.DATE,
 }, {
     sequelize: connection_1.default,
     tableName: 'solicituds',

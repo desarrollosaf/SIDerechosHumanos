@@ -431,10 +431,11 @@ export const updatepassword = async (req: Request, res: Response): Promise<any> 
 
 export const resetpassword = async (req: Request, res: Response): Promise<any> => {
   const { correo } = req.body;
+  
   const usuario = await User.findOne({
     where: { email: correo }  
   });
-
+  
   if(usuario){
     try {
     const token = jwt.sign(
@@ -445,8 +446,10 @@ export const resetpassword = async (req: Request, res: Response): Promise<any> =
           process.env.JWT_SECRET || 'sUP3r_s3creT_ClavE-4321!', 
           { expiresIn: '2d' } 
         );
-        const enlace = `http://localhost:4200/auth/cambiar-contrasena?token=${token}`;
+        const enlace = `https://dev5.siasaf.gob.mx/auth/cambiar-contrasena?token=${token}`;
 
+  //       console.log(enlace);
+  // return (500);
 
     
     (async () => {
@@ -485,7 +488,7 @@ export const resetpassword = async (req: Request, res: Response): Promise<any> =
     })();
 
     return res.json({valid: true, msg: `enviado correctamente`, correo: correo } );
-    
+
   } catch (error) {
     console.error(error);
     return res.status(400).json({ msg: `Ocurrió un error al registrar` });

@@ -185,7 +185,6 @@ export class DetalleValidadorComponent {
           const archivoUrl = 'http://localhost:3001/' + doc.path;
           this.archivosSubidos[clave] = archivoUrl;
           const index = this.documentosRequeridos.findIndex(d => d.clave === clave);
-          console.log( doc.estatus);
           if (index !== -1) {
             this.documentosRequeridos[index].estatus = doc.estatus;
           }

@@ -43,12 +43,12 @@ export class RestaurarContrasenaComponent {
     };
     this._userService.resetPassword(datos).subscribe({
       next: (response: any) => {
-        console.log(response.valid);
         if(response.valid == true){
           Swal.fire({
             position: "center",
             icon: "success",
-            title: "Se ha enviado a la cuenta de correo electrónico el enlace para cambio de contraseña. Si no encuentra el correo en la bandeja de entrada, verifique en el apartado de Correo no deseado o Spam.",
+            title: "Se ha enviado a la cuenta de correo electrónico el enlace para cambio de contraseña.",
+            text: " Si no encuentra el correo en la bandeja de entrada, verifique en el apartado de Correo no deseado o Spam.",
             showConfirmButton: false,
             timer: 4000
           });

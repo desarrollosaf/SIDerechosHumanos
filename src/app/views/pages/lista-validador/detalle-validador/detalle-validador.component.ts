@@ -182,7 +182,7 @@ export class DetalleValidadorComponent {
         this.documentos = response.documentos;
         this.documentos.forEach((doc: any) => {
           const clave = doc.tipo?.valor;
-          const archivoUrl = 'http://localhost:3001/' + doc.path;
+          const archivoUrl = 'https://dev4.siasaf.gob.mx/' + doc.path;
           this.archivosSubidos[clave] = archivoUrl;
           const index = this.documentosRequeridos.findIndex(d => d.clave === clave);
           if (index !== -1) {

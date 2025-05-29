@@ -222,8 +222,8 @@ export const saveValidador = async (req: Request, res: Response): Promise<any> =
 
           <p>Se le recuerda que podrá iniciar su proceso de registro
             a través del micrositio 
-            <a href="https://dev5.siasaf.gob.mx/auth/login" target="_blank">
-              https://dev5.siasaf.gob.mx/auth/login
+            <a href="http://localhost:4200/auth/login" target="_blank">
+              http://localhost:4200/auth/login
             </a> 
             durante el periodo comprendido del XXXXX al XXXXX de XXXXX de 2025.
           </p>
@@ -414,10 +414,10 @@ export const validatoken = async (req: Request, res: Response): Promise<any> => 
 
 export const updatepassword = async (req: Request, res: Response): Promise<any> => {
   const { token, newPassword } = req.body;
+ 
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload & { userId: string };
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-
     await User.update(
       { password: hashedPassword },
       { where: { id: payload.userId } }

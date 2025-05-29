@@ -35,18 +35,20 @@ export class CambiarContrasenaComponent {
     this.validaTkn();
   }
   validaTkn(){
+    console.log(this.token);
     this._userService.validaToken(this.token).subscribe({
     next: (response: any) => {
-      if(response.valid != true){
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Token inválido o expirado",
-          showConfirmButton: false,
-          timer: 3000
-        });
-        this.router.navigate(['/auth/login']); 
-      }
+      console.log(response);
+      // if(response.valid != true){
+      //   Swal.fire({
+      //     position: "center",
+      //     icon: "error",
+      //     title: "Token inválido o expirado",
+      //     showConfirmButton: false,
+      //     timer: 3000
+      //   });
+      //   this.router.navigate(['/auth/login']); 
+      // }
     },
     error: (e: HttpErrorResponse) => {
       console.error('Error:', e.error?.msg || e);

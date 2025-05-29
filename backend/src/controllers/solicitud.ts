@@ -92,7 +92,7 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
       process.env.JWT_SECRET || 'sUP3r_s3creT_ClavE-4321!', 
       { expiresIn: '2d' } 
     );
-    const enlace = `https://dev5.siasaf.gob.mx/auth/cambiar-contrasena?token=${token}`;
+    const enlace = `http://localhost:4200/auth/cambiar-contrasena?token=${token}`;
                     
     body.userId = newUser.id;
     body.estatusId = 1;
@@ -118,8 +118,8 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
 
           <p>Se le recuerda que podrá iniciar su proceso de registro
             a través del micrositio 
-            <a href="https://dev5.siasaf.gob.mx/auth/login" target="_blank">
-              https://dev5.siasaf.gob.mx/auth/login   
+            <a href="http://localhost:4200/auth/login" target="_blank">
+              http://localhost:4200/auth/login   
             </a> 
             durante el periodo comprendido del XXXXX al XXXXX de XXXXX de 2025.
           </p>
@@ -321,7 +321,7 @@ function generarPDFBuffer(data: { nombreCompleto: string, correo: string, passwo
     doc.text(`Contraseña generada: ${data.password}`);
     doc.moveDown();
     doc.text('Puede ingresar al micrositio en:');
-    doc.text('https://dev5.siasaf.gob.mx/auth/login', { underline: true });
+    doc.text('http://localhost:4200/auth/login', { underline: true });
 
     doc.end();
   });

@@ -79,16 +79,32 @@ export class RegistroComponent {
 
     this._registroService.saveRegistro(registroval).subscribe({
       next: (response: any) => {
-        console.log(response.estatus);     
-        Swal.fire({
-          position: "center", // posición centrada
-          icon: "success",
-          title: "¡Solicitud registrada satisfactoriamente! Para continuar con el trámite, se han enviado a la cuenta de correo electrónico micorreo@hotmail.com las instrucciones para continuar con el proceso de registro. Si no encuentra el correo en la bandeja de entrada, verifique en el apartado de Correo no deseado o Spam.",
-          showConfirmButton: false,
-          timer: 3000
-        });
-
-        this.router.navigate(['/']);
+        const correo = response.correo
+        if(response.estatus == 400){
+          Swal.fire({
+              position: "center",
+              icon: "error",
+              title: "¡Atención!",
+              text: `Ya existe un registro con el correo: ${correo}.`,
+              showConfirmButton: false,
+              timer: 3000
+            });
+            this.formReg.get('confirmEmail')?.reset('');
+            this.formReg.get('confirmEmail')?.markAsTouched();
+            this.formReg.get('correo')?.reset('');
+            this.formReg.get('correo')?.markAsTouched();
+            
+        }else{
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "¡Solicitud registrada satisfactoriamente!",
+            text: `Para continuar con el trámite, se han enviado a la cuenta de correo electrónico ${correo} las instrucciones para continuar con el proceso de registro. Si no encuentra el correo en la bandeja de entrada, verifique en el apartado de Correo no deseado o Spam.`,
+            showConfirmButton: false,
+            timer: 3000
+          });
+          this.router.navigate(['/']);
+        }        
       },
       error: (e: HttpErrorResponse) => {
         if (e.error && e.error.msg) {

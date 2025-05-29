@@ -22,6 +22,11 @@
                     <ngx-datatable #table class="bootstrap" [rows]="rows" [columnMode]="'force'" [headerHeight]="50"  *ngIf="rows.length > 0"
                         [footerHeight]="50" [rowHeight]="'auto'" [limit]="pageSize" [count]="filteredCount"
                         [offset]="page" (page)="setPage($event)" [loadingIndicator]="loading" >
+                        <ngx-datatable-column [headerClass]="'text-center'" [cellClass]="'text-center'" name="Folio">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                {{ row.id | slice:0:8 }}
+                            </ng-template>
+                        </ngx-datatable-column>
                         <ngx-datatable-column [headerClass]="'text-center'" [cellClass]="'text-center'" name="Nombre">
                             <ng-template let-row="row" ngx-datatable-cell-template>
                                 {{ row.ap_paterno }} {{ row.ap_materno }} {{ row.nombres }}

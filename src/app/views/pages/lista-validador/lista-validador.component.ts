@@ -55,6 +55,7 @@ export class ListaValidadorComponent {
     
     this._validadorService.getSolicitudes(payload).subscribe({
       next: (response: any) => {
+        console.log(response);
         this.originalData = [...response.data];
         this.temp = [...this.originalData];
         this.filteredCount = this.temp.length;

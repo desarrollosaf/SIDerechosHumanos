@@ -15,9 +15,9 @@ class Solicitudes extends Model<
   InferAttributes<Solicitudes>,
   InferCreationAttributes<Solicitudes>
 > {
-  declare id: CreationOptional<string>; // UUID es string
-  declare userId: ForeignKey<string>;    // UUID como string
-  declare estatusId: ForeignKey<number>; // Si estatusId sigue siendo INTEGER
+  declare id: CreationOptional<string>;
+  declare userId: ForeignKey<string>;
+  declare estatusId: ForeignKey<number>;
   declare ap_paterno: string | null;
   declare ap_materno: string | null;
   declare nombres: string | null;
@@ -26,6 +26,11 @@ class Solicitudes extends Model<
   declare curp: string | null;
   declare cedula_profesional: string | null;
   declare aviso_privacidad: boolean | null;
+  declare fecha_envio: Date | null;
+  declare fecha_validacion: Date | null;
+  declare deletedAt: Date | null;
+
+  // Relaciones
   declare documentos?: Documentos[];
 }
 
@@ -33,7 +38,7 @@ Solicitudes.init(
   {
     id: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4, // autogenera UUID
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
       allowNull: false,
     },
@@ -42,7 +47,7 @@ Solicitudes.init(
       allowNull: false,
     },
     estatusId: {
-      type: DataTypes.INTEGER, // Cambiar a UUID si el modelo estatus también lo usa
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     ap_paterno: DataTypes.STRING,
@@ -53,6 +58,9 @@ Solicitudes.init(
     curp: DataTypes.STRING,
     cedula_profesional: DataTypes.STRING,
     aviso_privacidad: DataTypes.BOOLEAN,
+    fecha_envio: DataTypes.DATE,
+    fecha_validacion: DataTypes.DATE,
+    deletedAt: DataTypes.DATE,
   },
   {
     sequelize,

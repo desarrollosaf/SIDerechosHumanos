@@ -28,7 +28,6 @@ export class DocumentosComponent {
       const id_user = String(this._userService.currentUserValue?.id);
       this._documentoService.getDocumentosUser(id_user).subscribe({
       next: (response: any) => {
-        console.log(response);
         this.persona = {
           id: response.id,
           nombre: response.ap_paterno + ' ' + response.ap_materno + ' ' + response.nombres,

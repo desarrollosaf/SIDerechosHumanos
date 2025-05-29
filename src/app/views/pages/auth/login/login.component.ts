@@ -59,7 +59,6 @@ export class LoginComponent implements OnInit {
 
         this._userService.setCurrentUser(userData);
         this.userRole$.subscribe(role => {
-          console.log('Rol actual:', role);
         });
         
         this.router.navigate([this.returnUrl]);

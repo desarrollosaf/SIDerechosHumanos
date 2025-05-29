@@ -11,6 +11,7 @@ import  DatosUser  from '../models/datos_user'
 // import { JwtPayload } from 'jsonwebtoken';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import Solicitudes from '../models/solicitud'
 
 export const ReadUser = async (req: Request, res: Response): Promise<any> => {
     const listUser = await User.findAll();
@@ -255,37 +256,54 @@ function generarHtmlCorreo(contenidoHtml: string): string {
   return `
     <html>
       <head>
-        <style>
-          body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 0;
-          }
-          .header {
-            background-color: #A9A9A9;
-            padding: 20px;
-            text-align: center;
-          }
-          .content {
-            padding: 20px;
-            color: #333;
-            font-size: 18px;
-            font-family: Arial, sans-serif;
-          }
-          .footer {
-            background-color: #eee;
-            text-align: center;
-            padding: 10px;
-            font-size: 12px;
-            color: #777;
-          }
-          .pcenter{
-            text-align: center;
-          }
-          .pletape{
-            font-size: 12px;
-          }
+         <style>
+             body {
+              font-family: Arial, sans-serif;
+              background-color: #f4f4f7;
+              margin: 0;
+              padding: 0;
+            }
+            .container {
+              background-color: #ffffff;
+              max-width: 600px;
+              margin: 40px auto;
+              border-radius: 10px;
+              box-shadow: 0 0 10px rgba(0,0,0,0.1);
+              padding: 30px;
+            }
+            h1 {
+              color: #2c3e50;
+              font-size: 22px;
+              margin-bottom: 20px;
+            }
+            p {
+              color: #4d4d4d;
+              font-size: 16px;
+              line-height: 1.5;
+            }
+            .credentials {
+              background-color: #ecf0f1;
+              padding: 15px;
+              border-radius: 8px;
+              margin: 20px 0;
+              font-family: monospace;
+            }
+            .button {
+              display: inline-block;
+              background-color: #007bff;
+              color: white;
+              padding: 12px 20px;
+              text-decoration: none;
+              border-radius: 6px;
+              font-size: 16px;
+              margin-top: 20px;
+            }
+            .footer {
+              font-size: 12px;
+              color: #999999;
+              margin-top: 30px;
+              text-align: center;
+            }
         </style>
       </head>
       <body>
@@ -436,8 +454,10 @@ export const resetpassword = async (req: Request, res: Response): Promise<any> =
     where: { email: correo }  
   });
   
+  
   if(usuario){
     try {
+    const solicitud: any = await Solicitudes.findOne({ where: { userId: usuario.id } });
     const token = jwt.sign(
           {
             email: correo,
@@ -448,30 +468,28 @@ export const resetpassword = async (req: Request, res: Response): Promise<any> =
         );
         const enlace = `http://localhost:4200/auth/cambiar-contrasena?token=${token}`;
 
-  //       console.log(enlace);
+      
+    const nombreCompleto =  `${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno}`.trim();
+  //         console.log(nombreCompleto);
   // return (500);
-
-    
     (async () => {
       try {
         const contenido = `
-          <h1 class="pcenter">REESTABLECER CONTRASEÑA </h1>
+          <div class="container">
+            <h1>Restablecer contraseña</h1>
+            <p>C. ${nombreCompleto}</p>
+            <p>Hemos recibido una solicitud para restablecer la contraseña de su cuenta. Para establecer una nueva contraseña, haga clic en el siguiente enlace:</p>
+            <p>
+              <a href="${enlace}">Restablecer mi contraseña</a>
+            </p>
+            <p>Si no solicitó este cambio, ignore este mensaje.</p>
+            <p class="footer">
+              Si tiene problemas para hacer clic en el botón, copie y pegue esta URL en su navegador:<br>
+               ${enlace}
+            </p>
+            <p>Atentamente,<br><strong>Poder Legislativo del Estado de México</strong></p>
+          </div> 
 
-          <p><strong>Correo:</strong> ${correo} ,</p>
-
-          <p>Hemos recibido una solicitud para restablecer la contraseña de su cuenta. Para establecer una nueva contraseña, haga clic en el siguiente enlace:</p>
-
-          <p>
-           <a href="${enlace}">Restablecer mi contraseña</a>
-          </p>
-          <p class="pcenter">
-            Atentamente, <br>
-            <strong>Poder Legislativo del Estado de México</strong>
-          </p>
-          <p>Si no solicitó este cambio, ignore este mensaje.</p>
-          <p class="pletape" >
-            Si tiene problemas para hacer clic en el botón, copie y pegue la siguiente URL en su navegador:<br>
-            ${enlace}
           </p>
         `;
         let htmlContent = generarHtmlCorreo(contenido);

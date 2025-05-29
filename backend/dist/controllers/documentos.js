@@ -23,6 +23,7 @@ const validadorsolicitud_1 = __importDefault(require("../models/validadorsolicit
 const user_1 = __importDefault(require("../models/user"));
 const datos_user_1 = __importDefault(require("../models/datos_user"));
 const mailer_1 = require("../utils/mailer");
+const detalle_fecha_1 = __importDefault(require("../models/detalle_fecha"));
 const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const archivo = req.file;
     const { tipo, usuario } = req.body;
@@ -53,8 +54,10 @@ const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
     if (documentoExistente) {
         const documentoPath = path_1.default.resolve(documentoExistente.path);
-        if (fs_1.default.existsSync(documentoPath)) {
-            fs_1.default.unlinkSync(documentoPath);
+        if (documentoExistente.path != '') {
+            if (fs_1.default.existsSync(documentoPath)) {
+                fs_1.default.unlinkSync(documentoPath);
+            }
         }
         documentoExistente.path = `storage/${usuario}/${archivo.filename}`;
         documentoExistente.estatus = 1;
@@ -142,6 +145,7 @@ const envSolicitud = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
     }
     solicitud.estatusId = 2;
+    solicitud.fecha_envio = new Date();
     yield solicitud.save();
     return res.json("200");
 });
@@ -224,6 +228,15 @@ const estatusDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             yield documentoExistente.save();
         }
         // Actualiza estatus
+        if (observados.length > 0) {
+            yield detalle_fecha_1.default.create({
+                solicitud_id: solicitud.id,
+                fecha: new Date(),
+            });
+        }
+        else {
+            solicitud.fecha_validacion = new Date();
+        }
         solicitud.estatusId = observados.length > 0 ? 4 : 3;
         yield solicitud.save();
         // ENVÍO ASÍNCRONO DEL CORREO
@@ -249,6 +262,7 @@ const estatusDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                     <td>${o.observaciones}</td>
                     </tr>
                 `).join('')}
+
                 </tbody>
             </table>`;
                         const meses = [
@@ -258,7 +272,8 @@ const estatusDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                         const hoy = new Date();
                         const fechaFormateada = `Toluca de Lerdo, México; a ${hoy.getDate()} de ${meses[hoy.getMonth()]} de ${hoy.getFullYear()}.`;
                         const contenido = `
-              <h1 class="pcenter">OBSERVACIONES</h1>
+              <div class="container">
+              <h1>OBSERVACIONES</h1>
               <p  class="pderecha" >${fechaFormateada}</p>
               <h3><trong>C.</strong> ${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno},</h3>
               <p><strong>Folio:</strong> ${solicitud.id.slice(0, 8)}</p>
@@ -283,21 +298,12 @@ const estatusDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 
                 Agradecemos su pronta atención a este asunto. Si tiene alguna duda o requiere asistencia
                 adicional, no dude en ponerse en contacto con nosotros.</p>
-                <p class="pcenter">
-                    Atentamente, <br>
-                    <strong>Poder Legislativo del Estado de México</strong>
-                </p>
-              
+                <p>Atentamente,<br><strong>Poder Legislativo del Estado de México</strong></p>
+              </div>
             `;
                         htmlContent = generarHtmlCorreo(contenido);
+                        yield (0, mailer_1.sendEmail)(emailDestino, 'Revisión de documentos', htmlContent);
                     }
-                    else {
-                        const contenido = `
-              <p>Todos tus documentos fueron revisados y están <strong>correctos</strong>.</p>
-            `;
-                        htmlContent = generarHtmlCorreo(contenido);
-                    }
-                    yield (0, mailer_1.sendEmail)(emailDestino, 'Revisión de documentos', htmlContent);
                 }
                 catch (correoError) {
                     console.error('Error al enviar correo:', correoError);
@@ -321,31 +327,51 @@ function generarHtmlCorreo(contenidoHtml) {
     <html>
       <head>
         <style>
-          body {
+           body {
             font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
+            background-color: #f4f4f7;
             margin: 0;
             padding: 0;
           }
-          .header {
-            background-color: #A9A9A9;
-            padding: 20px;
-            text-align: center;
+          .container {
+            background-color: #ffffff;
+            max-width: 600px;
+            margin: 40px auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 30px;
           }
-          .content {
-            padding: 20px;
-            color: #333;
-            font-size: 18px;
-            font-family: Arial, sans-serif;
+          h1 {
+            color: #2c3e50;
+            font-size: 22px;
+            margin-bottom: 20px;
+          }
+          p {
+            color: #4d4d4d;
+            font-size: 16px;
+            line-height: 1.5;
+          }
+          .credentials {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: monospace;
+          }
+          .button {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 16px;
+            margin-top: 20px;
           }
           .footer {
-            background-color: #eee;
-            text-align: center;
-            padding: 10px;
             font-size: 12px;
-            color: #777;
-          }
-          .pcenter{
+            color: #999999;
+            margin-top: 30px;
             text-align: center;
           }
           .pderecha{

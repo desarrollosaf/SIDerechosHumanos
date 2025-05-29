@@ -9,6 +9,7 @@ import sequelize from '../database/connection';
 import RolUsers from './role_users'; 
 import { v4 as uuidv4 } from 'uuid';
 import DatosUser from './datos_user';
+import Solicitudes from './solicitud';
 
 class User extends Model<
   InferAttributes<User>,
@@ -73,6 +74,5 @@ User.init(
 User.hasOne(RolUsers, { foreignKey: 'user_id', as: 'rol_users' });
 User.hasOne(DatosUser, { foreignKey: 'user_id', as: 'datos_user' });
 RolUsers.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
-
 
 export default User;

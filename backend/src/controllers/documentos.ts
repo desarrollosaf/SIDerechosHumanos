@@ -9,13 +9,14 @@ import ValidadorSolicitud from '../models/validadorsolicitud';
 import User from '../models/user';   
 import DatosUser from '../models/datos_user'; 
 import { sendEmail } from '../utils/mailer';
+import DetalleFecha from '../models/detalle_fecha';
 
 
 export const saveDocumentos = async (req: Request, res: Response): Promise<any> => {
     const archivo = req.file; 
     const { tipo, usuario } = req.body;
 
-    
+  
     if (!archivo) {
         return res.status(400).json({ message: 'Archivo no recibido' });
     }
@@ -43,11 +44,12 @@ export const saveDocumentos = async (req: Request, res: Response): Promise<any> 
     if (!tipo1) {
         return res.status(404).json({ message: 'Tipo de documento no encontrado' });
     }
-
     if (documentoExistente) {
         const documentoPath = path.resolve(documentoExistente.path);
-        if (fs.existsSync(documentoPath)) {
+        if(documentoExistente.path != ''){
+          if (fs.existsSync(documentoPath)) {
             fs.unlinkSync(documentoPath);
+          }
         }
         documentoExistente.path = `storage/${usuario}/${archivo.filename}`;
          documentoExistente.estatus = 1;
@@ -150,6 +152,7 @@ export const envSolicitud = async (req: Request, res: Response): Promise<any> =>
     
 
     solicitud.estatusId = 2;
+    solicitud.fecha_envio = new Date();
     await solicitud.save();
     return res.json("200");
 };
@@ -243,6 +246,14 @@ export const estatusDoc = async (req: Request, res: Response): Promise<any> => {
     }
 
     // Actualiza estatus
+    if(observados.length > 0){
+      await DetalleFecha.create({
+          solicitud_id: solicitud.id,
+          fecha: new Date(),
+      });
+    }else{
+      solicitud.fecha_validacion = new Date();
+    }
     solicitud.estatusId = observados.length > 0 ? 4 : 3;
     await solicitud.save();
 
@@ -271,6 +282,7 @@ export const estatusDoc = async (req: Request, res: Response): Promise<any> => {
                     <td>${o.observaciones}</td>
                     </tr>
                 `).join('')}
+
                 </tbody>
             </table>`;
              const meses = [
@@ -282,7 +294,8 @@ export const estatusDoc = async (req: Request, res: Response): Promise<any> => {
             const fechaFormateada = `Toluca de Lerdo, México; a ${hoy.getDate()} de ${meses[hoy.getMonth()]} de ${hoy.getFullYear()}.`;
 
             const contenido = `
-              <h1 class="pcenter">OBSERVACIONES</h1>
+              <div class="container">
+              <h1>OBSERVACIONES</h1>
               <p  class="pderecha" >${fechaFormateada}</p>
               <h3><trong>C.</strong> ${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno},</h3>
               <p><strong>Folio:</strong> ${solicitud.id.slice(0, 8)}</p>
@@ -307,26 +320,19 @@ export const estatusDoc = async (req: Request, res: Response): Promise<any> => {
                 
                 Agradecemos su pronta atención a este asunto. Si tiene alguna duda o requiere asistencia
                 adicional, no dude en ponerse en contacto con nosotros.</p>
-                <p class="pcenter">
-                    Atentamente, <br>
-                    <strong>Poder Legislativo del Estado de México</strong>
-                </p>
-              
+                <p>Atentamente,<br><strong>Poder Legislativo del Estado de México</strong></p>
+              </div>
             `;
 
             htmlContent = generarHtmlCorreo(contenido);
-          } else {
-            const contenido = `
-              <p>Todos tus documentos fueron revisados y están <strong>correctos</strong>.</p>
-            `;
-            htmlContent = generarHtmlCorreo(contenido);
+
+             await sendEmail(
+                emailDestino,
+                'Revisión de documentos',
+                htmlContent
+              );
           }
-
-          await sendEmail(
-            emailDestino,
-            'Revisión de documentos',
-            htmlContent
-          );
+           
         } catch (correoError) {
           console.error('Error al enviar correo:', correoError);
         }
@@ -349,31 +355,51 @@ function generarHtmlCorreo(contenidoHtml: string): string {
     <html>
       <head>
         <style>
-          body {
+           body {
             font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
+            background-color: #f4f4f7;
             margin: 0;
             padding: 0;
           }
-          .header {
-            background-color: #A9A9A9;
-            padding: 20px;
-            text-align: center;
+          .container {
+            background-color: #ffffff;
+            max-width: 600px;
+            margin: 40px auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 30px;
           }
-          .content {
-            padding: 20px;
-            color: #333;
-            font-size: 18px;
-            font-family: Arial, sans-serif;
+          h1 {
+            color: #2c3e50;
+            font-size: 22px;
+            margin-bottom: 20px;
+          }
+          p {
+            color: #4d4d4d;
+            font-size: 16px;
+            line-height: 1.5;
+          }
+          .credentials {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: monospace;
+          }
+          .button {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 16px;
+            margin-top: 20px;
           }
           .footer {
-            background-color: #eee;
-            text-align: center;
-            padding: 10px;
             font-size: 12px;
-            color: #777;
-          }
-          .pcenter{
+            color: #999999;
+            margin-top: 30px;
             text-align: center;
           }
           .pderecha{

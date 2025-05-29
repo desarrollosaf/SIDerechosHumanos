@@ -74,8 +74,16 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     const solicitud = yield user_1.default.findOne({
         where: { email: body.correo }
     });
-    if (solicitud) {
-        return res.json({ estatus: `400`, correo: solicitud.email });
+    const cedula = yield solicitud_1.default.findOne({
+        where: { cedula_profesional: body.cedula_profesional }
+    });
+    if (solicitud || cedula) {
+        return res.status(400).json({
+            estatus: 400,
+            mensaje: 'Ya existe un registro con el mismo correo o cédula profesional',
+            correo: (solicitud === null || solicitud === void 0 ? void 0 : solicitud.email) || null,
+            cedula: (cedula === null || cedula === void 0 ? void 0 : cedula.cedula_profesional) || null
+        });
     }
     try {
         const Upassword = generateRandomPassword(12);
@@ -101,41 +109,22 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         (() => __awaiter(void 0, void 0, void 0, function* () {
             try {
                 const contenido = `
-          <h1 class="pcenter">CORREO ELECTRÓNICO PARA EL REGISTRO EXITOSO</h1>
-          
-          <p><strong>Asunto:</strong> Cuenta creada exitosamente.</p>
-
-          <h3>C. ${body.nombres} ${body.ap_paterno} ${body.ap_materno},</h3>
-
-          <p>Por este medio le informamos que se ha generado de manera exitosa
-          su usuario para el proceso de registro. A continuación, 
-          se le proporcionan sus credenciales:</p>
-
-          <p>
-            <strong>Usuario:</strong> ${body.correo} <br>
+           <div class="container">
+            <h1>Cuenta creada exitosamente</h1>
+            <p>C. ${body.nombres} ${body.ap_paterno} ${body.ap_materno},</p>
+            <p>Por este medio le informamos que su cuenta de usuario ha sido generada exitosamente para el proceso de registro. A continuación, se proporcionan sus credenciales de acceso:</p>
+            <div class="credentials">
+              <strong>Usuario:</strong> ${body.correo} <br>
             <strong>Contraseña:</strong> <a href="${enlace}">Establecer mi contraseña</a>
-          </p>
-
-          <p>Se le recuerda que podrá iniciar su proceso de registro
-            a través del micrositio 
-            <a href="http://localhost:4200/auth/login" target="_blank">
-              http://localhost:4200/auth/login   
-            </a> 
-            durante el periodo comprendido del XXXXX al XXXXX de XXXXX de 2025.
-          </p>
-
-          <p>Agradecemos su atención y quedamos a sus órdenes para cualquier duda o aclaración.</p>
-
-          <p class="pcenter">
-            Atentamente, <br>
-            <strong>Poder Legislativo del Estado de México</strong>
-          </p>
-
-          <p class="pletape" >
-            Si tiene problemas para hacer clic en el botón, copie y pegue la siguiente URL en su navegador:<br>
-            ${enlace}
-
-          </p>
+            </div>
+            <p>Podrá iniciar su proceso de registro a través del siguiente enlace durante el periodo comprendido del <strong>XXXXX al XXXXX de XXXXX de 2025</strong>:</p>
+            <a href="https://dev5.siasaf.gob.mx/auth/login" class="button" target="_blank">Iniciar registro</a>
+            <p class="footer">
+              Si tiene problemas para hacer clic en el botón, copie y pegue esta URL en su navegador:<br>
+               ${enlace}
+            </p>
+            <p>Atentamente,<br><strong>Poder Legislativo del Estado de México</strong></p>
+          </div>
         `;
                 let htmlContent = generarHtmlCorreo(contenido);
                 yield (0, mailer_1.sendEmail)(body.correo, 'Tus credenciales de acceso', htmlContent, [{
@@ -242,36 +231,53 @@ function generarHtmlCorreo(contenidoHtml) {
     <html>
       <head>
         <style>
-          body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 0;
-          }
-          .header {
-            background-color: #A9A9A9;
-            padding: 20px;
-            text-align: center;
-          }
-          .content {
-            padding: 20px;
-            color: #333;
-            font-size: 18px;
-            font-family: Arial, sans-serif;
-          }
-          .footer {
-            background-color: #eee;
-            text-align: center;
-            padding: 10px;
-            font-size: 12px;
-            color: #777;
-          }
-          .pcenter{
-            text-align: center;
-          }
-          .pletape{
-            font-size: 12px;
-          }
+             body {
+              font-family: Arial, sans-serif;
+              background-color: #f4f4f7;
+              margin: 0;
+              padding: 0;
+            }
+            .container {
+              background-color: #ffffff;
+              max-width: 600px;
+              margin: 40px auto;
+              border-radius: 10px;
+              box-shadow: 0 0 10px rgba(0,0,0,0.1);
+              padding: 30px;
+            }
+            h1 {
+              color: #2c3e50;
+              font-size: 22px;
+              margin-bottom: 20px;
+            }
+            p {
+              color: #4d4d4d;
+              font-size: 16px;
+              line-height: 1.5;
+            }
+            .credentials {
+              background-color: #ecf0f1;
+              padding: 15px;
+              border-radius: 8px;
+              margin: 20px 0;
+              font-family: monospace;
+            }
+            .button {
+              display: inline-block;
+              background-color: #007bff;
+              color: white;
+              padding: 12px 20px;
+              text-decoration: none;
+              border-radius: 6px;
+              font-size: 16px;
+              margin-top: 20px;
+            }
+            .footer {
+              font-size: 12px;
+              color: #999999;
+              margin-top: 30px;
+              text-align: center;
+            }
         </style>
       </head>
       <body>

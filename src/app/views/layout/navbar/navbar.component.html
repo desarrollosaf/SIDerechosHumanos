@@ -266,16 +266,14 @@
   </nav>
 
   <nav class="bottom-navbar">
-		<div class="container">
-
-      <!--- Menu -->
-			<ul class="nav page-navigation">
+	 <div style="padding-left:250px;"> <!-- solo quite container -->
+    <ul class="nav page-navigation">
         @for (item of menuItems; track item.label) {
 
           <!-- Nav item with a mega menu -->
           @if (item.isMegaMenu) {
        
-            <li class="nav-item mega-menu" [routerLinkActive]="['active']" #navItemMegaMenu (click)="toggleSubmenuOnSmallDevices(navItemMegaMenu)" [ngClass]="{'show-submenu': currentlyOpenedNavItem === navItemMegaMenu}">
+            <li class="nav-item mega-menu nav-item ms-38" [routerLinkActive]="['active']" #navItemMegaMenu (click)="toggleSubmenuOnSmallDevices(navItemMegaMenu)" [ngClass]="{'show-submenu': currentlyOpenedNavItem === navItemMegaMenu}">
               <a href="javascript:void(0);" class="nav-link">
                 @if (item.icon) {
                   <i class="link-icon" [attr.data-feather]="item.icon" appFeatherIcon></i>

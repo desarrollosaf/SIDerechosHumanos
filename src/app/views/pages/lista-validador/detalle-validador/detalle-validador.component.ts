@@ -182,9 +182,7 @@ export class DetalleValidadorComponent {
         this.solicitante = response;
         this.documentos = response.documentos;
         this.estatusSoli = response.estatusId;
-        console.log(this.estatusSoli);
-        this.documentos.forEach((doc: any) => {
-         
+        this.documentos.forEach((doc: any) => { 
           const clave = doc.tipo?.valor;
           const archivoUrl = 'https://dev4.siasaf.gob.mx/' + doc.path;
           this.archivosSubidos[clave] = archivoUrl;

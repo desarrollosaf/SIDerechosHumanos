@@ -30,6 +30,7 @@ export class DetalleValidadorComponent {
   documentos: any;
   solicitante: any;
   validadorSol: any;
+  estatusSoli: any;
   public currentUser: any;
   public esAdmin: boolean = false;
   public usuariosValidador: any[] = [];
@@ -180,7 +181,10 @@ export class DetalleValidadorComponent {
         this.validadorSol= response.validasolicitud.validador.datos_user.nombre + ' ' + response.validasolicitud.validador.datos_user.apaterno + ' ' + response.validasolicitud.validador.datos_user.amaterno;
         this.solicitante = response;
         this.documentos = response.documentos;
+        this.estatusSoli = response.estatusId;
+        console.log(this.estatusSoli);
         this.documentos.forEach((doc: any) => {
+         
           const clave = doc.tipo?.valor;
           const archivoUrl = 'https://dev4.siasaf.gob.mx/' + doc.path;
           this.archivosSubidos[clave] = archivoUrl;

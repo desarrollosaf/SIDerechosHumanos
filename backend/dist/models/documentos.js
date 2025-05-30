@@ -35,7 +35,7 @@ Documentos.init({
         allowNull: true,
     },
     observaciones: {
-        type: sequelize_1.DataTypes.STRING,
+        type: sequelize_1.DataTypes.TEXT('long'),
         allowNull: true,
     },
 }, {

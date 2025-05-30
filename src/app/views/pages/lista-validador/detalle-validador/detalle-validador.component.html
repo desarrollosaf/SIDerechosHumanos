@@ -51,7 +51,8 @@
                     <div class="row">
                         @for (doc of documentosRequeridos; track doc.clave) {
                             <!-- @if (doc.estatus === 1 || doc.estatus === 3 ) { -->
-                                <ng-container> <!--  quite esto *ngIf="doc.estatus === 1 || doc.estatus === 3" -->
+                             @if (estatusSoli == 1 || estatusSoli == 2 || estatusSoli == 4) {
+                                 <ng-container *ngIf="doc.estatus === 1 || doc.estatus === 3"> <!--  quite esto *ngIf="doc.estatus === 1 || doc.estatus === 3" -->
                                     <div class="col-md-12 grid-margin stretch-card">
                                         <div class="card h-100">
                                             <div class="card-body">
@@ -100,6 +101,58 @@
                                         </div>
                                     </div>
                                 </ng-container>
+                             }@else if(estatusSoli == 3){
+                                 <ng-container> <!--  quite esto *ngIf="doc.estatus === 1 || doc.estatus === 3" -->
+                                    <div class="col-md-12 grid-margin stretch-card">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <div class="row align-items-start">
+
+                                                    <div class="col-md-4">
+                                                        <p class="text-center"><strong>TIPO</strong></p>
+                                                        <br>
+                                                        <label class="form-label">
+                                                            <strong> {{ doc.label }}</strong>
+                                                            <p>{{ doc.txt }}</p>
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="col-md-4 text-center">
+                                                        <p class="text-center"><strong>DOCUMENTO</strong></p>
+                                                        <br>
+                                                        <div *ngIf="archivosSubidos[doc.clave]">
+                                                            <a [href]="archivosSubidos[doc.clave]" target="_blank"
+                                                                class="d-flex justify-content-center text-decoration-none">
+                                                                <img src="assets/images/pdf.png" alt="PDF" btn-primarywidth="40"
+                                                                    height="50" />
+                                                            </a>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4 text-center">
+                                                        <p class="text-center"><strong>VALIDACIÓN</strong></p>
+                                                        <br>
+                                                        <mat-slide-toggle [ngModelOptions]="{ standalone: true }"
+                                                            [(ngModel)]="validarrechazar[doc.clave].estado"
+                                                            (ngModelChange)="onToggleChange(doc.clave)">
+                                                        </mat-slide-toggle>
+                                                    </div>
+                                                </div>
+
+                                                <div *ngIf="validarrechazar[doc.clave]?.estado === false" class="mt-3">
+                                                    <label><strong>Motivo del rechazo:</strong></label>
+                                                    <textarea class="form-control" rows="3"
+                                                        [ngModelOptions]="{ standalone: true }"
+                                                        [(ngModel)]="validarrechazar[doc.clave].observaciones"
+                                                        placeholder="Escribe el motivo del rechazo..."></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                             }
+                              
                             <!-- } -->
                         }
 

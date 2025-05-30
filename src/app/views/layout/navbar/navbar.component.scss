@@ -1,0 +1,30 @@
+.submenu {
+  padding: 0.5rem 0;
+}
+
+.submenu-item {
+  padding-left: 0.75rem;
+  margin: 0;
+  list-style: none;
+}
+
+.submenu-item .nav-item {
+  margin: 0;
+  padding: 0.25rem 0;
+}
+
+.submenu-item .nav-link {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  display: block;
+}
+
+.category-heading {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #aaa;
+  text-transform: uppercase;
+  padding: 0.25rem 0.75rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+}

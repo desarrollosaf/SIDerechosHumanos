@@ -55,7 +55,7 @@ Documentos.init(
       allowNull: true,
     },
     observaciones: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT('long'),
       allowNull: true,
     },
   },

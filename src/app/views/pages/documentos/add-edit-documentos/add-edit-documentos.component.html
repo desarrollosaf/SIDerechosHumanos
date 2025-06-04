@@ -6,7 +6,6 @@
 </nav>
 
 <div class="container">
-
     <div class="row w-100 mx-0 auth-page">
         <div class="mx-auto">
             <div class="row">
@@ -14,34 +13,594 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Indicaciones</h4>
-                            <p class="text-secondary">
-                                <strong>Formato:</strong> Todos los archivos deberán estar en formato PDF, legibles y sin restricciones de contraseña.
+                            <p >
+                                <strong>1. Formato:</strong> Todos los archivos deberán estar en formato PDF, legibles y sin restricciones de contraseña.
                             </p>
-                            <p class="text-secondary mt-2">
-                                <strong>Tamaño máximo:</strong> Cada documento no deberá exceder los 10 MB de tamaño.
+                            <p class=" mt-2">
+                                <strong>2. Tamaño máximo:</strong> Cada documento no deberá exceder los 10 MB de tamaño.
                             </p>
-                            <p class="text-secondary mt-2">
-                               <strong>Nomenclatura:</strong>  Se recomienda nombrar los archivos de forma clara y estructurada, incluyendo el nombre del solicitante y el tipo de documento (ejemplo: JuanPerez_Identificación.pdf).
+                            <p class=" mt-2">
+                               <strong>3. Nomenclatura:</strong>  Se recomienda nombrar los archivos de forma clara y estructurada, incluyendo el nombre del solicitante y el tipo de documento (ejemplo: JuanPerez_Identificación.pdf).
                             </p>
-                            <p class="text-secondary mt-2">
-                                <strong>Legibilidad:</strong> Verifique que los documentos sean completamente legibles, sin cortes, borrosidad o contenido faltante.
+                            <p class=" mt-2">
+                                <strong>4. Legibilidad:</strong> Verifique que los documentos sean completamente legibles, sin cortes, borrosidad o contenido faltante.
                             </p>
-                            <p class="text-secondary mt-2">
-                                <strong>Contenido completo:</strong> Asegúrese de que el documento contenga todas las páginas requeridas y esté debidamente firmado, en su caso.
+                            <p class=" mt-2">
+                                <strong>5. Contenido completo:</strong> Asegúrese de que el documento contenga todas las páginas requeridas y esté debidamente firmado, en su caso.
                             </p>
-                            <p class="text-secondary mt-2">
-                               <strong>Compatibilidad:</strong>  Asegúrese de que el archivo no esté dañado o corrupto; se recomienda abrirlo antes de cargarlo para verificar su integridad.
+                            <p class=" mt-2">
+                               <strong>6. Compatibilidad:</strong>  Asegúrese de que el archivo no esté dañado o corrupto; se recomienda abrirlo antes de cargarlo para verificar su integridad.
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="card">
+            @if(estatusSoli === 1 || estatusSoli === 4){
+                <div class="card">
+                    <form [formGroup]="formDoc" (ngSubmit)="sendDoc()">
+                        <div class="row">
+                            <div class="col-md-6 grid-margin stretch-card"
+                                *ngIf=" !archivosRechazados['curp'] || archivosRechazados['curp'] === 1 || archivosRechazados['curp'] === 3 ">
+                                <div class="card h-100">
+                                    <div class="card-body d-flex flex-column">
+                                        <label class="form-label" for="formFile" style="text-align: justify;">
+                                            <strong>Ser mexicano por nacimiento, en pleno goce y ejercicio de sus derechos políticos y civiles.</strong>
+                                            <p>Documento requerido: Clave Única de Registro de Población (CURP)*:</p>
+                                        </label>
+                                        <div class="mt-auto">
+                                            <input class="form-control" type="file" id="curp" accept="application/pdf"
+                                                (change)="onFile7($event, 'curp',7)">
+                                        </div>
+                                        <div *ngIf="formDoc.get('curp')?.hasError('required')">
+                                            <small class="text-danger">Este campo es obligatorio.</small>
+                                        </div>
+                                        <div *ngIf="formDoc.get('curp')?.hasError('fileSize')">
+                                            <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
+                                        </div>
+                                        <div *ngIf="archivosSubidos['curp']" class="mt-2">
+                                            <div class="d-flex justify-content-center align-items-center gap-3">
+                                                <a [href]="archivosSubidos['curp']" target="_blank"
+                                                    class="d-flex align-items-center text-decoration-none">
+                                                    <img src="assets/images/pdf.png"
+                                                        alt="PDF" width="40" height="50" />
+                                                </a>
+                                                <button type="button" class="btn btn-primary btn-icon-text btn-xs"
+                                                    (click)="eliminarArchivo('curp')">
+                                                    <i class="feather icon-trash btn-icon-prepend"></i>
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div *ngIf=" archivosRechazados['curp'] === 3" class="mt-3">
+                                            <label>Motivo del rechazo:</label>
+                                            <textarea class="form-control"
+                                                readonly>{{this.observac['curp']?.toLocaleUpperCase('es-ES') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <div class="col-md-6 grid-margin stretch-card"
+                                *ngIf="!archivosRechazados['ine'] || archivosRechazados['ine'] === 1 || archivosRechazados['ine'] === 3">
+                                <div class="card h-100">
+                                    <div class="card-body d-flex flex-column">
+                                        <label class="form-label" for="formFile" style="text-align: justify;">
+                                            <strong>Acreditar residencia efectiva en el territorio del Estado de México por un periodo no menor a cinco años anteriores al día de su elección.</strong>
+                                            <p>Documento requerido: Credencial para votar con fotografía vigente, expedida por el Instituto Nacional Electoral (INE)*:</p>
+                                        </label>
+                                        <div class="mt-auto">
+                                            <input #fileInputsRef curp class="form-control" type="file" id="ine" accept="application/pdf"
+                                                (change)="onFile7($event, 'ine',7)">
+                                        </div>
+                                        <div *ngIf="formDoc.get('ine')?.hasError('required')">
+                                            <small class="text-danger">Este campo es obligatorio.</small>
+                                        </div>
+                                        <div *ngIf="formDoc.get('ine')?.hasError('fileSize')">
+                                            <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
+                                        </div>
+                                        <div *ngIf="archivosSubidos['ine']" class="mt-2">
+                                            <div class="d-flex justify-content-center align-items-center gap-3">
+                                                <a [href]="archivosSubidos['ine']" target="_blank"
+                                                    class="d-flex align-items-center text-decoration-none">
+                                                    <img src="assets/images/pdf.png"
+                                                        alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
+                                                </a>
+                                                <button type="button" class="btn btn-primary btn-icon-text btn-xs"
+                                                    (click)="eliminarArchivo('ine')">
+                                                    <i class="feather icon-trash btn-icon-prepend"></i>
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div *ngIf=" archivosRechazados['ine'] === 3" class="mt-3">
+                                            <label>Motivo del rechazo:</label>
+                                            <textarea class="form-control"
+                                                readonly>{{this.observac['ine']?.toLocaleUpperCase('es-ES') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 grid-margin stretch-card"
+                                *ngIf="!archivosRechazados['titulo_licenciatura'] || archivosRechazados['titulo_licenciatura'] === 1 || archivosRechazados['titulo_licenciatura'] === 3">
+                                <div class="card h-100">
+                                    <div class="card-body d-flex flex-column">
+                                        <label class="form-label" for="formFile" style="text-align: justify;">
+                                            <strong>Contar preferentemente con título de Licenciatura en Derecho, así como experiencia o estudios en materia de derechos humanos.</strong>
+                                            <p>Documento requerido: Título de Licenciatura en Derecho*:</p>
+                                        </label>
+                                        <div class="mt-auto">
+                                            <input class="form-control" type="file" id="titulo_licenciatura"
+                                                accept="application/pdf"
+                                                (change)="onFile7($event, 'titulo_licenciatura',7)">
+                                        </div>
+                                        <div *ngIf="formDoc.get('titulo_licenciatura')?.hasError('required')">
+                                            <small class="text-danger">Este campo es obligatorio.</small>
+                                        </div>
+                                        <div *ngIf="formDoc.get('titulo_licenciatura')?.hasError('fileSize')">
+                                            <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
+                                        </div>
+                                        <div *ngIf="archivosSubidos['titulo_licenciatura']" class="mt-2">
+                                            <div class="d-flex justify-content-center align-items-center gap-3">
+                                                <a [href]="archivosSubidos['titulo_licenciatura']" target="_blank"
+                                                    class="d-flex align-items-center text-decoration-none">
+                                                    <img src="assets/images/pdf.png"
+                                                        alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
+                                                </a>
+                                                <button type="button" class="btn btn-primary btn-icon-text btn-xs"
+                                                    (click)="eliminarArchivo('titulo_licenciatura')">
+                                                    <i class="feather icon-trash btn-icon-prepend"></i>
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div *ngIf=" archivosRechazados['titulo_licenciatura'] === 3" class="mt-3">
+                                            <label>Motivo del rechazo:</label>
+                                            <textarea class="form-control"
+                                                readonly>{{this.observac['titulo_licenciatura']?.toLocaleUpperCase('es-ES') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 grid-margin stretch-card"
+                                *ngIf="!archivosRechazados['acta_nacimiento'] || archivosRechazados['acta_nacimiento'] === 1 || archivosRechazados['acta_nacimiento'] === 3">
+                                <div class="card h-100">
+                                    <div class="card-body d-flex flex-column">
+                                        <label class="form-label" for="formFile" style="text-align: justify;">
+                                            <strong>Tener treinta y cinco años cumplidos al día de la elección.</strong>
+                                            <p>Documento requerido: Acta de nacimiento*:</p>
+                                        </label>
+                                        <div class="mt-auto">
+                                            <input class="form-control" type="file" id="acta_nacimiento"
+                                                accept="application/pdf" (change)="onFile7($event, 'acta_nacimiento',7)">
+                                        </div>
+                                        <div *ngIf="formDoc.get('acta_nacimiento')?.hasError('required')">
+                                            <small class="text-danger">Este campo es obligatorio.</small>
+                                        </div>
+                                        <div *ngIf="formDoc.get('acta_nacimiento')?.hasError('fileSize')">
+                                            <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
+                                        </div>
+                                        <div *ngIf="archivosSubidos['acta_nacimiento']" class="mt-2">
+                                            <div class="d-flex justify-content-center align-items-center gap-3">
+                                                <a [href]="archivosSubidos['acta_nacimiento']" target="_blank"
+                                                    class="d-flex align-items-center text-decoration-none">
+                                                    <img src="assets/images/pdf.png"
+                                                        alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
+                                                </a>
+                                                <button type="button" class="btn btn-primary btn-icon-text btn-xs"
+                                                    (click)="eliminarArchivo('acta_nacimiento')">
+                                                    <i class="feather icon-trash btn-icon-prepend"></i>
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div *ngIf=" archivosRechazados['acta_nacimiento'] === 3" class="mt-3">
+                                            <label>Motivo del rechazo:</label>
+                                            <textarea class="form-control"
+                                                readonly>{{this.observac['acta_nacimiento']?.toLocaleUpperCase('es-ES') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 grid-margin stretch-card"
+                                *ngIf="!archivosRechazados['carta_ant_no_penales'] || archivosRechazados['carta_ant_no_penales'] === 1 || archivosRechazados['carta_ant_no_penales'] === 3">
+                                <div class="card h-100">
+                                    <div class="card-body d-flex flex-column">
+                                        <label class="form-label" for="formFile" style="text-align: justify;">
+                                            <strong>Gozar de buena fama pública y no haber sido condenado mediante sentencia ejecutoriada por delito intencional.</strong>
+                                            <p>Documento requerido: Carta bajo protesta de decir verdad y/o carta de antecedentes no penales*:</p>
+                                        </label>
+                                        <div class="mt-auto">
+                                            <input class="form-control" type="file" id="carta_ant_no_penales"
+                                                accept="application/pdf"
+                                                (change)="onFile7($event, 'carta_ant_no_penales',7)">
+                                        </div>
+                                        <div *ngIf="formDoc.get('carta_ant_no_penales')?.hasError('required')">
+                                            <small class="text-danger">Este campo es obligatorio.</small>
+                                        </div>
+                                        <div *ngIf="formDoc.get('carta_ant_no_penales')?.hasError('fileSize')">
+                                            <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
+                                        </div>
+                                        <div *ngIf="archivosSubidos['carta_ant_no_penales']" class="mt-2">
+                                            <div class="d-flex justify-content-center align-items-center gap-3">
+                                                <a [href]="archivosSubidos['carta_ant_no_penales']" target="_blank"
+                                                    class="d-flex align-items-center text-decoration-none">
+                                                    <img src="assets/images/pdf.png"
+                                                        alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
+                                                </a>
+                                                <button type="button" class="btn btn-primary btn-icon-text btn-xs"
+                                                    (click)="eliminarArchivo('carta_ant_no_penales')">
+                                                    <i class="feather icon-trash btn-icon-prepend"></i>
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div *ngIf=" archivosRechazados['carta_ant_no_penales'] === 3" class="mt-3">
+                                            <label>Motivo del rechazo:</label>
+                                            <textarea class="form-control"
+                                                readonly>{{this.observac['carta_ant_no_penales']?.toLocaleUpperCase('es-ES') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 grid-margin stretch-card"
+                                *ngIf="!archivosRechazados['carta_protesta1'] || archivosRechazados['carta_protesta1'] === 1 || archivosRechazados['carta_protesta1'] === 3">
+                                <div class="card h-100">
+                                    <div class="card-body d-flex flex-column">
+                                        <label class="form-label" for="formFile" style="text-align: justify;">
+                                            <strong>No ser ministro de culto, salvo que se haya separado de dicho ministerio con al menos tres años de anticipación al día de su elección.</strong>
+                                            <p>Documento requerido: Carta bajo protesta de decir verdad*:</p>
+                                        </label>
+                                        <div class="mt-auto">
+                                            <input class="form-control" type="file" id="carta_protesta1"
+                                                accept="application/pdf" (change)="onFile7($event, 'carta_protesta1',7)">
+                                        </div>
+                                        <div *ngIf="formDoc.get('carta_protesta1')?.hasError('required')">
+                                            <small class="text-danger">Este campo es obligatorio.</small>
+                                        </div>
+                                        <div *ngIf="formDoc.get('carta_protesta1')?.hasError('fileSize')">
+                                            <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
+                                        </div>
+                                        <div *ngIf="archivosSubidos['carta_protesta1']" class="mt-2">
+                                            <div class="d-flex justify-content-center align-items-center gap-3">
+                                                <a [href]="archivosSubidos['carta_protesta1']" target="_blank"
+                                                    class="d-flex align-items-center text-decoration-none">
+                                                    <img src="assets/images/pdf.png"
+                                                        alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
+                                                </a>
+                                                <button type="button" class="btn btn-primary btn-icon-text btn-xs"
+                                                    (click)="eliminarArchivo('carta_protesta1')">
+                                                    <i class="feather icon-trash btn-icon-prepend"></i>
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div *ngIf=" archivosRechazados['carta_protesta1'] === 3" class="mt-3">
+                                            <label>Motivo del rechazo:</label>
+                                            <textarea class="form-control"
+                                                readonly>{{this.observac['carta_protesta1']?.toLocaleUpperCase('es-ES') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 grid-margin stretch-card"
+                                *ngIf="!archivosRechazados['carta_protesta2'] || archivosRechazados['carta_protesta2'] === 1 || archivosRechazados['carta_protesta2'] === 3">
+                                <div class="card h-100">
+                                    <div class="card-body d-flex flex-column">
+                                        <label class="form-label" for="formFile" style="text-align: justify;">
+                                            <strong>No haber desempeñado cargo directivo en partido político, asociación u organización política en los tres años anteriores a la elección.</strong>
+                                            <p>Documento requerido: Carta bajo protesta de decir verdad*:</p>
+                                        </label>
+                                        <div class="mt-auto">
+                                            <input class="form-control" type="file" id="carta_protesta2"
+                                                accept="application/pdf" (change)="onFile7($event, 'carta_protesta2',7)">
+                                        </div>
+                                        <div *ngIf="formDoc.get('carta_protesta2')?.hasError('required')">
+                                            <small class="text-danger">Este campo es obligatorio.</small>
+                                        </div>
+                                        <div *ngIf="formDoc.get('carta_protesta2')?.hasError('fileSize')">
+                                            <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
+                                        </div>
+                                        <div *ngIf="archivosSubidos['carta_protesta2']" class="mt-2">
+                                            <div class="d-flex justify-content-center align-items-center gap-3">
+                                                <a [href]="archivosSubidos['carta_protesta2']" target="_blank"
+                                                    class="d-flex align-items-center text-decoration-none">
+                                                    <img src="assets/images/pdf.png"
+                                                        alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
+                                                </a>
+                                                <button type="button" class="btn btn-primary btn-icon-text btn-xs"
+                                                    (click)="eliminarArchivo('carta_protesta2')">
+                                                    <i class="feather icon-trash btn-icon-prepend"></i>
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div *ngIf=" archivosRechazados['carta_protesta2'] === 3" class="mt-3">
+                                            <label>Motivo del rechazo:</label>
+                                            <textarea class="form-control"
+                                                readonly>{{this.observac['carta_protesta2']?.toLocaleUpperCase('es-ES') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 grid-margin stretch-card"
+                                *ngIf="!archivosRechazados['carta_protesta3'] || archivosRechazados['carta_protesta3'] === 1 || archivosRechazados['carta_protesta3'] === 3">
+                                <div class="card h-100">
+                                    <div class="card-body d-flex flex-column">
+                                        <label class="form-label" for="formFile" style="text-align: justify;">
+                                            <strong>No haber sido sancionado en el ejercicio de funciones públicas por recomendaciones de organismos públicos de derechos humanos.</strong>
+                                            <p>Documento requerido: Carta bajo protesta de decir verdad*:</p>
+                                        </label>
+                                        <div class="mt-auto">
+                                            <input class="form-control" type="file" id="carta_protesta3"
+                                                accept="application/pdf" (change)="onFile7($event, 'carta_protesta3',7)">
+                                        </div>
+                                        <div *ngIf="formDoc.get('carta_protesta3')?.hasError('required')">
+                                            <small class="text-danger">Este campo es obligatorio.</small>
+                                        </div>
+                                        <div *ngIf="formDoc.get('carta_protesta3')?.hasError('fileSize')">
+                                            <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
+                                        </div>
+                                        <div *ngIf="archivosSubidos['carta_protesta3']" class="mt-2">
+                                            <div class="d-flex justify-content-center align-items-center gap-3">
+                                                <a [href]="archivosSubidos['carta_protesta3']" target="_blank"
+                                                    class="d-flex align-items-center text-decoration-none">
+                                                    <img src="assets/images/pdf.png"
+                                                        alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
+                                                </a>
+                                                <button type="button" class="btn btn-primary btn-icon-text btn-xs"
+                                                    (click)="eliminarArchivo('carta_protesta3')">
+                                                    <i class="feather icon-trash btn-icon-prepend"></i>
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div *ngIf=" archivosRechazados['carta_protesta3'] === 3" class="mt-3">
+                                            <label>Motivo del rechazo:</label>
+                                            <textarea class="form-control"
+                                                readonly>{{this.observac['carta_protesta3']?.toLocaleUpperCase('es-ES') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 grid-margin stretch-card"
+                                *ngIf="!archivosRechazados['carta_protesta4'] || archivosRechazados['carta_protesta4'] === 1 || archivosRechazados['carta_protesta4'] === 3">
+                                <div class="card h-100">
+                                    <div class="card-body d-flex flex-column">
+                                        <label class="form-label" for="formFile" style="text-align: justify;">
+                                            <strong>No haber sido objeto de sanción de inhabilitación o destitución administrativas mediante resolución firme.</strong>
+                                            <p>Documento requerido: Carta bajo protesta de decir verdad</p>
+                                        </label>
+
+                                        <div class="mt-auto">
+                                            <input class="form-control" type="file" id="carta_protesta4"
+                                                accept="application/pdf" (change)="onFile7($event, 'carta_protesta4',7)">
+                                        </div>
+                                        <div *ngIf="formDoc.get('carta_protesta4')?.hasError('required')">
+                                            <small class="text-danger">Este campo es obligatorio.</small>
+                                        </div>
+                                        <div *ngIf="formDoc.get('carta_protesta4')?.hasError('fileSize')">
+                                            <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
+                                        </div>
+                                        <div *ngIf="archivosSubidos['carta_protesta4']" class="mt-2">
+                                            <div class="d-flex justify-content-center align-items-center gap-3">
+                                                <a [href]="archivosSubidos['carta_protesta4']" target="_blank"
+                                                    class="d-flex align-items-center text-decoration-none">
+                                                    <img src="assets/images/pdf.png"
+                                                        alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
+                                                </a>
+                                                <button type="button" class="btn btn-primary btn-icon-text btn-xs"
+                                                    (click)="eliminarArchivo('carta_protesta4')">
+                                                    <i class="feather icon-trash btn-icon-prepend"></i>
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div *ngIf=" archivosRechazados['carta_protesta4'] === 3" class="mt-3">
+                                            <label>Motivo del rechazo:</label>
+                                            <textarea class="form-control"
+                                                readonly>{{this.observac['carta_protesta4']?.toLocaleUpperCase('es-ES') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 grid-margin stretch-card"
+                                *ngIf="!archivosRechazados['carta_protesta5'] || archivosRechazados['carta_protesta5'] === 1 || archivosRechazados['carta_protesta5'] === 3">
+                                <div class="card h-100">
+                                    <div class="card-body d-flex flex-column">
+                                        <label class="form-label" for="formFile" style="text-align: justify;">
+                                            <strong>Carta firmada en la que la persona aspirante manifieste su voluntad expresa de participar en el proceso de selección.</strong>
+                                            <p>Documento requerido: Carta de manifestación de voluntad*:</p>
+                                        </label>
+                                        <div class="mt-auto">
+                                            <input class="form-control" type="file" id="carta_protesta5"
+                                                accept="application/pdf" (change)="onFile7($event, 'carta_protesta5',7)">
+                                        </div>
+                                        <div *ngIf="formDoc.get('carta_protesta5')?.hasError('required')">
+                                            <small class="text-danger">Este campo es obligatorio.</small>
+                                        </div>
+                                        <div *ngIf="formDoc.get('carta_protesta5')?.hasError('fileSize')">
+                                            <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
+                                        </div>
+                                        <div *ngIf="archivosSubidos['carta_protesta5']" class="mt-2">
+                                            <div class="d-flex justify-content-center align-items-center gap-3">
+                                                <a [href]="archivosSubidos['carta_protesta5']" target="_blank"
+                                                    class="d-flex align-items-center text-decoration-none">
+                                                    <img src="assets/images/pdf.png"
+                                                        alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
+                                                </a>
+                                                <button type="button" class="btn btn-primary btn-icon-text btn-xs"
+                                                    (click)="eliminarArchivo('carta_protesta5')">
+                                                    <i class="feather icon-trash btn-icon-prepend"></i>
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div *ngIf=" archivosRechazados['carta_protesta5'] === 3" class="mt-3">
+                                            <label>Motivo del rechazo:</label>
+                                            <textarea class="form-control"
+                                                readonly>{{this.observac['carta_protesta5']?.toLocaleUpperCase('es-ES') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 grid-margin stretch-card"
+                                *ngIf="!archivosRechazados['curriculum'] || archivosRechazados['curriculum'] === 1 || archivosRechazados['curriculum'] === 3">
+                                <div class="card h-100">
+                                    <div class="card-body d-flex flex-column">
+                                        <label class="form-label" for="curriculum" style="text-align: justify;">
+                                            <strong>Currículum vitae con detalle de experiencia laboral, formación académica, especialización y/o publicaciones en materia de derechos humanos.</strong>
+                                            <p>Documento requerido: Currículum Vitae*:</p>
+                                        </label>
+                                        <div class="mt-auto">
+                                            <input class="form-control" type="file" id="curriculum" accept="application/pdf"
+                                                (change)="onFile7($event, 'curriculum',50)">
+                                        </div>
+                                        <div *ngIf="formDoc.get('curriculum')?.hasError('required')">
+                                            <small class="text-danger">Este campo es obligatorio.</small>
+                                        </div>
+                                        <div *ngIf="formDoc.get('curriculum')?.hasError('fileSize')">
+                                            <small class="text-danger">El archivo no debe exceder los 50 MB.</small>
+                                        </div>
+                                        <div *ngIf="archivosSubidos['curriculum']" class="mt-2">
+                                            <div class="d-flex justify-content-center align-items-center gap-3">
+                                                <a [href]="archivosSubidos['curriculum']" target="_blank"
+                                                    class="d-flex align-items-center text-decoration-none">
+                                                    <img src="assets/images/pdf.png"
+                                                        alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
+                                                </a>
+                                                <button type="button" class="btn btn-primary btn-icon-text btn-xs"
+                                                    (click)="eliminarArchivo('curriculum')">
+                                                    <i class="feather icon-trash btn-icon-prepend"></i>
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div *ngIf=" archivosRechazados['curriculum'] === 3" class="mt-3">
+                                            <label>Motivo del rechazo:</label>
+                                            <textarea class="form-control"
+                                                readonly>{{this.observac['curriculum']?.toLocaleUpperCase('es-ES') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 grid-margin stretch-card"
+                                *ngIf="!archivosRechazados['propuesta_programa'] || archivosRechazados['propuesta_programa'] === 1 || archivosRechazados['propuesta_programa'] === 3">
+                                <div class="card h-100">
+                                    <div class="card-body d-flex flex-column">
+                                        <label class="form-label" for="propuesta_programa" style="text-align: justify;">
+                                            <strong>Propuesta de programa de trabajo y justificación de idoneidad para ocupar el cargo.</strong>
+                                            <p>Documento requerido: Propuesta (máximo 10 cuartillas, Arial 12, interlineado 1.5)*:</p>
+                                        </label>
+                                        <div class="mt-auto">
+                                            <input class="form-control" type="file" id="propuesta_programa"
+                                                accept="application/pdf"
+                                                (change)="onFile7($event, 'propuesta_programa',50)">
+                                        </div>
+                                        <div *ngIf="formDoc.get('propuesta_programa')?.hasError('required')">
+                                            <small class="text-danger">Este campo es obligatorio.</small>
+                                        </div>
+                                        <div *ngIf="formDoc.get('propuesta_programa')?.hasError('fileSize')">
+                                            <small class="text-danger">El archivo no debe exceder los 50 MB.</small>
+                                        </div>
+                                        <div *ngIf="archivosSubidos['propuesta_programa']" class="mt-2">
+                                            <div class="d-flex justify-content-center align-items-center gap-3">
+                                                <a [href]="archivosSubidos['propuesta_programa']" target="_blank"
+                                                    class="d-flex align-items-center text-decoration-none">
+                                                    <img src="assets/images/pdf.png"
+                                                        alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
+                                                </a>
+                                                <button type="button" class="btn btn-primary btn-icon-text btn-xs"
+                                                    (click)="eliminarArchivo('propuesta_programa')">
+                                                    <i class="feather icon-trash btn-icon-prepend"></i>
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div *ngIf=" archivosRechazados['propuesta_programa'] === 3" class="mt-3">
+                                            <label>Motivo del rechazo:</label>
+                                            <textarea class="form-control"
+                                                readonly>{{this.observac['propuesta_programa']?.toLocaleUpperCase('es-ES') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 grid-margin stretch-card"
+                                *ngIf="!archivosRechazados['copia_certificada'] || archivosRechazados['copia_certificada'] === 1 || archivosRechazados['copia_certificada'] === 3">
+                                <div class="card h-100">
+                                    <div class="card-body d-flex flex-column">
+                                        <label class="form-label" for="copia_certificada" style="text-align: justify;">
+                                            <strong>Copia certificada de documentos que acrediten nacionalidad, ciudadanía, edad y grado(s) académico(s).</strong>
+                                            <p>Documento requerido: Copias certificadas correspondientes*:</p>
+                                        </label>
+                                        <div class="mt-auto">
+                                            <input class="form-control" type="file" id="copia_certificada"
+                                                accept="application/pdf" (change)="onFile7($event, 'copia_certificada',50)">
+                                        </div>
+                                        <div *ngIf="formDoc.get('copia_certificada')?.hasError('required')">
+                                            <small class="text-danger">Este campo es obligatorio.</small>
+                                        </div>
+                                        <div *ngIf="formDoc.get('copia_certificada')?.hasError('fileSize')">
+                                            <small class="text-danger">El archivo no debe exceder los 50 MB.</small>
+                                        </div>
+                                        <div *ngIf="archivosSubidos['copia_certificada']" class="mt-2">
+                                            <div class="d-flex justify-content-center align-items-center gap-3">
+                                                <a [href]="archivosSubidos['copia_certificada']" target="_blank"
+                                                    class="d-flex align-items-center text-decoration-none">
+                                                    <img src="assets/images/pdf.png"
+                                                        alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
+                                                </a>
+                                                <button type="button" class="btn btn-primary btn-icon-text btn-xs"
+                                                    (click)="eliminarArchivo('copia_certificada')">
+                                                    <i class="feather icon-trash btn-icon-prepend"></i>
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div *ngIf=" archivosRechazados['copia_certificada'] === 3" class="mt-3">
+                                            <label>Motivo del rechazo:</label>
+                                            <textarea class="form-control"
+                                                readonly>{{this.observac['copia_certificada']?.toLocaleUpperCase('es-ES') }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="isLoading" class="text-center my-3">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
+                                </div>
+                                <p>Procesando solicitud...</p>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col text-center">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <button [disabled]="formDoc.invalid" type="submit" class="btn btn-primary submit">
+                                            Enviar
+                                        </button>
+                                        <a routerLink="/registro/documentos" class="btn btn-secondary">
+                                            Cancelar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    </form>
+                </div>
+            }@else if (estatusSoli === 3) {
+                <div class="card">
                 <form [formGroup]="formDoc" (ngSubmit)="sendDoc()">
                     <div class="row">
-                        <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf=" !archivosRechazados['curp'] || archivosRechazados['curp'] === 1 || archivosRechazados['curp'] === 3 ">
+                        <div class="col-md-6 grid-margin stretch-card">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
@@ -50,7 +609,7 @@
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="curp" accept="application/pdf"
-                                            (change)="onFile7($event, 'curp',7)">
+                                            (change)="onFile7($event, 'curp',7)" [disabled]="true">
                                     </div>
                                     <div *ngIf="formDoc.get('curp')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
@@ -66,7 +625,7 @@
                                                     alt="PDF" width="40" height="50" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
-                                                (click)="eliminarArchivo('curp')">
+                                                (click)="eliminarArchivo('curp')" [disabled]="true">
                                                 <i class="feather icon-trash btn-icon-prepend"></i>
                                                 Eliminar
                                             </button>
@@ -81,8 +640,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="!archivosRechazados['ine'] || archivosRechazados['ine'] === 1 || archivosRechazados['ine'] === 3">
+                        <div class="col-md-6 grid-margin stretch-card">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
@@ -91,7 +649,7 @@
                                     </label>
                                     <div class="mt-auto">
                                         <input #fileInputsRef curp class="form-control" type="file" id="ine" accept="application/pdf"
-                                            (change)="onFile7($event, 'ine',7)">
+                                            (change)="onFile7($event, 'ine',7)" [disabled]="true">
                                     </div>
                                     <div *ngIf="formDoc.get('ine')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
@@ -107,7 +665,7 @@
                                                     alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
-                                                (click)="eliminarArchivo('ine')">
+                                                (click)="eliminarArchivo('ine')" [disabled]="true">
                                                 <i class="feather icon-trash btn-icon-prepend"></i>
                                                 Eliminar
                                             </button>
@@ -122,8 +680,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="!archivosRechazados['titulo_licenciatura'] || archivosRechazados['titulo_licenciatura'] === 1 || archivosRechazados['titulo_licenciatura'] === 3">
+                        <div class="col-md-6 grid-margin stretch-card">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
@@ -133,7 +690,7 @@
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="titulo_licenciatura"
                                             accept="application/pdf"
-                                            (change)="onFile7($event, 'titulo_licenciatura',7)">
+                                            (change)="onFile7($event, 'titulo_licenciatura',7)" [disabled]="true">
                                     </div>
                                     <div *ngIf="formDoc.get('titulo_licenciatura')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
@@ -149,7 +706,7 @@
                                                     alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
-                                                (click)="eliminarArchivo('titulo_licenciatura')">
+                                                (click)="eliminarArchivo('titulo_licenciatura')" [disabled]="true">
                                                 <i class="feather icon-trash btn-icon-prepend"></i>
                                                 Eliminar
                                             </button>
@@ -164,8 +721,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="!archivosRechazados['acta_nacimiento'] || archivosRechazados['acta_nacimiento'] === 1 || archivosRechazados['acta_nacimiento'] === 3">
+                        <div class="col-md-6 grid-margin stretch-card">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
@@ -174,7 +730,7 @@
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="acta_nacimiento"
-                                            accept="application/pdf" (change)="onFile7($event, 'acta_nacimiento',7)">
+                                            accept="application/pdf" (change)="onFile7($event, 'acta_nacimiento',7)" [disabled]="true">
                                     </div>
                                     <div *ngIf="formDoc.get('acta_nacimiento')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
@@ -190,7 +746,7 @@
                                                     alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
-                                                (click)="eliminarArchivo('acta_nacimiento')">
+                                                (click)="eliminarArchivo('acta_nacimiento')" [disabled]="true">
                                                 <i class="feather icon-trash btn-icon-prepend"></i>
                                                 Eliminar
                                             </button>
@@ -205,8 +761,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="!archivosRechazados['carta_ant_no_penales'] || archivosRechazados['carta_ant_no_penales'] === 1 || archivosRechazados['carta_ant_no_penales'] === 3">
+                        <div class="col-md-6 grid-margin stretch-card">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
@@ -216,7 +771,7 @@
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="carta_ant_no_penales"
                                             accept="application/pdf"
-                                            (change)="onFile7($event, 'carta_ant_no_penales',7)">
+                                            (change)="onFile7($event, 'carta_ant_no_penales',7)" [disabled]="true">
                                     </div>
                                     <div *ngIf="formDoc.get('carta_ant_no_penales')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
@@ -232,7 +787,7 @@
                                                     alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
-                                                (click)="eliminarArchivo('carta_ant_no_penales')">
+                                                (click)="eliminarArchivo('carta_ant_no_penales')" [disabled]="true">
                                                 <i class="feather icon-trash btn-icon-prepend"></i>
                                                 Eliminar
                                             </button>
@@ -246,8 +801,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="!archivosRechazados['carta_protesta1'] || archivosRechazados['carta_protesta1'] === 1 || archivosRechazados['carta_protesta1'] === 3">
+                        <div class="col-md-6 grid-margin stretch-card">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
@@ -256,7 +810,7 @@
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="carta_protesta1"
-                                            accept="application/pdf" (change)="onFile7($event, 'carta_protesta1',7)">
+                                            accept="application/pdf" (change)="onFile7($event, 'carta_protesta1',7)" [disabled]="true">
                                     </div>
                                     <div *ngIf="formDoc.get('carta_protesta1')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
@@ -272,7 +826,7 @@
                                                     alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
-                                                (click)="eliminarArchivo('carta_protesta1')">
+                                                (click)="eliminarArchivo('carta_protesta1')" [disabled]="true">
                                                 <i class="feather icon-trash btn-icon-prepend"></i>
                                                 Eliminar
                                             </button>
@@ -287,8 +841,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="!archivosRechazados['carta_protesta2'] || archivosRechazados['carta_protesta2'] === 1 || archivosRechazados['carta_protesta2'] === 3">
+                        <div class="col-md-6 grid-margin stretch-card">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
@@ -297,7 +850,7 @@
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="carta_protesta2"
-                                            accept="application/pdf" (change)="onFile7($event, 'carta_protesta2',7)">
+                                            accept="application/pdf" (change)="onFile7($event, 'carta_protesta2',7)" [disabled]="true">
                                     </div>
                                     <div *ngIf="formDoc.get('carta_protesta2')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
@@ -313,7 +866,7 @@
                                                     alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
-                                                (click)="eliminarArchivo('carta_protesta2')">
+                                                (click)="eliminarArchivo('carta_protesta2')" [disabled]="true">
                                                 <i class="feather icon-trash btn-icon-prepend"></i>
                                                 Eliminar
                                             </button>
@@ -328,8 +881,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="!archivosRechazados['carta_protesta3'] || archivosRechazados['carta_protesta3'] === 1 || archivosRechazados['carta_protesta3'] === 3">
+                        <div class="col-md-6 grid-margin stretch-card">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
@@ -338,7 +890,7 @@
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="carta_protesta3"
-                                            accept="application/pdf" (change)="onFile7($event, 'carta_protesta3',7)">
+                                            accept="application/pdf" (change)="onFile7($event, 'carta_protesta3',7)" [disabled]="true">
                                     </div>
                                     <div *ngIf="formDoc.get('carta_protesta3')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
@@ -354,7 +906,7 @@
                                                     alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
-                                                (click)="eliminarArchivo('carta_protesta3')">
+                                                (click)="eliminarArchivo('carta_protesta3')" [disabled]="true">
                                                 <i class="feather icon-trash btn-icon-prepend"></i>
                                                 Eliminar
                                             </button>
@@ -369,8 +921,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="!archivosRechazados['carta_protesta4'] || archivosRechazados['carta_protesta4'] === 1 || archivosRechazados['carta_protesta4'] === 3">
+                        <div class="col-md-6 grid-margin stretch-card">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
@@ -380,7 +931,7 @@
 
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="carta_protesta4"
-                                            accept="application/pdf" (change)="onFile7($event, 'carta_protesta4',7)">
+                                            accept="application/pdf" (change)="onFile7($event, 'carta_protesta4',7)" [disabled]="true">
                                     </div>
                                     <div *ngIf="formDoc.get('carta_protesta4')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
@@ -396,7 +947,7 @@
                                                     alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
-                                                (click)="eliminarArchivo('carta_protesta4')">
+                                                (click)="eliminarArchivo('carta_protesta4')" [disabled]="true">
                                                 <i class="feather icon-trash btn-icon-prepend"></i>
                                                 Eliminar
                                             </button>
@@ -411,8 +962,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="!archivosRechazados['carta_protesta5'] || archivosRechazados['carta_protesta5'] === 1 || archivosRechazados['carta_protesta5'] === 3">
+                        <div class="col-md-6 grid-margin stretch-card">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
@@ -421,7 +971,7 @@
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="carta_protesta5"
-                                            accept="application/pdf" (change)="onFile7($event, 'carta_protesta5',7)">
+                                            accept="application/pdf" (change)="onFile7($event, 'carta_protesta5',7)" [disabled]="true">
                                     </div>
                                     <div *ngIf="formDoc.get('carta_protesta5')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
@@ -437,7 +987,7 @@
                                                     alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
-                                                (click)="eliminarArchivo('carta_protesta5')">
+                                                (click)="eliminarArchivo('carta_protesta5')" [disabled]="true">
                                                 <i class="feather icon-trash btn-icon-prepend"></i>
                                                 Eliminar
                                             </button>
@@ -452,8 +1002,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="!archivosRechazados['curriculum'] || archivosRechazados['curriculum'] === 1 || archivosRechazados['curriculum'] === 3">
+                        <div class="col-md-6 grid-margin stretch-card">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="curriculum" style="text-align: justify;">
@@ -462,7 +1011,7 @@
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="curriculum" accept="application/pdf"
-                                            (change)="onFile7($event, 'curriculum',50)">
+                                            (change)="onFile7($event, 'curriculum',50)" [disabled]="true">
                                     </div>
                                     <div *ngIf="formDoc.get('curriculum')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
@@ -478,7 +1027,7 @@
                                                     alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
-                                                (click)="eliminarArchivo('curriculum')">
+                                                (click)="eliminarArchivo('curriculum')" [disabled]="true">
                                                 <i class="feather icon-trash btn-icon-prepend"></i>
                                                 Eliminar
                                             </button>
@@ -493,8 +1042,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="!archivosRechazados['propuesta_programa'] || archivosRechazados['propuesta_programa'] === 1 || archivosRechazados['propuesta_programa'] === 3">
+                        <div class="col-md-6 grid-margin stretch-card">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="propuesta_programa" style="text-align: justify;">
@@ -504,7 +1052,7 @@
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="propuesta_programa"
                                             accept="application/pdf"
-                                            (change)="onFile7($event, 'propuesta_programa',50)">
+                                            (change)="onFile7($event, 'propuesta_programa',50)" [disabled]="true">
                                     </div>
                                     <div *ngIf="formDoc.get('propuesta_programa')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
@@ -520,7 +1068,7 @@
                                                     alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
-                                                (click)="eliminarArchivo('propuesta_programa')">
+                                                (click)="eliminarArchivo('propuesta_programa')" [disabled]="true">
                                                 <i class="feather icon-trash btn-icon-prepend"></i>
                                                 Eliminar
                                             </button>
@@ -535,8 +1083,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="!archivosRechazados['copia_certificada'] || archivosRechazados['copia_certificada'] === 1 || archivosRechazados['copia_certificada'] === 3">
+                        <div class="col-md-6 grid-margin stretch-card">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="copia_certificada" style="text-align: justify;">
@@ -545,7 +1092,7 @@
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="copia_certificada"
-                                            accept="application/pdf" (change)="onFile7($event, 'copia_certificada',50)">
+                                            accept="application/pdf" (change)="onFile7($event, 'copia_certificada',50)" [disabled]="true">
                                     </div>
                                     <div *ngIf="formDoc.get('copia_certificada')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
@@ -561,7 +1108,7 @@
                                                     alt="PDF" btn-primarywidth="40" height="50" class="me-2" />
                                             </a>
                                             <button type="button" class="btn btn-primary btn-icon-text btn-xs"
-                                                (click)="eliminarArchivo('copia_certificada')">
+                                                (click)="eliminarArchivo('copia_certificada')" [disabled]="true">
                                                 <i class="feather icon-trash btn-icon-prepend"></i>
                                                 Eliminar
                                             </button>
@@ -584,7 +1131,7 @@
                         <div class="row mt-2">
                             <div class="col text-center">
                                 <div class="d-flex justify-content-center gap-2">
-                                    <button [disabled]="formDoc.invalid" type="submit" class="btn btn-primary submit">
+                                    <button [disabled]="formDoc.invalid || estatusSoli === 3" type="submit" class="btn btn-primary submit" >
                                         Enviar
                                     </button>
                                     <a routerLink="/registro/documentos" class="btn btn-secondary">
@@ -597,6 +1144,8 @@
                     <br>
                 </form>
             </div>
+            }
+            
         </div>
     </div>
 </div>

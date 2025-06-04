@@ -248,7 +248,7 @@ export class DetalleValidadorComponent {
       Swal.fire({
         position: 'center',
         icon: 'success',
-        title: 'Solicitud validada correctamente.',
+        title: 'Proceso concluido: La validación de la información remitida por el candidato se ha completado exitosamente.',
         showConfirmButton: false,
         timer: 3000
       });

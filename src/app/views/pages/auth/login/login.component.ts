@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserService } from '../../../../service/user.service';
 import { User } from '../../../../interfaces/user';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -65,7 +66,13 @@ export class LoginComponent implements OnInit {
       },
       error: (e: HttpErrorResponse) => {
         if (e.error && e.error.msg) {
-          console.error('Error del servidor:', e.error.msg);
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Usuario o contraseña incorrectos",
+            showConfirmButton: false,
+            timer: 3000
+          });
         } else {
           console.error('Error desconocido:', e);
         }

@@ -50,7 +50,6 @@ export class NavbarComponent implements OnInit {
     const role = this._userService.currentUserValue?.rol_users?.role?.name;
     this.menuItems = MENU;
     this.usuario = this._userService.currentUserValue?.email;
-    console.log(this.usuario)
     if (role) {
       this.menuItems = this.filterMenuByRole(MENU, role);
     } else {

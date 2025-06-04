@@ -290,7 +290,7 @@ function generarHtmlCorreo(contenidoHtml) {
       <body>
         <div style="text-align: center;">
           <img 
-            src="https://congresoedomex.gob.mx/storage/images/congreso.jpg" 
+            src="https://congresoedomex.gob.mx/storage/images/IMAGOTIPOHorizontal.png" 
             alt="Logo"
             style="display: block; margin: 0 auto; width: 300px; height: auto;"
           >
@@ -430,9 +430,15 @@ const resetpassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             // return (500);
             (() => __awaiter(void 0, void 0, void 0, function* () {
                 try {
+                    const meses = [
+                        "enero", "febrero", "marzo", "abril", "mayo", "junio",
+                        "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+                    ];
+                    const hoy = new Date();
+                    const fechaFormateada = `Toluca de Lerdo, México; a ${hoy.getDate()} de ${meses[hoy.getMonth()]} de ${hoy.getFullYear()}.`;
                     const contenido = `
           <div class="container">
-            <h1>Restablecer contraseña</h1>
+            <p  class="pderecha" >${fechaFormateada}</p>
             <p>C. ${nombreCompleto}</p>
             <p>Hemos recibido una solicitud para restablecer la contraseña de su cuenta. Para establecer una nueva contraseña, haga clic en el siguiente enlace:</p>
             <p>

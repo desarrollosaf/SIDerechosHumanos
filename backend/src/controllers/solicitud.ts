@@ -109,9 +109,15 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
     
     (async () => {
       try {
+         const meses = [
+            "enero", "febrero", "marzo", "abril", "mayo", "junio",
+            "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+            ];
+         const hoy = new Date();
+         const fechaFormateada = `Toluca de Lerdo, México; a ${hoy.getDate()} de ${meses[hoy.getMonth()]} de ${hoy.getFullYear()}.`;
         const contenido = `
            <div class="container">
-            <h1>Cuenta creada exitosamente</h1>
+            <p  class="pderecha" >${fechaFormateada}</p>
             <p>C. ${body.nombres} ${body.ap_paterno} ${body.ap_materno},</p>
             <p>Por este medio le informamos que su cuenta de usuario ha sido generada exitosamente para el proceso de registro. A continuación, se proporcionan sus credenciales de acceso:</p>
             <div class="credentials">
@@ -131,16 +137,7 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
         await sendEmail(
           body.correo,
           'Tus credenciales de acceso',
-          htmlContent,
-          [{
-            filename: 'oficio.pdf',
-            content: await generarPDFBuffer({
-              nombreCompleto: `${body.nombres} ${body.ap_paterno} ${body.ap_materno}`,
-              correo: body.correo,
-              password: Upassword,
-            }),
-            contentType: 'application/pdf',
-          }]
+           htmlContent
         );
 
         console.log('Correo enviado correctamente');
@@ -296,7 +293,7 @@ function generarHtmlCorreo(contenidoHtml: string): string {
       <body>
         <div style="text-align: center;">
           <img 
-            src="https://congresoedomex.gob.mx/storage/images/congreso.jpg" 
+            src="https://congresoedomex.gob.mx/storage/images/IMAGOTIPOHorizontal.png" 
             alt="Logo"
             style="display: block; margin: 0 auto; width: 300px; height: auto;"
           >
@@ -312,27 +309,6 @@ function generarHtmlCorreo(contenidoHtml: string): string {
   `;
 }
 
-function generarPDFBuffer(data: { nombreCompleto: string, correo: string, password: string }): Promise<Buffer> {
-  return new Promise((resolve, reject) => {
-    const doc = new PDFDocument();
-    const chunks: any[] = [];
-
-    doc.on('data', (chunk: Buffer) => chunks.push(chunk));
-    doc.on('end', () => resolve(Buffer.concat(chunks)));
-    doc.on('error', reject);
-
-    doc.fontSize(14).text('Cuenta creada exitosamente', { align: 'center' });
-    doc.moveDown();
-    doc.text(`Nombre: ${data.nombreCompleto}`);
-    doc.text(`Correo electrónico: ${data.correo}`);
-    doc.text(`Contraseña generada: ${data.password}`);
-    doc.moveDown();
-    doc.text('Puede ingresar al micrositio en:');
-    doc.text('http://localhost:4200/auth/login', { underline: true });
-
-    doc.end();
-  });
-}
 
 
 

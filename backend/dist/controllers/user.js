@@ -293,7 +293,7 @@ function generarHtmlCorreo(contenidoHtml) {
       <body>
         <div style="text-align: center;">
           <img 
-            src="https://congresoedomex.gob.mx/storage/images/IMAGOTIPOHorizontal.png" 
+            src="https://congresoedomex.gob.mx/storage/images/congreso.png" 
             alt="Logo"
             style="display: block; margin: 0 auto; width: 300px; height: auto;"
           >

@@ -285,6 +285,9 @@ function generarHtmlCorreo(contenidoHtml) {
               margin-top: 30px;
               text-align: center;
             }
+               .pderecha{
+          text-align: right;
+          }
         </style>
       </head>
       <body>

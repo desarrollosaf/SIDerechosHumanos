@@ -24,6 +24,7 @@ const user_1 = __importDefault(require("../models/user"));
 const datos_user_1 = __importDefault(require("../models/datos_user"));
 const mailer_1 = require("../utils/mailer");
 const detalle_fecha_1 = __importDefault(require("../models/detalle_fecha"));
+const PDFDocument = require('pdfkit');
 const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const archivo = req.file;
     const { tipo, usuario } = req.body;
@@ -125,7 +126,16 @@ const getDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.getDocumentos = getDocumentos;
 const envSolicitud = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const solicitud = yield solicitud_1.default.findOne({ where: { userId: id } });
+    const solicitud = yield solicitud_1.default.findOne({
+        where: { userId: id },
+        include: [
+            {
+                model: user_1.default,
+                as: 'usuario',
+                attributes: ['email'],
+            },
+        ],
+    });
     if (!solicitud) {
         return res.status(404).json({ msg: `No existe el id ${id}` });
     }
@@ -143,6 +153,52 @@ const envSolicitud = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             solicitudId: solicitud.id,
             validadorId: validadorConMenosSolicitudes.user_id,
         });
+        (() => __awaiter(void 0, void 0, void 0, function* () {
+            try {
+                const meses = [
+                    "enero", "febrero", "marzo", "abril", "mayo", "junio",
+                    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+                ];
+                const hoy = new Date();
+                const fechaFormateada = `Toluca de Lerdo, México; a ${hoy.getDate()} de ${meses[hoy.getMonth()]} de ${hoy.getFullYear()}.`;
+                const contenido = `
+                  <div class="container">
+                  <p  class="pderecha" >${fechaFormateada}</p>
+                  <h3><trong>C.</strong> ${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno},</h3>
+                  <p>Por este medio le informamos que su registro electrónico ha sido concluido
+                   de manera satisfactoria. Es importante señalar que este correo únicamente
+                    confirma la recepción de su registro y documentación en el sistema, pero
+                     no constituye una garantía de que los documentos cargados cumplan con
+                      los requisitos establecidos en los artículos 89, fracción II, inciso a),
+                       91 y 107 de la Constitución Política del Estado Libre y Soberano de México.
+                        Tampoco se emite pronunciamiento alguno sobre el contenido o idoneidad
+                         de los archivos recibidos.
+                  </p>
+                  <p>Asimismo, se le informa que en el archivo adjunto a este correo podrá
+                   descargar el acuse de envío de información, así como el folio asignado al trámite correspondiente.</p>
+                  <p>Le recordamos que deberá mantenerse atento a cualquier comunicación adicional que se enviará
+                   al correo electrónico proporcionado durante el proceso de registro.</p>
+                  <p>
+                  Agradecemos su atención y quedamos a sus órdenes para cualquier duda o aclaración.
+                  </p>
+                   <p>Atentamente,<br><strong>Poder Legislativo del Estado de México</strong></p>
+                </div>
+              `;
+                let htmlContent = generarHtmlCorreo(contenido);
+                yield (0, mailer_1.sendEmail)(solicitud.usuario.email, 'Registro Electronico Satisfactorio', htmlContent, [{
+                        filename: 'oficio.pdf',
+                        content: yield generarPDFBuffer({
+                            nombreCompleto: `${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno}`,
+                            correo: solicitud.correo,
+                        }),
+                        contentType: 'application/pdf',
+                    }]);
+                console.log('Correo enviado correctamente');
+            }
+            catch (err) {
+                console.error('Error al enviar correo:', err);
+            }
+        }))();
     }
     solicitud.estatusId = 2;
     solicitud.fecha_envio = new Date();
@@ -273,7 +329,6 @@ const estatusDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                         const fechaFormateada = `Toluca de Lerdo, México; a ${hoy.getDate()} de ${meses[hoy.getMonth()]} de ${hoy.getFullYear()}.`;
                         const contenido = `
               <div class="container">
-              <h1>OBSERVACIONES</h1>
               <p  class="pderecha" >${fechaFormateada}</p>
               <h3><trong>C.</strong> ${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno},</h3>
               <p><strong>Folio:</strong> ${solicitud.id.slice(0, 8)}</p>
@@ -382,7 +437,7 @@ function generarHtmlCorreo(contenidoHtml) {
       <body>
         <div style="text-align: center;">
           <img 
-            src="https://congresoedomex.gob.mx/storage/images/congreso.jpg" 
+            src="https://congresoedomex.gob.mx/storage/images/IMAGOTIPOHorizontal.png" 
             alt="Logo"
             style="display: block; margin: 0 auto; width: 300px; height: auto;"
           >
@@ -396,4 +451,20 @@ function generarHtmlCorreo(contenidoHtml) {
       </body>
     </html>
   `;
+}
+function generarPDFBuffer(data) {
+    return new Promise((resolve, reject) => {
+        const doc = new PDFDocument();
+        const chunks = [];
+        doc.on('data', (chunk) => chunks.push(chunk));
+        doc.on('end', () => resolve(Buffer.concat(chunks)));
+        doc.on('error', reject);
+        doc.fontSize(14).text('Cuenta creada exitosamente', { align: 'center' });
+        doc.moveDown();
+        doc.text(`Nombre: ${data.nombreCompleto}`);
+        doc.text(`Correo electrónico: ${data.correo}`);
+        doc.moveDown();
+        doc.text('Puede ingresar al micrositio en:');
+        doc.end();
+    });
 }

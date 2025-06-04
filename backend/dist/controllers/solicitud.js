@@ -108,9 +108,15 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         yield solicitud_1.default.create(body);
         (() => __awaiter(void 0, void 0, void 0, function* () {
             try {
+                const meses = [
+                    "enero", "febrero", "marzo", "abril", "mayo", "junio",
+                    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+                ];
+                const hoy = new Date();
+                const fechaFormateada = `Toluca de Lerdo, México; a ${hoy.getDate()} de ${meses[hoy.getMonth()]} de ${hoy.getFullYear()}.`;
                 const contenido = `
            <div class="container">
-            <h1>Cuenta creada exitosamente</h1>
+            <p  class="pderecha" >${fechaFormateada}</p>
             <p>C. ${body.nombres} ${body.ap_paterno} ${body.ap_materno},</p>
             <p>Por este medio le informamos que su cuenta de usuario ha sido generada exitosamente para el proceso de registro. A continuación, se proporcionan sus credenciales de acceso:</p>
             <div class="credentials">
@@ -127,15 +133,7 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
           </div>
         `;
                 let htmlContent = generarHtmlCorreo(contenido);
-                yield (0, mailer_1.sendEmail)(body.correo, 'Tus credenciales de acceso', htmlContent, [{
-                        filename: 'oficio.pdf',
-                        content: yield generarPDFBuffer({
-                            nombreCompleto: `${body.nombres} ${body.ap_paterno} ${body.ap_materno}`,
-                            correo: body.correo,
-                            password: Upassword,
-                        }),
-                        contentType: 'application/pdf',
-                    }]);
+                yield (0, mailer_1.sendEmail)(body.correo, 'Tus credenciales de acceso', htmlContent);
                 console.log('Correo enviado correctamente');
             }
             catch (err) {
@@ -283,7 +281,7 @@ function generarHtmlCorreo(contenidoHtml) {
       <body>
         <div style="text-align: center;">
           <img 
-            src="https://congresoedomex.gob.mx/storage/images/congreso.jpg" 
+            src="https://congresoedomex.gob.mx/storage/images/IMAGOTIPOHorizontal.png" 
             alt="Logo"
             style="display: block; margin: 0 auto; width: 300px; height: auto;"
           >
@@ -297,22 +295,4 @@ function generarHtmlCorreo(contenidoHtml) {
       </body>
     </html>
   `;
-}
-function generarPDFBuffer(data) {
-    return new Promise((resolve, reject) => {
-        const doc = new PDFDocument();
-        const chunks = [];
-        doc.on('data', (chunk) => chunks.push(chunk));
-        doc.on('end', () => resolve(Buffer.concat(chunks)));
-        doc.on('error', reject);
-        doc.fontSize(14).text('Cuenta creada exitosamente', { align: 'center' });
-        doc.moveDown();
-        doc.text(`Nombre: ${data.nombreCompleto}`);
-        doc.text(`Correo electrónico: ${data.correo}`);
-        doc.text(`Contraseña generada: ${data.password}`);
-        doc.moveDown();
-        doc.text('Puede ingresar al micrositio en:');
-        doc.text('http://localhost:4200/auth/login', { underline: true });
-        doc.end();
-    });
 }

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import {FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms'
+import {FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormControl} from '@angular/forms'
 import { CommonModule } from '@angular/common';
 import {Registro} from '../../../interfaces/registro'
 import { HttpErrorResponse } from '@angular/common/http';
@@ -16,7 +16,7 @@ import Swal from 'sweetalert2';
 })
 export class RegistroComponent {
   formReg: FormGroup;
-  
+  miControl = new FormControl('');
   public _registroService  =  inject( RegistroService )
 
   constructor(private fb: FormBuilder,private router: Router){
@@ -53,7 +53,10 @@ export class RegistroComponent {
       return null;
     }
   }
-
+   convertirAMayuscula(controlName: string) {
+    const valor = this.formReg.get(controlName)?.value || '';
+    this.formReg.get(controlName)?.setValue(valor.toUpperCase(), { emitEvent: false });
+  }
   validadorCorreo(formGroup: FormGroup): { [key: string]: boolean } | null {
     const email = formGroup.get('correo')?.value;
     const confirmEmail = formGroup.get('confirmEmail')?.value;
@@ -101,7 +104,7 @@ export class RegistroComponent {
             title: "¡Solicitud registrada satisfactoriamente!",
             text: `Para continuar con el trámite, se han enviado a la cuenta de correo electrónico ${correo} las instrucciones para continuar con el proceso de registro. Si no encuentra el correo en la bandeja de entrada, verifique en el apartado de Correo no deseado o Spam.`,
             showConfirmButton: false,
-            timer: 3000
+            timer: 10000
           });
           this.router.navigate(['/']);
         }        

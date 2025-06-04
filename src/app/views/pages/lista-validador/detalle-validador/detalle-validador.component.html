@@ -135,7 +135,8 @@
                                                         <br>
                                                         <mat-slide-toggle [ngModelOptions]="{ standalone: true }"
                                                             [(ngModel)]="validarrechazar[doc.clave].estado"
-                                                            (ngModelChange)="onToggleChange(doc.clave)">
+                                                            [disabled]="true">
+                                                            <!-- (ngModelChange)="onToggleChange(doc.clave)" -->
                                                         </mat-slide-toggle>
                                                     </div>
                                                 </div>
@@ -159,7 +160,7 @@
                         <div class="row mt-2">
                             <div class="col text-center">
                                 <div class="d-flex justify-content-center gap-2">
-                                    <button type="submit" class="btn btn-primary submit" (click)="enviarValidacion()">
+                                    <button type="submit" class="btn btn-primary submit" (click)="enviarValidacion()"  [disabled]="(estatusSoli === 3)">
                                         Enviar
                                     </button>
                                     <a routerLink="/solicitud/tramite" class="btn btn-secondary">

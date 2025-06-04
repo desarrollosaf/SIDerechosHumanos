@@ -11,7 +11,8 @@
               <div class="col-sm-6">
                 <div class="mb-3">
                   <label class="form-label">Apellido paterno:*</label>
-                  <input formControlName="ap_paterno" type="text" class="form-control" placeholder="Ejemplo: Martínez" />
+                  <input formControlName="ap_paterno" type="text" class="form-control" placeholder="Ejemplo: Martínez"    
+                   (input)="convertirAMayuscula('ap_paterno')"/>
                   <small class="colorsm" *ngIf="
                       formReg.get('ap_paterno')?.hasError('required') &&
                       formReg.get('ap_paterno')?.touched
@@ -22,7 +23,7 @@
               <div class="col-sm-6">
                 <div class="mb-3">
                   <label class="form-label">Apellido materno:*</label>
-                  <input formControlName="ap_materno" type="text" class="form-control" placeholder="Ejemplo: López" />
+                  <input formControlName="ap_materno" type="text" class="form-control" placeholder="Ejemplo: López" (input)="convertirAMayuscula('ap_materno')" />
                   <small class="colorsm" *ngIf="
                       formReg.get('ap_materno')?.hasError('required') &&
                       formReg.get('ap_materno')?.touched
@@ -36,7 +37,7 @@
               <div class="col-sm-6">
                 <div class="mb-3">
                   <label class="form-label">Nombres:*</label>
-                  <input formControlName="nombres" type="text" class="form-control" placeholder="Ejemplo: Juan Carlos" />
+                  <input formControlName="nombres" type="text" class="form-control" placeholder="Ejemplo: Juan Carlos" (input)="convertirAMayuscula('nombres')"/>
                   <small class="colorsm" *ngIf="
                       formReg.get('nombres')?.hasError('required') &&
                       formReg.get('nombres')?.touched
@@ -126,7 +127,7 @@
               <div class="col-sm-6">
                 <div class="mb-3">
                   <label class="form-label">CURP:*</label>
-                  <input formControlName="curp" type="text" class="form-control" placeholder="Ejemplo: MACJ750101HDFRRL01"   maxlength="18"/>
+                  <input formControlName="curp" type="text" class="form-control" placeholder="Ejemplo: MACJ750101HDFRRL01"   maxlength="18" (input)="convertirAMayuscula('curp')"/>
                   <small class="colorsm" *ngIf="formReg.get('curp')?.hasError('pattern')">
                     <strong> CURP inválida o incompleta.</strong>
                   </small>
@@ -146,7 +147,7 @@
                 <div class="mb-3">
                   <label class="form-label">Cédula profesional:*</label>
                   <input formControlName="cedula_profesional" type="text" class="form-control"
-                    placeholder="Ejemplo: 1234567" />
+                    placeholder="Ejemplo: 1234567" (input)="convertirAMayuscula('cedula_profesional')"/>
                   <small class="colorsm" *ngIf="formReg.get('cedula_profesional')?.hasError('required') && formReg.get('cedula_profesional')?.touched">
                     Este campo es <strong>requerido</strong>
                     </small>

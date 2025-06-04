@@ -28,6 +28,7 @@ export class AddEditDocumentosComponent {
   observac: { [key: string]: string } = {};
   documentos: any;
   isLoading: boolean = false;
+  estatusSoli: any;
   constructor(private fb: FormBuilder, private router: Router) {
     this.formDoc = this.fb.group({
       curp: [null, Validators.required],
@@ -160,7 +161,9 @@ export class AddEditDocumentosComponent {
     const id_user = String(this._userService.currentUserValue?.id);
     this._documentoService.getDocumentosUser(id_user).subscribe({
       next: (response: any) => {
+        console.log(response);
           this.documentos = response.documentos;
+           this.estatusSoli = response.estatusId;
           this.documentos.forEach((doc: any) => {
             if (doc) {
                 this.archivosRechazados[doc.tipo?.valor] = doc.estatus;

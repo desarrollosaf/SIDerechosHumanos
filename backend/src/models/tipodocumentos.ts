@@ -29,7 +29,7 @@ TipoDocumentos.init(
       allowNull: true,
     },
     valor_real: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.TEXT('long'),
       allowNull: true,
     },
   },

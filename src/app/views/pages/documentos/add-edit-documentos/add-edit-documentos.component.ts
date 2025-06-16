@@ -128,7 +128,7 @@ export class AddEditDocumentosComponent {
 
         this._documentoService.saveDocumentos(formData, currntUsr).subscribe({
           next: (response: any) => {
-            const archivoUrl = 'http://localhost:3001/' + response.documento.path;
+            const archivoUrl = 'https://dev4.siasaf.gob.mx/' + response.documento.path;
             this.archivosSubidos[input.id] = archivoUrl;
             const Toast = Swal.mixin({
               toast: true,
@@ -165,14 +165,13 @@ export class AddEditDocumentosComponent {
     const id_user = String(this._userService.currentUserValue?.id);
     this._documentoService.getDocumentosUser(id_user).subscribe({
       next: (response: any) => {
-        console.log(response);
           this.documentos = response.documentos;
            this.estatusSoli = response.estatusId;
           this.documentos.forEach((doc: any) => {
             if (doc) {
                 this.archivosRechazados[doc.tipo?.valor] = doc.estatus;
                 this.observac[doc.tipo?.valor] = doc.observaciones;
-                const archivoUrl = 'http://localhost:3001/' + doc.path;
+                const archivoUrl = 'https://dev4.siasaf.gob.mx/' + doc.path;
                 this.archivosSubidos[doc.tipo?.valor] = archivoUrl;
                 this.formDoc.get(doc.tipo?.valor)?.clearValidators();
                 this.formDoc.get(doc.tipo?.valor)?.updateValueAndValidity();

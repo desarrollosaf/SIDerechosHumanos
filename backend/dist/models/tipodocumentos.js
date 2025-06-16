@@ -19,7 +19,7 @@ TipoDocumentos.init({
         allowNull: true,
     },
     valor_real: {
-        type: sequelize_1.DataTypes.STRING(255),
+        type: sequelize_1.DataTypes.TEXT('long'),
         allowNull: true,
     },
 }, {

@@ -38,7 +38,7 @@ export class RegistroComponent {
     { validators: [this.validadorTelefono, this.validadorCorreo]
 
 
-     });
+    });
   }
 
   ngOnInit(): void {

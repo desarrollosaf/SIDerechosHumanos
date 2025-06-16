@@ -427,7 +427,7 @@ const resetpassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 email: correo,
                 userId: usuario.id,
             }, process.env.JWT_SECRET || 'sUP3r_s3creT_ClavE-4321!', { expiresIn: '2d' });
-            const enlace = `https://dev5.siasaf.gob.mx/auth/cambiar-contrasena?token=${token}`;
+            const enlace = `http://localhost:4200/auth/cambiar-contrasena?token=${token}`;
             const nombreCompleto = `${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno}`.trim();
             //         console.log(nombreCompleto);
             // return (500);

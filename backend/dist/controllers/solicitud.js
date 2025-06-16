@@ -102,7 +102,7 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             email: body.correo,
             userId: newUser.id,
         }, process.env.JWT_SECRET || 'sUP3r_s3creT_ClavE-4321!', { expiresIn: '2d' });
-        const enlace = `https://dev5.siasaf.gob.mx/auth/cambiar-contrasena?token=${token}`;
+        const enlace = `http://localhost:4200/auth/cambiar-contrasena?token=${token}`;
         body.userId = newUser.id;
         body.estatusId = 1;
         yield solicitud_1.default.create(body);
@@ -124,7 +124,7 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             <strong>Contraseña:</strong> <a href="${enlace}">Establecer mi contraseña</a>
             </div>
             <p>Podrá iniciar su proceso de registro a través del siguiente enlace durante el periodo comprendido del <strong>XXXXX al XXXXX de XXXXX de 2025</strong>:</p>
-            <a href="https://dev5.siasaf.gob.mx/auth/login" class="button" target="_blank">Iniciar registro</a>
+            <a href="http://localhost:4200/auth/login" class="button" target="_blank">Iniciar registro</a>
             <p class="footer">
               Si tiene problemas para hacer clic en el botón, copie y pegue esta URL en su navegador:<br>
                ${enlace}

@@ -223,8 +223,8 @@ export const saveValidador = async (req: Request, res: Response): Promise<any> =
 
           <p>Se le recuerda que podrá iniciar su proceso de registro
             a través del micrositio 
-            <a href="http://localhost:4200/auth/login" target="_blank">
-              http://localhost:4200/auth/login
+            <a href="https://dev5.siasaf.gob.mx/auth/login" target="_blank">
+              https://dev5.siasaf.gob.mx/auth/login
             </a> 
             durante el periodo comprendido del XXXXX al XXXXX de XXXXX de 2025.
           </p>
@@ -469,7 +469,7 @@ export const resetpassword = async (req: Request, res: Response): Promise<any> =
           process.env.JWT_SECRET || 'sUP3r_s3creT_ClavE-4321!', 
           { expiresIn: '2d' } 
         );
-        const enlace = `http://localhost:4200/auth/cambiar-contrasena?token=${token}`;
+        const enlace = `https://dev5.siasaf.gob.mx/auth/cambiar-contrasena?token=${token}`;
 
       
     const nombreCompleto =  `${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno}`.trim();

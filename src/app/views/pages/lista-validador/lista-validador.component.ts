@@ -44,6 +44,10 @@ export class ListaValidadorComponent {
       this.titulo='Solicitudes rechazadas'
       this.tipoEstatus = 4;
     }
+    else if(this.rutaActual.includes('registradas')){
+      this.titulo='Solicitudes registradas'
+      this.tipoEstatus = 1;
+    }
 
     const payload: any = {};
     if (this._userService.currentUserValue?.id !== undefined) {

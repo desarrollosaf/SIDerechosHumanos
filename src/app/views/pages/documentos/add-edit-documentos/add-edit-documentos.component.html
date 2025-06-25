@@ -12,6 +12,13 @@
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
+                            <h4 class="card-title" *ngIf="this.isAdmin">Datos del solicitante</h4>
+                            <p class="text">Nombre completo: {{ this.data?.nombres }} {{ this.data?.ap_paterno }} {{
+                                this.data?.ap_materno }} <br>
+                                Curp: {{ this.data?.curp }} <br>
+                                Cedula profesional: {{ this.data?.cedula_profesional }} </p>
+                        </div>
+                        <div class="card-body">
                             <h4 class="card-title">Indicaciones</h4>
                             <p>
                                 <strong>1. Formato:</strong> Todos los archivos deberán estar en formato PDF, legibles y
@@ -800,8 +807,8 @@
                                     <button [disabled]="formDoc.invalid" type="submit" class="btn btn-primary submit">
                                         Enviar
                                     </button>
-                                    <a routerLink="/registro/documentos" class="btn btn-secondary">
-                                        Cancelar
+                                    <a [routerLink]="isAdmin ? ['/solicitud/registradas'] : ['/registro/documentos']" class="btn btn-secondary">
+                                    Cancelar
                                     </a>
                                 </div>
                             </div>

@@ -9,6 +9,7 @@ import { DocumentoService } from '../../../../service/documento.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { RouterModule } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-add-edit-documentos',
@@ -29,7 +30,10 @@ export class AddEditDocumentosComponent {
   documentos: any;
   isLoading: boolean = false;
   estatusSoli: any;
-  constructor(private fb: FormBuilder, private router: Router) {
+  isAdmin = false;
+  id_user: string | null = null;
+  data: any  = {};
+  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute,) {
     this.formDoc = this.fb.group({
       curp: [null, Validators.required],
       constancia_residencia: [null, Validators.required],
@@ -57,7 +61,7 @@ export class AddEditDocumentosComponent {
     this.getDocumUsuario();
   }
   eliminarArchivo(tipoDoc: string){
-    const currntUsr = String(this._userService.currentUserValue?.id);
+    const currntUsr = String(this.id_user);
       const datos = {
         tipo: tipoDoc, usuario: currntUsr
       };
@@ -101,9 +105,10 @@ export class AddEditDocumentosComponent {
       })
   }
   onFile7(event: Event, controlName: string, maxmb: number): void {
+
     const input = event.target as HTMLInputElement;
     const control = this.formDoc.get(controlName);
-    const currntUsr = String(this._userService.currentUserValue?.id);
+    const currntUsr = String(this.id_user);
 
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
@@ -161,10 +166,18 @@ export class AddEditDocumentosComponent {
   }
 
   getDocumUsuario() {
-      
-    const id_user = String(this._userService.currentUserValue?.id);
-    this._documentoService.getDocumentosUser(id_user).subscribe({
+
+   
+    if(this._userService.currentUserValue?.rol_users?.role?.name == 'Administrador'){
+       this.id_user  = this.route.snapshot.paramMap.get('id') ?? '';
+       this.isAdmin = true
+    }else{
+      this.id_user = String(this._userService.currentUserValue?.id);
+    }
+
+    this._documentoService.getDocumentosUser(this.id_user).subscribe({
       next: (response: any) => {
+          this.data = response
           this.documentos = response.documentos;
            this.estatusSoli = response.estatusId;
           this.documentos.forEach((doc: any) => {
@@ -190,7 +203,7 @@ export class AddEditDocumentosComponent {
 
   sendDoc() {
     this.isLoading = true;
-    const id_user = String(this._userService.currentUserValue?.id);
+    const id_user = String(this.id_user);
     this._documentoService.sendDocumentos(id_user).subscribe({
       next: (response: any) => {
         this.isLoading = false; 
@@ -201,7 +214,12 @@ export class AddEditDocumentosComponent {
           showConfirmButton: false,
           timer: 3000
         });
-        this.router.navigate(['/registro/documentos']);
+        if(this.isAdmin){
+          this.router.navigate(['/solicitud/registradas']);
+        }else{
+          this.router.navigate(['/registro/documentos']);
+        }
+        
       },
       error: (e: HttpErrorResponse) => {
         if (e.error && e.error.msg) {

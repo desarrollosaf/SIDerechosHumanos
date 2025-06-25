@@ -7,7 +7,7 @@ export default [
         loadComponent: () => import('./documentos.component').then(c => c.DocumentosComponent)
     },
     {
-        path: 'add-documentos',
+        path: 'add-documentos/:id',
         loadComponent: () => import('./add-edit-documentos/add-edit-documentos.component').then(c => c.AddEditDocumentosComponent)
         // canActivate : [ statusGuard ]
     },

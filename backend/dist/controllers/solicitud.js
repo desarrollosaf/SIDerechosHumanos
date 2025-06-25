@@ -74,15 +74,11 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     const solicitud = yield user_1.default.findOne({
         where: { email: body.correo }
     });
-    const cedula = yield solicitud_1.default.findOne({
-        where: { cedula_profesional: body.cedula_profesional }
-    });
-    if (solicitud || cedula) {
+    if (solicitud) {
         return res.status(400).json({
             estatus: 400,
             mensaje: 'Ya existe un registro con el mismo correo o cédula profesional',
             correo: (solicitud === null || solicitud === void 0 ? void 0 : solicitud.email) || null,
-            cedula: (cedula === null || cedula === void 0 ? void 0 : cedula.cedula_profesional) || null
         });
     }
     try {

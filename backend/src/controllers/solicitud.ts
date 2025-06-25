@@ -66,16 +66,12 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
     where: { email: body.correo }  
   });
 
-  const cedula = await Solicitudes.findOne({
-    where: { cedula_profesional: body.cedula_profesional }  
-  });
 
-  if (solicitud || cedula) {
+  if (solicitud) {
   return res.status(400).json({
     estatus: 400,
     mensaje: 'Ya existe un registro con el mismo correo o cédula profesional',
     correo: solicitud?.email || null,
-    cedula: cedula?.cedula_profesional || null
   });
 }
 

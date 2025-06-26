@@ -37,7 +37,6 @@ export class AddEditDocumentosComponent {
     this.formDoc = this.fb.group({
       curp: [null, Validators.required],
       constancia_residencia: [null, Validators.required],
-      titulo_licenciatura: [null, Validators.required],
       acta_nacimiento: [null, Validators.required],
       carta_ant_no_penales: [null, Validators.required],
       carta_protesta1: [null, Validators.required],
@@ -178,13 +177,17 @@ export class AddEditDocumentosComponent {
     this._documentoService.getDocumentosUser(this.id_user).subscribe({
       next: (response: any) => {
           this.data = response
+          console.log(response)
           this.documentos = response.documentos;
            this.estatusSoli = response.estatusId;
           this.documentos.forEach((doc: any) => {
+            
             if (doc) {
+              
                 this.archivosRechazados[doc.tipo?.valor] = doc.estatus;
                 this.observac[doc.tipo?.valor] = doc.observaciones;
                 const archivoUrl = 'https://dev4.siasaf.gob.mx/' + doc.path;
+                
                 this.archivosSubidos[doc.tipo?.valor] = archivoUrl;
                 this.formDoc.get(doc.tipo?.valor)?.clearValidators();
                 this.formDoc.get(doc.tipo?.valor)?.updateValueAndValidity();
@@ -199,6 +202,7 @@ export class AddEditDocumentosComponent {
         }
       },
     })
+    console.log(this.archivosSubidos)
   }
 
   sendDoc() {

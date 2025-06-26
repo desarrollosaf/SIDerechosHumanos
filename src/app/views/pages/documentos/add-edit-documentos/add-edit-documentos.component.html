@@ -139,21 +139,18 @@
                         </div>
 
                         <div class="col-md-6 grid-margin stretch-card"
-                            *ngIf="!archivosRechazados['titulo_licenciatura'] || archivosRechazados['titulo_licenciatura'] === 1 || archivosRechazados['titulo_licenciatura'] === 3">
+                            *ngIf="(estatusSoli === 4 && archivosRechazados['titulo_licenciatura']) || (estatusSoli === 1 && !archivosRechazados['titulo_licenciatura']) || archivosRechazados['titulo_licenciatura'] === 1 || archivosRechazados['titulo_licenciatura'] === 3">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
                                         <strong>Tener preferentemente título de licenciado en derecho, así como
                                             experiencia o estudios en materia de derechos humanos.</strong>
-                                        <p>Documento requerido: Título de Licenciatura en Derecho*:</p>
+                                        <p>Documento requerido: Título de Licenciatura en Derecho:</p>
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="titulo_licenciatura"
                                             accept="application/pdf"
                                             (change)="onFile7($event, 'titulo_licenciatura',7)">
-                                    </div>
-                                    <div *ngIf="formDoc.get('titulo_licenciatura')?.hasError('required')">
-                                        <small class="text-danger">Este campo es obligatorio.</small>
                                     </div>
                                     <div *ngIf="formDoc.get('titulo_licenciatura')?.hasError('fileSize')">
                                         <small class="text-danger">El archivo no debe exceder los 7 MB.</small>
@@ -911,15 +908,12 @@
                                     <label class="form-label" for="formFile" style="text-align: justify;">
                                         <strong>Tener preferentemente título de licenciado en derecho, así como
                                             experiencia o estudios en materia de derechos humanos.</strong>
-                                        <p>Documento requerido: Título de Licenciatura en Derecho*:</p>
+                                        <p>Documento requerido: Título de Licenciatura en Derecho:</p>
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="titulo_licenciatura"
                                             accept="application/pdf" (change)="onFile7($event, 'titulo_licenciatura',7)"
                                             [disabled]="true">
-                                    </div>
-                                    <div *ngIf="formDoc.get('titulo_licenciatura')?.hasError('required')">
-                                        <small class="text-danger">Este campo es obligatorio.</small>
                                     </div>
                                     <div *ngIf="formDoc.get('titulo_licenciatura')?.hasError('fileSize')">
                                         <small class="text-danger">El archivo no debe exceder los 7 MB.</small>

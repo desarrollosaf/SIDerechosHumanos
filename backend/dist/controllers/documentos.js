@@ -151,37 +151,38 @@ const envSolicitud = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         return { validador, count };
     }))).then((results) => results.sort((a, b) => a.count - b.count)[0].validador);
     const existsolicitud = yield validadorsolicitud_1.default.findOne({ where: { solicitudId: solicitud.id } });
-    // if(!existsolicitud){
-    yield validadorsolicitud_1.default.create({
-        solicitudId: solicitud.id,
-        validadorId: validadorConMenosSolicitudes.user_id,
-    });
-    const cadenaOriginal = `${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno}|${solicitud.curp}|${solicitud.fecha_envio}`;
-    const key = crypto_1.default.createHash('sha256').update('mi_clave_super_secreta').digest(); // 32 bytes
-    const iv = crypto_1.default.randomBytes(16); // 16 bytes
-    // === Encriptar la cadena original con AES-256-CBC ===
-    const cipher = crypto_1.default.createCipheriv('aes-256-cbc', key, iv);
-    let encrypted = cipher.update(cadenaOriginal, 'utf8', 'base64');
-    encrypted += cipher.final('base64');
-    // La cadena cifrada incluirá el IV codificado
-    const cadenaCifrada = `${iv.toString('base64')}.${encrypted}`;
-    // === Crear sello digital SHA-256 codificado en base64 ===
-    const selloDigital = crypto_1.default.createHash('sha256').update(cadenaOriginal).digest('base64');
-    const valida = yield validadoc_1.default.create({
-        solicitudId: solicitud.id,
-        sello: cadenaCifrada,
-        cadena: selloDigital,
-        folio: solicitud.id.substring(0, 8)
-    });
-    (() => __awaiter(void 0, void 0, void 0, function* () {
-        try {
-            const meses = [
-                "enero", "febrero", "marzo", "abril", "mayo", "junio",
-                "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
-            ];
-            const hoy = new Date();
-            const fechaFormateada = `Toluca de Lerdo, México; a ${hoy.getDate()} de ${meses[hoy.getMonth()]} de ${hoy.getFullYear()}.`;
-            const contenido = `
+    if (!existsolicitud) {
+        solicitud.fecha_envio = new Date();
+        yield validadorsolicitud_1.default.create({
+            solicitudId: solicitud.id,
+            validadorId: validadorConMenosSolicitudes.user_id,
+        });
+        const cadenaOriginal = `${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno}|${solicitud.curp}|${solicitud.fecha_envio}`;
+        const key = crypto_1.default.createHash('sha256').update('mi_clave_super_secreta').digest(); // 32 bytes
+        const iv = crypto_1.default.randomBytes(16); // 16 bytes
+        // === Encriptar la cadena original con AES-256-CBC ===
+        const cipher = crypto_1.default.createCipheriv('aes-256-cbc', key, iv);
+        let encrypted = cipher.update(cadenaOriginal, 'utf8', 'base64');
+        encrypted += cipher.final('base64');
+        // La cadena cifrada incluirá el IV codificado
+        const cadenaCifrada = `${iv.toString('base64')}.${encrypted}`;
+        // === Crear sello digital SHA-256 codificado en base64 ===
+        const selloDigital = crypto_1.default.createHash('sha256').update(cadenaOriginal).digest('base64');
+        const valida = yield validadoc_1.default.create({
+            solicitudId: solicitud.id,
+            sello: cadenaCifrada,
+            cadena: selloDigital,
+            folio: solicitud.id.substring(0, 8)
+        });
+        (() => __awaiter(void 0, void 0, void 0, function* () {
+            try {
+                const meses = [
+                    "enero", "febrero", "marzo", "abril", "mayo", "junio",
+                    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+                ];
+                const hoy = new Date();
+                const fechaFormateada = `Toluca de Lerdo, México; a ${hoy.getDate()} de ${meses[hoy.getMonth()]} de ${hoy.getFullYear()}.`;
+                const contenido = `
                   <div class="container">
                   <p  class="pderecha" >${fechaFormateada}</p>
                   <h3><trong>C.</strong> ${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno},</h3>
@@ -204,47 +205,46 @@ const envSolicitud = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                    <p>Atentamente,<br><strong>Poder Legislativo del Estado de México</strong></p>
                 </div>
               `;
-            let htmlContent = generarHtmlCorreo(contenido);
-            const fecha = new Date(solicitud.fecha_envio);
-            const options = {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: true
-            };
-            const fechaRegistroFormateada = fecha.toLocaleString('en-US', options);
-            const fechaEnvioFormateada = formatearFecha(solicitud.fecha_envio);
-            const curp = solicitud.curp;
-            const sexo = curp.charAt(10);
-            const cargo = sexo === 'M'
-                ? 'Presidenta de la Comisión de Derechos Humanos del Estado de México'
-                : 'Presidente de la Comisión de Derechos Humanos del Estado de México';
-            yield (0, mailer_1.sendEmail)(solicitud.usuario.email, 'Registro Electronico Satisfactorio', htmlContent, [{
-                    filename: 'oficio.pdf',
-                    content: yield generarPDFBuffer({
-                        folio: solicitud.id.substring(0, 8),
-                        nombreCompleto: `${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno}`,
-                        curp: solicitud.curp,
-                        correo: solicitud.correo,
-                        fechaRegistro: fechaRegistroFormateada,
-                        fecha: fechaEnvioFormateada,
-                        sello: valida.sello,
-                        cadena: valida.cadena,
-                        cargo: cargo
-                    }),
-                    contentType: 'application/pdf',
-                }]);
-            console.log('Correo enviado correctamente');
-        }
-        catch (err) {
-            console.error('Error al enviar correo:', err);
-        }
-    }))();
-    // }
+                let htmlContent = generarHtmlCorreo(contenido);
+                const fecha = new Date(solicitud.fecha_envio);
+                const options = {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                };
+                const fechaRegistroFormateada = fecha.toLocaleString('en-US', options);
+                const fechaEnvioFormateada = formatearFecha(solicitud.fecha_envio);
+                const curp = solicitud.curp;
+                const sexo = curp.charAt(10);
+                const cargo = sexo === 'M'
+                    ? 'Presidenta de la Comisión de Derechos Humanos del Estado de México'
+                    : 'Presidente de la Comisión de Derechos Humanos del Estado de México';
+                yield (0, mailer_1.sendEmail)(solicitud.usuario.email, 'Registro Electronico Satisfactorio', htmlContent, [{
+                        filename: 'oficio.pdf',
+                        content: yield generarPDFBuffer({
+                            folio: solicitud.id.substring(0, 8),
+                            nombreCompleto: `${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno}`,
+                            curp: solicitud.curp,
+                            correo: solicitud.correo,
+                            fechaRegistro: fechaRegistroFormateada,
+                            fecha: fechaEnvioFormateada,
+                            sello: valida.sello,
+                            cadena: valida.cadena,
+                            cargo: cargo
+                        }),
+                        contentType: 'application/pdf',
+                    }]);
+                console.log('Correo enviado correctamente');
+            }
+            catch (err) {
+                console.error('Error al enviar correo:', err);
+            }
+        }))();
+    }
     solicitud.estatusId = 2;
-    solicitud.fecha_envio = new Date();
     yield solicitud.save();
     return res.json("200");
 });

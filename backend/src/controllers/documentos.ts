@@ -177,8 +177,8 @@ export const envSolicitud = async (req: Request, res: Response): Promise<any> =>
                    de manera satisfactoria. Es importante señalar que este correo únicamente
                     confirma la recepción de su registro y documentación en el sistema, pero
                      no constituye una garantía de que los documentos cargados cumplan con
-                      los requisitos establecidos en los artículos 89, fracción II, inciso a),
-                       91 y 107 de la Constitución Política del Estado Libre y Soberano de México.
+                      los requisitos establecidos en el artículo 17 de la Ley de la Comisión
+                       de Derechos Humanos del Estado de México.
                         Tampoco se emite pronunciamiento alguno sobre el contenido o idoneidad
                          de los archivos recibidos.
                   </p>
@@ -366,7 +366,7 @@ export const estatusDoc = async (req: Request, res: Response): Promise<any> => {
                A continuación, se detallan las observaciones encontradas:</p>
                ${tablaObservados}
                <p>Es importante mencionarle que puede subsanar dichas observaciones en un plazo no mayor
-                a XXXX horas naturales contadas a partir de la recepción de este correo.
+                a 12 horas naturales contadas a partir de la recepción de este correo.
                 En caso de no realizarlo en dicho plazo, se considerará no cumplimentada
                 la acreditación de los requisitos de elegibilidad. <br><br>
                 

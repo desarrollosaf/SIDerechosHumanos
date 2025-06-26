@@ -139,6 +139,7 @@ export const envSolicitud = async (req: Request, res: Response): Promise<any> =>
         },
       ], 
     });
+    
 
     if (!solicitud) {
         return res.status(404).json({ msg: `No existe el id ${id}` });
@@ -158,7 +159,8 @@ export const envSolicitud = async (req: Request, res: Response): Promise<any> =>
    
     
     const existsolicitud: any = await ValidadorSolicitud.findOne({ where: { solicitudId: solicitud.id } });
-    // if(!existsolicitud){
+    if(!existsolicitud){
+      solicitud.fecha_envio = new Date();
       await ValidadorSolicitud.create({
           solicitudId: solicitud.id,
           validadorId: validadorConMenosSolicitudes.user_id,
@@ -265,9 +267,8 @@ export const envSolicitud = async (req: Request, res: Response): Promise<any> =>
               console.error('Error al enviar correo:', err);
             }
           })();
-    // }
+    }
     solicitud.estatusId = 2;
-    solicitud.fecha_envio = new Date();
     await solicitud.save();
     return res.json("200");
 };

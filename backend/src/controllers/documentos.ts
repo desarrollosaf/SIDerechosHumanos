@@ -12,6 +12,10 @@ import { sendEmail } from '../utils/mailer';
 import DetalleFecha from '../models/detalle_fecha';
 const PDFDocument = require('pdfkit');
 import jwt from 'jsonwebtoken';
+import QRCode from 'qrcode';
+import Validadoc from '../models/validadoc';
+import { create } from 'sortablejs';
+import crypto from 'crypto';
 
 
 export const saveDocumentos = async (req: Request, res: Response): Promise<any> => {
@@ -154,11 +158,36 @@ export const envSolicitud = async (req: Request, res: Response): Promise<any> =>
    
     
     const existsolicitud: any = await ValidadorSolicitud.findOne({ where: { solicitudId: solicitud.id } });
-    if(!existsolicitud){
+    // if(!existsolicitud){
       await ValidadorSolicitud.create({
           solicitudId: solicitud.id,
           validadorId: validadorConMenosSolicitudes.user_id,
       });
+
+      const cadenaOriginal = `${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno}|${solicitud.curp}|${solicitud.fecha_envio}`;
+
+      const key = crypto.createHash('sha256').update('mi_clave_super_secreta').digest(); // 32 bytes
+      const iv = crypto.randomBytes(16); // 16 bytes
+
+      // === Encriptar la cadena original con AES-256-CBC ===
+      const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
+      let encrypted = cipher.update(cadenaOriginal, 'utf8', 'base64');
+      encrypted += cipher.final('base64');
+
+      // La cadena cifrada incluirá el IV codificado
+      const cadenaCifrada = `${iv.toString('base64')}.${encrypted}`;
+
+      // === Crear sello digital SHA-256 codificado en base64 ===
+      const selloDigital = crypto.createHash('sha256').update(cadenaOriginal).digest('base64');
+      
+      const valida = await Validadoc.create({
+        solicitudId: solicitud.id,
+        sello: cadenaCifrada,
+        cadena: selloDigital,
+        folio: solicitud.id.substring(0, 8)
+      });
+
+    
 
       (async () => {
             try {
@@ -193,6 +222,22 @@ export const envSolicitud = async (req: Request, res: Response): Promise<any> =>
                 </div>
               `;
               let htmlContent = generarHtmlCorreo(contenido);
+              const fecha = new Date(solicitud.fecha_envio);
+              const options: Intl.DateTimeFormatOptions = {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+              };
+              const fechaRegistroFormateada = fecha.toLocaleString('en-US', options);
+              const fechaEnvioFormateada = formatearFecha(solicitud.fecha_envio);
+              const curp = solicitud.curp;
+              const sexo = curp.charAt(10);
+              const cargo = sexo === 'M'
+                ? 'Presidenta de la Comisión de Derechos Humanos del Estado de México'
+                : 'Presidente de la Comisión de Derechos Humanos del Estado de México';
               await sendEmail(
                 solicitud.usuario.email,
                 'Registro Electronico Satisfactorio',
@@ -200,8 +245,16 @@ export const envSolicitud = async (req: Request, res: Response): Promise<any> =>
                 [{
                   filename: 'oficio.pdf',
                   content: await generarPDFBuffer({
+                    folio: solicitud.id.substring(0, 8),
                     nombreCompleto: `${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno}`,
+                    curp: solicitud.curp,
                     correo: solicitud.correo,
+                    fechaRegistro: fechaRegistroFormateada,
+                    fecha: fechaEnvioFormateada,
+                    sello: valida.sello,
+                    cadena: valida.cadena,
+                    cargo: cargo
+            
                   }),
                   contentType: 'application/pdf',
                 }]
@@ -212,7 +265,7 @@ export const envSolicitud = async (req: Request, res: Response): Promise<any> =>
               console.error('Error al enviar correo:', err);
             }
           })();
-    }
+    // }
     solicitud.estatusId = 2;
     solicitud.fecha_envio = new Date();
     await solicitud.save();
@@ -487,23 +540,104 @@ function generarHtmlCorreo(contenidoHtml: string): string {
   `;
 }
 
-function generarPDFBuffer(data: { nombreCompleto: string, correo: string }): Promise<Buffer> {
-  return new Promise((resolve, reject) => {
-    const doc = new PDFDocument();
+function generarPDFBuffer(data: {
+  folio: string;
+  nombreCompleto: string;
+  correo: string;
+  curp: string;
+  fechaRegistro: string;
+  sello: string;
+  cadena: string;
+  fecha: string;
+  cargo: string;
+}): Promise<Buffer> {
+  return new Promise(async (resolve, reject) => {
+    const doc = new PDFDocument({ size: 'LETTER', margin: 50 });
     const chunks: any[] = [];
 
-    doc.on('data', (chunk: Buffer) => chunks.push(chunk));
+    // Ruta donde se guardará el PDF
+    const pdfDir = path.join(process.cwd(), 'public/pdfs');
+    if (!fs.existsSync(pdfDir)) {
+      fs.mkdirSync(pdfDir, { recursive: true });
+    }
+
+    const fileName = `acuse_${data.folio}.pdf`;
+    const filePath = path.join(pdfDir, fileName);
+
+    const writeStream = fs.createWriteStream(filePath);
+    doc.pipe(writeStream);
+    doc.on('data', (chunk: any) => chunks.push(chunk));
     doc.on('end', () => resolve(Buffer.concat(chunks)));
     doc.on('error', reject);
 
-    doc.fontSize(14).text('Cuenta creada exitosamente', { align: 'center' });
+    // ✅ Imagen de fondo
+    doc.image(path.join(__dirname, '../assets/acusederegistro.png'), 0, 0, {
+      width: doc.page.width,
+      height: doc.page.height,
+    });
+
     doc.moveDown();
-    doc.text(`Nombre: ${data.nombreCompleto}`);
-    doc.text(`Correo electrónico: ${data.correo}`);
     doc.moveDown();
-    doc.text('Puede ingresar al micrositio en:');
+    doc.moveDown();
+    doc.fontSize(12).text(
+      'Proceso y Convocatoria para elegir o reelegir a la Presidenta o el Presidente de la Comisión de Derechos Humanos del Estado de México.',
+      { align: 'justify' }
+    );
+
+    doc.moveDown();
+
+    // ✅ Generar URL del PDF
+    const qrUrl = `https://dev4.siasaf.gob.mx/pdfs/${fileName}`;
+    const qrData = await QRCode.toDataURL(qrUrl);
+    const qrBuffer = Buffer.from(qrData.split(',')[1], 'base64');
+    doc.image(qrBuffer, doc.x, doc.y, { width: 170 });
+
+    const xStart = doc.x + 200;
+    const yStart = doc.y;
+
+    doc
+      .fontSize(11)
+      .font('Helvetica-Bold').text('FOLIO:', xStart, yStart)
+      .font('Helvetica').text(data.folio, xStart, doc.y + 2)
+      .font('Helvetica-Bold').text('NOMBRE:', xStart, doc.y + 10)
+      .font('Helvetica').text(data.nombreCompleto, xStart, doc.y + 2)
+      .font('Helvetica-Bold').text('CURP:', xStart, doc.y + 10)
+      .font('Helvetica').text(data.curp, xStart, doc.y + 2)
+      .font('Helvetica-Bold').text('PUESTO AL QUE ASPIRA:', xStart, doc.y + 10)
+      .font('Helvetica').text(data.cargo, xStart, doc.y + 2)
+      .font('Helvetica-Bold').text('FECHA DE REGISTRO:', xStart, doc.y + 10)
+      .font('Helvetica').text(data.fechaRegistro, xStart, doc.y + 2);
+
+    doc.moveDown();
+    doc.moveDown();
+    doc.x = 50;
+    doc.fontSize(11).text(
+      'Par dar seguimiento a su solicitud de trámite, escanee el código QR. Esto le permitirá descargar el acuse en formato PDF.',
+      { align: 'justify' }
+    );
+
+    doc.moveDown();
+
+    doc.fontSize(11).font('Helvetica-Bold').text('Cadena original:');
+    doc.font('Helvetica').text(
+      `${data.cadena} |FECHA:${data.fecha} | EXPIRACION:${data.fecha}`,
+      { align: 'justify' }
+    );
+
+    doc.moveDown();
+
+    doc.fontSize(11).font('Helvetica-Bold').text('Sello digital:');
+    doc.font('Helvetica').text(data.sello, { align: 'justify' });
+
     doc.end();
   });
 }
+
+function formatearFecha(fecha: Date): string {
+  const d = new Date(fecha);
+  const pad = (n: number) => n.toString().padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+}
+
 
 

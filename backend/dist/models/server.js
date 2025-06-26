@@ -44,6 +44,7 @@ class Server {
         this.app.use(express_1.default.json());
         this.app.use((0, cors_1.default)());
         this.app.use('/storage', express_1.default.static(path_1.default.join(process.cwd(), 'storage')));
+        this.app.use('/pdfs', express_1.default.static(path_1.default.join(process.cwd(), 'public/pdfs')));
     }
     DBconnetc() {
         return __awaiter(this, void 0, void 0, function* () {

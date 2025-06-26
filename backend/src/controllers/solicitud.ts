@@ -98,7 +98,7 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
       { expiresIn: '2d' } 
     );
     const enlace = `https://dev5.siasaf.gob.mx/auth/cambiar-contrasena?token=${token}`;
-                    
+      //  https://dev5.siasaf.gob.mx             
     body.userId = newUser.id;
     body.estatusId = 1;
     await Solicitudes.create(body);
@@ -181,7 +181,6 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
         }
         ]
       })
-     
       const roleId = user.rol_users.role_id
       
       let listSolicitudes: any[] = [];

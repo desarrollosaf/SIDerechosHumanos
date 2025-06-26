@@ -99,6 +99,7 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             userId: newUser.id,
         }, process.env.JWT_SECRET || 'sUP3r_s3creT_ClavE-4321!', { expiresIn: '2d' });
         const enlace = `https://dev5.siasaf.gob.mx/auth/cambiar-contrasena?token=${token}`;
+        //  https://dev5.siasaf.gob.mx             
         body.userId = newUser.id;
         body.estatusId = 1;
         yield solicitud_1.default.create(body);

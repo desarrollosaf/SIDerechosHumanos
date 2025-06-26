@@ -471,7 +471,7 @@ export const resetpassword = async (req: Request, res: Response): Promise<any> =
         );
         const enlace = `https://dev5.siasaf.gob.mx/auth/cambiar-contrasena?token=${token}`;
 
-      
+    // https://dev5.siasaf.gob.mx/
     const nombreCompleto =  `${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno}`.trim();
   //         console.log(nombreCompleto);
   // return (500);

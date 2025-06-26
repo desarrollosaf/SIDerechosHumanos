@@ -9,19 +9,33 @@
         <div class="card">
             <div class="card-body">
                 <h6 class="card-title">{{titulo}}</h6>
-                <div class="row">
+                <div class="row align-items-center mb-3">
                     <div class="col-xl-3 col-md-4">
                         <input type="text" class="form-control form-control-sm" placeholder="Buscar..."
                             (input)="updateFilter($event)" />
+                    </div>
+                    <div *ngIf="rows.length > 0" class="col text-end">
+                        <button class="btn btn-sm btn-primary" (click)="exportToExcel()">Descargar Excel</button>
                     </div>
                 </div>
                 <div class="table-responsive">
                     <div *ngIf="rows.length === 0 && !loading" class="text-center my-3">
                         <p><strong>No hay datos para mostrar</strong></p>
                     </div>
+
                     <ngx-datatable #table class="bootstrap" [rows]="rows" [columnMode]="'force'" [headerHeight]="50"  *ngIf="rows.length > 0"
                         [footerHeight]="50" [rowHeight]="'auto'" [limit]="pageSize" [count]="filteredCount"
                         [offset]="page" (page)="setPage($event)" [loadingIndicator]="loading" >
+                        <ngx-datatable-column [headerClass]="'text-center'" [cellClass]="'text-center'" name="#">
+                        <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                            {{ rowIndex + 1 }}
+                        </ng-template>
+                        </ngx-datatable-column>
+                         <ngx-datatable-column [headerClass]="'text-center'" [cellClass]="'text-center'" name="Fecha solicitud">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                {{ row.fecha_envio | date:'dd/MM/yyyy' }}
+                            </ng-template>
+                        </ngx-datatable-column>
                         <ngx-datatable-column [headerClass]="'text-center'" [cellClass]="'text-center'" name="Folio">
                             <ng-template let-row="row" ngx-datatable-cell-template>
                                 {{ row.id | slice:0:8 }}

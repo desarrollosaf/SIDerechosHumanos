@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, TemplateRef } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import {FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormControl} from '@angular/forms'
 import { CommonModule } from '@angular/common';
@@ -6,6 +6,7 @@ import {Registro} from '../../../interfaces/registro'
 import { HttpErrorResponse } from '@angular/common/http';
 import {RegistroService} from '../../../service/registro.service'
 import Swal from 'sweetalert2';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';  
 
 @Component({
   selector: 'app-registro',
@@ -19,7 +20,7 @@ export class RegistroComponent {
   miControl = new FormControl('');
   public _registroService  =  inject( RegistroService )
 
-  constructor(private fb: FormBuilder,private router: Router){
+  constructor(private fb: FormBuilder,private router: Router, private modalService: NgbModal){
     this.formReg = this.fb.group({
       ap_paterno:['', Validators.required],
       ap_materno:['', Validators.required],
@@ -32,7 +33,6 @@ export class RegistroComponent {
         Validators.required,
         Validators.pattern(/^[A-Z]{1}[AEIOU]{1}[A-Z]{2}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[HM]{1}(AS|BC|BS|CC|CL|CM|CS|CH|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}\d{1}$/)
       ]],
-      cedula_profesional:['', Validators.required],
       aviso_privacidad:[false, Validators.requiredTrue],
     },
     { validators: [this.validadorTelefono, this.validadorCorreo]
@@ -67,6 +67,20 @@ export class RegistroComponent {
     }
   }
 
+  onAvisoChange(event: Event, modalRef: TemplateRef<any>) {
+    const checkbox = event.target as HTMLInputElement;
+    if (checkbox.checked) {
+      this.openLgModal(modalRef);
+    }
+  }
+
+  openLgModal(content: TemplateRef<any>) {
+    console.log('modal')
+    this.modalService.open(content, {size: 'lg'}).result.then((result) => {
+      console.log("Modal closed" + result);
+    }).catch((res) => {});
+  }
+  
   sendReg(){
 
     const registroval: Registro = {
@@ -76,7 +90,6 @@ export class RegistroComponent {
       correo: this.formReg.value.correo,
       celular: this.formReg.value.celular,
       curp: this.formReg.value.curp,
-      cedula_profesional: this.formReg.value.cedula_profesional,
       aviso_privacidad: this.formReg.value.aviso_privacidad,
     }
 

@@ -25,6 +25,9 @@ const datos_user_1 = __importDefault(require("../models/datos_user"));
 const mailer_1 = require("../utils/mailer");
 const detalle_fecha_1 = __importDefault(require("../models/detalle_fecha"));
 const PDFDocument = require('pdfkit');
+const qrcode_1 = __importDefault(require("qrcode"));
+const validadoc_1 = __importDefault(require("../models/validadoc"));
+const crypto_1 = __importDefault(require("crypto"));
 const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const archivo = req.file;
     const { tipo, usuario } = req.body;
@@ -148,20 +151,37 @@ const envSolicitud = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         return { validador, count };
     }))).then((results) => results.sort((a, b) => a.count - b.count)[0].validador);
     const existsolicitud = yield validadorsolicitud_1.default.findOne({ where: { solicitudId: solicitud.id } });
-    if (!existsolicitud) {
-        yield validadorsolicitud_1.default.create({
-            solicitudId: solicitud.id,
-            validadorId: validadorConMenosSolicitudes.user_id,
-        });
-        (() => __awaiter(void 0, void 0, void 0, function* () {
-            try {
-                const meses = [
-                    "enero", "febrero", "marzo", "abril", "mayo", "junio",
-                    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
-                ];
-                const hoy = new Date();
-                const fechaFormateada = `Toluca de Lerdo, México; a ${hoy.getDate()} de ${meses[hoy.getMonth()]} de ${hoy.getFullYear()}.`;
-                const contenido = `
+    // if(!existsolicitud){
+    yield validadorsolicitud_1.default.create({
+        solicitudId: solicitud.id,
+        validadorId: validadorConMenosSolicitudes.user_id,
+    });
+    const cadenaOriginal = `${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno}|${solicitud.curp}|${solicitud.fecha_envio}`;
+    const key = crypto_1.default.createHash('sha256').update('mi_clave_super_secreta').digest(); // 32 bytes
+    const iv = crypto_1.default.randomBytes(16); // 16 bytes
+    // === Encriptar la cadena original con AES-256-CBC ===
+    const cipher = crypto_1.default.createCipheriv('aes-256-cbc', key, iv);
+    let encrypted = cipher.update(cadenaOriginal, 'utf8', 'base64');
+    encrypted += cipher.final('base64');
+    // La cadena cifrada incluirá el IV codificado
+    const cadenaCifrada = `${iv.toString('base64')}.${encrypted}`;
+    // === Crear sello digital SHA-256 codificado en base64 ===
+    const selloDigital = crypto_1.default.createHash('sha256').update(cadenaOriginal).digest('base64');
+    const valida = yield validadoc_1.default.create({
+        solicitudId: solicitud.id,
+        sello: cadenaCifrada,
+        cadena: selloDigital,
+        folio: solicitud.id.substring(0, 8)
+    });
+    (() => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const meses = [
+                "enero", "febrero", "marzo", "abril", "mayo", "junio",
+                "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+            ];
+            const hoy = new Date();
+            const fechaFormateada = `Toluca de Lerdo, México; a ${hoy.getDate()} de ${meses[hoy.getMonth()]} de ${hoy.getFullYear()}.`;
+            const contenido = `
                   <div class="container">
                   <p  class="pderecha" >${fechaFormateada}</p>
                   <h3><trong>C.</strong> ${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno},</h3>
@@ -184,22 +204,45 @@ const envSolicitud = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                    <p>Atentamente,<br><strong>Poder Legislativo del Estado de México</strong></p>
                 </div>
               `;
-                let htmlContent = generarHtmlCorreo(contenido);
-                yield (0, mailer_1.sendEmail)(solicitud.usuario.email, 'Registro Electronico Satisfactorio', htmlContent, [{
-                        filename: 'oficio.pdf',
-                        content: yield generarPDFBuffer({
-                            nombreCompleto: `${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno}`,
-                            correo: solicitud.correo,
-                        }),
-                        contentType: 'application/pdf',
-                    }]);
-                console.log('Correo enviado correctamente');
-            }
-            catch (err) {
-                console.error('Error al enviar correo:', err);
-            }
-        }))();
-    }
+            let htmlContent = generarHtmlCorreo(contenido);
+            const fecha = new Date(solicitud.fecha_envio);
+            const options = {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            };
+            const fechaRegistroFormateada = fecha.toLocaleString('en-US', options);
+            const fechaEnvioFormateada = formatearFecha(solicitud.fecha_envio);
+            const curp = solicitud.curp;
+            const sexo = curp.charAt(10);
+            const cargo = sexo === 'M'
+                ? 'Presidenta de la Comisión de Derechos Humanos del Estado de México'
+                : 'Presidente de la Comisión de Derechos Humanos del Estado de México';
+            yield (0, mailer_1.sendEmail)(solicitud.usuario.email, 'Registro Electronico Satisfactorio', htmlContent, [{
+                    filename: 'oficio.pdf',
+                    content: yield generarPDFBuffer({
+                        folio: solicitud.id.substring(0, 8),
+                        nombreCompleto: `${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno}`,
+                        curp: solicitud.curp,
+                        correo: solicitud.correo,
+                        fechaRegistro: fechaRegistroFormateada,
+                        fecha: fechaEnvioFormateada,
+                        sello: valida.sello,
+                        cadena: valida.cadena,
+                        cargo: cargo
+                    }),
+                    contentType: 'application/pdf',
+                }]);
+            console.log('Correo enviado correctamente');
+        }
+        catch (err) {
+            console.error('Error al enviar correo:', err);
+        }
+    }))();
+    // }
     solicitud.estatusId = 2;
     solicitud.fecha_envio = new Date();
     yield solicitud.save();
@@ -453,18 +496,65 @@ function generarHtmlCorreo(contenidoHtml) {
   `;
 }
 function generarPDFBuffer(data) {
-    return new Promise((resolve, reject) => {
-        const doc = new PDFDocument();
+    return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+        const doc = new PDFDocument({ size: 'LETTER', margin: 50 });
         const chunks = [];
+        // Ruta donde se guardará el PDF
+        const pdfDir = path_1.default.join(process.cwd(), 'public/pdfs');
+        if (!fs_1.default.existsSync(pdfDir)) {
+            fs_1.default.mkdirSync(pdfDir, { recursive: true });
+        }
+        const fileName = `acuse_${data.folio}.pdf`;
+        const filePath = path_1.default.join(pdfDir, fileName);
+        const writeStream = fs_1.default.createWriteStream(filePath);
+        doc.pipe(writeStream);
         doc.on('data', (chunk) => chunks.push(chunk));
         doc.on('end', () => resolve(Buffer.concat(chunks)));
         doc.on('error', reject);
-        doc.fontSize(14).text('Cuenta creada exitosamente', { align: 'center' });
+        // ✅ Imagen de fondo
+        doc.image(path_1.default.join(__dirname, '../assets/acusederegistro.png'), 0, 0, {
+            width: doc.page.width,
+            height: doc.page.height,
+        });
         doc.moveDown();
-        doc.text(`Nombre: ${data.nombreCompleto}`);
-        doc.text(`Correo electrónico: ${data.correo}`);
         doc.moveDown();
-        doc.text('Puede ingresar al micrositio en:');
+        doc.moveDown();
+        doc.fontSize(12).text('Proceso y Convocatoria para elegir o reelegir a la Presidenta o el Presidente de la Comisión de Derechos Humanos del Estado de México.', { align: 'justify' });
+        doc.moveDown();
+        // ✅ Generar URL del PDF
+        const qrUrl = `https://dev4.siasaf.gob.mx/pdfs/${fileName}`;
+        const qrData = yield qrcode_1.default.toDataURL(qrUrl);
+        const qrBuffer = Buffer.from(qrData.split(',')[1], 'base64');
+        doc.image(qrBuffer, doc.x, doc.y, { width: 170 });
+        const xStart = doc.x + 200;
+        const yStart = doc.y;
+        doc
+            .fontSize(11)
+            .font('Helvetica-Bold').text('FOLIO:', xStart, yStart)
+            .font('Helvetica').text(data.folio, xStart, doc.y + 2)
+            .font('Helvetica-Bold').text('NOMBRE:', xStart, doc.y + 10)
+            .font('Helvetica').text(data.nombreCompleto, xStart, doc.y + 2)
+            .font('Helvetica-Bold').text('CURP:', xStart, doc.y + 10)
+            .font('Helvetica').text(data.curp, xStart, doc.y + 2)
+            .font('Helvetica-Bold').text('PUESTO AL QUE ASPIRA:', xStart, doc.y + 10)
+            .font('Helvetica').text(data.cargo, xStart, doc.y + 2)
+            .font('Helvetica-Bold').text('FECHA DE REGISTRO:', xStart, doc.y + 10)
+            .font('Helvetica').text(data.fechaRegistro, xStart, doc.y + 2);
+        doc.moveDown();
+        doc.moveDown();
+        doc.x = 50;
+        doc.fontSize(11).text('Par dar seguimiento a su solicitud de trámite, escanee el código QR. Esto le permitirá descargar el acuse en formato PDF.', { align: 'justify' });
+        doc.moveDown();
+        doc.fontSize(11).font('Helvetica-Bold').text('Cadena original:');
+        doc.font('Helvetica').text(`${data.cadena} |FECHA:${data.fecha} | EXPIRACION:${data.fecha}`, { align: 'justify' });
+        doc.moveDown();
+        doc.fontSize(11).font('Helvetica-Bold').text('Sello digital:');
+        doc.font('Helvetica').text(data.sello, { align: 'justify' });
         doc.end();
-    });
+    }));
+}
+function formatearFecha(fecha) {
+    const d = new Date(fecha);
+    const pad = (n) => n.toString().padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
 }

@@ -6,6 +6,9 @@ import { UserService } from '../../../service/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ColumnMode, DatatableComponent, NgxDatatableModule } from '@siemens/ngx-datatable';
 import { RouterModule } from '@angular/router';
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
+
 @Component({
   selector: 'app-lista-validador',
   imports: [NgxDatatableModule, CommonModule,RouterModule],
@@ -92,5 +95,48 @@ export class ListaValidadorComponent {
     this.setPage({ offset: 0 }); 
   }
 
+  exportToExcel(): void {
+  const exportData = this.rows.map((row, index) => ({
+    N: index + 1,
+    'Fecha Solicitud': this.formatDate(row.fecha_envio),
+    Folio: row.id?.substring(0, 8),
+    Nombre: `${row.ap_paterno} ${row.ap_materno} ${row.nombres}`,
+    Correo: row.correo,
+    Telefono: row.celular,
+    Curp: row.curp,
+    Estatus: this.getEstatusNombre(row.estatusId)
+  }));
+
+  const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(exportData);
+  const workbook: XLSX.WorkBook = {
+    Sheets: { 'Datos': worksheet },
+    SheetNames: ['Datos']
+  };
+
+  const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  const blob: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+  FileSaver.saveAs(blob, 'reporte.xlsx');
+}
+
+// Devuelve el nombre del estatus como texto
+getEstatusNombre(estatusId: number): string {
+  switch (estatusId) {
+    case 1: return 'Registrado';
+    case 2: return 'Pendiente';
+    case 3: return 'Validado';
+    case 4: return 'Rechazado';
+    default: return 'Desconocido';
+  }
+}
+
+
+formatDate(fecha: string | Date): string {
+  const d = new Date(fecha);
+  if (isNaN(d.getTime())) return ''; // fecha inválida
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
   
 }

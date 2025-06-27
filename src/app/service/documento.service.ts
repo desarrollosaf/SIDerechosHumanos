@@ -36,4 +36,11 @@ export class DocumentoService {
   deleteDocumento(documentos: any): Observable<void> {
     return this.http.post<void>(`${this.myAppUrl}${this.myAPIUrl}/deleted`, documentos);
   }
+
+  getDocsZip(id: string): Observable<Blob> {
+    return this.http.get(`${this.myAppUrl}${this.myAPIUrl}/getdoczips/${id}`, {
+      responseType: 'blob' as 'blob',
+    });
+  }
+  
 }

@@ -144,21 +144,11 @@
             <!-- Row -->
             <div class="row">
               <div class="col-sm-6">
-                <div class="mb-3">
-                  <label class="form-label">Cédula profesional:*</label>
-                  <input formControlName="cedula_profesional" type="text" class="form-control"
-                    placeholder="Ejemplo: 1234567" (input)="convertirAMayuscula('cedula_profesional')"/>
-                  <small class="colorsm" *ngIf="formReg.get('cedula_profesional')?.hasError('required') && formReg.get('cedula_profesional')?.touched">
-                    Este campo es <strong>requerido</strong>
-                    </small>
-                </div>
-              </div>
-              <div class="col-sm-6">
                 <div class="mb-4 mt-4"> 
                   <div class="form-check">
-                    <input formControlName="aviso_privacidad" class="form-check-input" type="checkbox" id="flexCheckDefault" />
+                    <input  formControlName="aviso_privacidad" class="form-check-input" type="checkbox" id="flexCheckDefault" (change)="onAvisoChange($event, lgModal)" />
                     <label class="form-check-label" for="flexCheckDefault">
-                      <a href="#" target="_blank">Aviso de privacidad</a>
+                      <a href="#" (click)="openLgModal(lgModal); $event.preventDefault()">Aviso de privacidad</a>
                     </label>
                   </div>
                 </div>
@@ -181,6 +171,221 @@
               </button>
             </div>
           </form>
+          <ng-template #lgModal let-modal>
+            <div class="modal-header">
+              <!--<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>-->
+              <button type="button" class="btn-close" (click)="modal.close('by: close icon')" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <h3 style="text-align: center;">AVISO DE PRIVACIDAD</h3>
+              <p><strong>Proceso y Convocatoria para elegir o reelegir a la Presidenta o el Presidente de la Comisi&oacute;n de Derechos Humanos del Estado de M&eacute;xico.</strong></p>
+              <p><strong>La LXII Legislatura del Estado de M&eacute;xico</strong>, a trav&eacute;s de la <strong>Junta de Coordinaci&oacute;n Pol&iacute;tica </strong>(en adelante <em>la JUCOPO</em>) es la responsable de dar tratamiento a los datos personales que se recaban derivado de los requisitos se&ntilde;alados en la <strong>Convocatoria para elegir o reelegir a la Presidenta o el Presidente de la Comisi&oacute;n de Derechos Humanos del Estado de M&eacute;xico</strong>, publicada en el Peri&oacute;dico Oficial &laquo;Gaceta del Gobierno&raquo; el 26 de junio de 2025 (en adelante <em>la Convocatoria)</em>.</p>
+              <p>Una vez que las personas interesadas en participar en el procedimiento, hayan presentado los documentos descritos en la Convocatoria, los datos personales que se obtengan de ellos ser&aacute;n concentrados a trav&eacute;s de expedientes elaborados por personal adscrito a la Secretar&iacute;a Ejecutiva de la JUCOPO, mismos que ser&aacute;n tratados de conformidad con lo dispuesto por la Ley de Protecci&oacute;n de Datos Personales en Posesi&oacute;n de Sujetos Obligados del Estado de M&eacute;xico y Municipios y dem&aacute;s normatividad que resulte aplicable.</p>
+              <p>En este sentido, en t&eacute;rminos del art&iacute;culo 4, fracci&oacute;n L de la mencionada Ley, se entender&aacute; por <strong><em>tratamiento </em></strong>a las operaciones efectuadas por los procedimientos manuales o automatizados aplicados a los datos personales, relacionadas con la obtenci&oacute;n, uso, registro, organizaci&oacute;n, conservaci&oacute;n, elaboraci&oacute;n, utilizaci&oacute;n, comunicaci&oacute;n, difusi&oacute;n, almacenamiento, posesi&oacute;n, acceso, manejo, aprovechamiento, divulgaci&oacute;n, transferencia o disposici&oacute;n de datos personales.</p>
+              <p>Por lo anterior y de conformidad con el art&iacute;culo 31 de la Ley de Protecci&oacute;n de Datos Personales en Posesi&oacute;n de Sujetos Obligados del Estado de M&eacute;xico y Municipios, se da a conocer el presente Aviso de Privacidad para toda persona interesada en participar en el procedimiento para <strong>elegir o reelegir a la Presidenta o el Presidente de la Comisi&oacute;n de Derechos Humanos del Estado de M&eacute;xico</strong>, en los t&eacute;rminos siguientes:</p>
+              <h3>I.&nbsp; Denominaci&oacute;n del Responsable.<strong>&nbsp;</strong></h3>
+              <ul>
+              <li>Poder Legislativo del Estado Libre y Soberano de M&eacute;xico</li>
+              </ul>
+              <h3>II.&nbsp; El nombre y cargo del administrador, as&iacute; como el &aacute;rea o unidad administrativa a la que se encuentra adscrito.<strong>&nbsp;</strong></h3>
+              <ul>
+              <li>Nombre: en E.J. Omar Salvador Olvera Herreros</li>
+              <li>Cargo: Secretario Ejecutivo de la Junta de Coordinaci&oacute;n Pol&iacute;tica de la LXII Legislatura del Estado de M&eacute;xico.</li>
+              <li>&Aacute;rea de Adscripci&oacute;n: Secretar&iacute;a Ejecutiva de la Junta de Coordinaci&oacute;n Pol&iacute;tica de la LXII Legislatura del Estado de M&eacute;xico.&nbsp;</li>
+              </ul>
+              <h3>III.&nbsp;&nbsp; El nombre del sistema de datos personales al que ser&aacute;n incorporados los datos personales.<strong>&nbsp;</strong></h3>
+              <ul>
+              <li>Proceso y la Convocatoria para elegir o reelegir a la Presidenta o el Presidente de la Comisi&oacute;n de Derechos Humanos del Estado de M&eacute;xico.&nbsp;</li>
+              </ul>
+              <h3>IV.&nbsp; Los datos personales que ser&aacute;n sometidos a tratamiento, identificando los que son sensibles.<strong>&nbsp;</strong></h3>
+              <p>Con el objeto de cumplir las finalidades previamente establecidas en la Convocatoria, se podr&aacute; llevar a cabo el uso de los siguientes documentos y datos personales de las y los aspirantes:</p>
+              <p>&nbsp;</p>
+              <ol style="list-style-type: upper-roman;">
+              <li>Acta de nacimiento en copia certificada o, en su caso, documento que acredite la nacionalidad mexicana.</li>
+              <li>Clave &Uacute;nica de Registro de Poblaci&oacute;n (CURP).</li>
+              <li>&nbsp;Credencial para votar con fotograf&iacute;a vigente, expedida por el Instituto Nacional Electoral en copia legible, de preferencia ampliada al 200% y en original para su cotejo.</li>
+              <li>&nbsp;Constancia de residencia en la entidad no menor de cinco a&ntilde;os anteriores al d&iacute;a de su designaci&oacute;n, que podr&aacute; acreditarse con manifestaci&oacute;n bajo protesta de decir verdad sobre su residencia.</li>
+              <li>Curriculum Vitae firmado aut&oacute;grafamente por la persona aspirante, en el que se se&ntilde;ale su experiencia laboral, formaci&oacute;n acad&eacute;mica; especializaci&oacute;n en derechos humanos; experiencia profesional en el &aacute;mbito de la protecci&oacute;n, observancia, promoci&oacute;n, estudio y divulgaci&oacute;n de los derechos humanos; y, en su caso, publicaciones en materias relacionadas con los derechos humanos;</li>
+              <li>&nbsp;Copia certificada de los documentos con los que acredite su t&iacute;tulo(s) o grado(s) acad&eacute;mico(s);</li>
+              <li>Informe de no antecedentes penales, expedido por la Fiscal&iacute;a General de Justicia del Estado de M&eacute;xico, con fecha de expedici&oacute;n no mayor a treinta d&iacute;as anteriores a la fecha de su presentaci&oacute;n.</li>
+              <li>&nbsp;Carta bajo protesta de decir verdad en donde se&ntilde;ale:</li>
+              </ol>
+              <ol style="list-style-type: lower-alpha;">
+              <li style="padding-left: 90px;">No ser ministro de culto, excepto que se haya separado de su ministerio con tres a&ntilde;os de anticipaci&oacute;n al d&iacute;a de su elecci&oacute;n;</li>
+              <li style="padding-left: 90px;">No haber desempe&ntilde;ado cargo directivo en alg&uacute;n partido, asociaci&oacute;n u organizaci&oacute;n pol&iacute;tica, en los tres a&ntilde;os anteriores al d&iacute;a de su elecci&oacute;n:</li>
+              <li style="padding-left: 90px;">No haber sido sancionado en el desempe&ntilde;o de empleo, cargo o comisi&oacute;n en el servicio p&uacute;blico federal, estatal o municipal, con motivo de alguna recomendaci&oacute;n emitida por organismos p&uacute;blicos de derechos humanos; y</li>
+              <li style="padding-left: 90px;">No haber sido objeto de sanci&oacute;n de inhabilitaci&oacute;n o destituci&oacute;n administrativas para el desempe&ntilde;o de empleo, cargo o comisi&oacute;n en el servicio p&uacute;blico, mediante resoluci&oacute;n que haya causado estado.</li>
+              </ol>
+              <p>Adicionalmente, la persona aspirante deber&aacute; presentar la documentaci&oacute;n siguiente:&nbsp;</p>
+              <ol>
+              <li>Carta firmada de manera aut&oacute;grafa en donde manifieste su voluntad expresa de participar en el proceso de selecci&oacute;n, as&iacute; como su aceptaci&oacute;n y conformidad con las bases, procedimientos y deliberaciones del proceso.</li>
+              <li>Carta de exposici&oacute;n de motivos firmada por la persona aspirante y descripci&oacute;n de las razones que justifican su idoneidad, con una extensi&oacute;n no mayor a tres cuartillas.</li>
+              <li>Documento impreso con la propuesta de programa de trabajo con una extensi&oacute;n m&aacute;xima de diez cuartillas, con letra tipo Arial, tama&ntilde;o n&uacute;mero 12 e interlineado 1.5;</li>
+              </ol>
+              <ol start="4">
+              <li>Escrito de consentimiento para el tratamiento de datos personales, as&iacute; como Aviso de Privacidad relativo al tratamiento de los datos personales descritos en la presente Convocatoria. Ambos documentos deber&aacute;n descargarse de p&aacute;gina <a href="https://legislacion.congresoedomex.gob.mx/avisosdeprivacidad">https://legislacion.congresoedomex.gob.mx/avisosdeprivacidad</a> y deber&aacute;n ser entregados debidamente firmados por la o el aspirante.</li>
+              </ol>
+              <p>Asimismo, se podr&aacute; recabar la imagen de los aspirantes mediante fotograf&iacute;as o video y audio, para efectos de difusi&oacute;n o en caso de que se realicen comparecencias, ya sea de manera presencial o en modalidad a distancia de manera virtual.&nbsp;</p>
+              <p>Dada su naturaleza y las finalidades del tratamiento, ninguno de los datos personales que se proporcionen se considera sensible.&nbsp;</p>
+              <h3>V.&nbsp; El car&aacute;cter obligatorio o facultativo de la entrega de los datos personales.<strong>&nbsp;</strong></h3>
+              <p>De conformidad con el <strong>Acuerdo por el que se establece el Proceso y Convocatoria para elegir o reelegir a la Presidenta o el Presidente de la Comisi&oacute;n de Derechos Humanos del Estado de M&eacute;xico</strong>, la entrega de los datos personales y documentos que los contienen <strong>ES OBLIGATORIA.</strong></p>
+              <p>La recepci&oacute;n de los datos personales y documentos que los contienen, por parte de la JUCOPO, los cuales han sido listados en el apartado IV del presente Aviso de Privacidad, no garantiza ser favorecidos en la designaci&oacute;n para la cual participa; asimismo, no constituye ninguna oferta de empleo formal ni otorga derecho a favor de su titular.&nbsp;</p>
+              <h3>VI.&nbsp; Las consecuencias de la negativa a suministrarlos.<strong>&nbsp;</strong></h3>
+              <p>La negativa a proporcionar la informaci&oacute;n solicitada produce, como consecuencia, la falta de acreditaci&oacute;n de los requisitos se&ntilde;alados en numeral <strong>SEGUNDO, </strong>se&ntilde;alado en la Convocatoria y, por lo tanto, que la o el aspirante titular de los datos personales sea descartado del procedimiento de designaci&oacute;n como <strong>Presidenta o Presidente de la Comisi&oacute;n de Derechos Humanos del Estado de M&eacute;xico</strong>.</p>
+              <h3>VII.&nbsp;&nbsp; Las finalidades del tratamiento para los cuales se obtienen los datos personales, distinguiendo aquellas que requieran el consentimiento de la o el titular.<strong>&nbsp;</strong></h3>
+              <p>Los datos personales que se recaben <strong>ser&aacute;n usados para llevar a cabo el procedimiento para elegir o reelegir a la Presidenta o el Presidente de la Comisi&oacute;n de Derechos Humanos del Estado de M&eacute;xico</strong>, descrito en la Convocatoria, y ser&aacute;n concentrados a trav&eacute;s de expedientes elaborados por personal adscrito a la <strong>Secretar&iacute;a Ejecutiva de la JUCOPO </strong>con la finalidad de tener un resguardo de la informaci&oacute;n, as&iacute; como estar en posibilidad de consultarlos y dar seguimiento al referido procedimiento.</p>
+              <p>Asimismo, tal y como lo menciona el numeral <strong>SEGUNDO </strong>de la Convocatoria, al someterse a lo dispuesto en dicho proceso, las personas aspirantes autorizan la difusi&oacute;n de su nombre, as&iacute; como su solicitud y documentos adjuntos en versi&oacute;n p&uacute;blica.</p>
+              <p>Por la naturaleza del tratamiento de datos personales, los aspirantes proporcionar&aacute;n el <strong>consentimiento expreso y por escrito para el tratamiento de sus datos personales</strong>. Aunado a lo anterior por su parte, se entiende que otorga su consentimiento al momento de participar enel procedimiento descrito en la Convocatoria y al presentar los documentos que contienen los requisitos.</p>
+              <h3>VIII. Cuando se realicen transferencias de datos personales se informar&aacute;:<strong>&nbsp;</strong></h3>
+              <p>De manera general, los datos personales proporcionados se consideran informaci&oacute;n confidencial, salvo que sean relativos a la erogaci&oacute;n de recursos p&uacute;blicos o al ejercicio de una funci&oacute;n de derecho p&uacute;blico, supuestos en los que constituir&aacute;n informaci&oacute;n p&uacute;blica, de conformidad con lo establecido por los art&iacute;culos 23 y 143 de la Ley de Transparencia y Acceso a la Informaci&oacute;n P&uacute;blica del Estado de M&eacute;xico y Municipios.</p>
+              <p>Fuera de los supuestos establecidos en el art&iacute;culo 66 de la Ley de Protecci&oacute;n de Datos Personales en Posesi&oacute;n de Sujetos Obligados del Estado de M&eacute;xico y Municipios, los datos personales no podr&aacute;n ser transferidos.&nbsp;</p>
+              <p>En todos los casos, resulta importante mencionar que la publicidad de los datos personales depender&aacute; proporcionalmente de lo establecido en las diversas leyes sobre el caso concreto y la expectativa de privacidad a la cual tenga derecho.&nbsp;</p>
+              <h3>IX. Mecanismos y medios estar&aacute;n disponibles para el uso previo al tratamiento de los datos personales, para que el titular, pueda manifestar su negativa para la finalidad y transferencia que requieran el consentimiento del titular.</h3>
+              <p>No existen mecanismos para que el titular manifieste su negativa para la finalidad y transferencia, sin perjuicio de que el titular pueda ejercer su derecho de oposici&oacute;n de datos personales en los t&eacute;rminos previstos por el art&iacute;culo 103 de la Ley de Protecci&oacute;n de Datos Personales en Posesi&oacute;n de Sujetos Obligados del Estado de M&eacute;xico y Municipios.&nbsp;</p>
+              <h3>X.&nbsp; Mecanismos, medios y procedimientos disponibles para ejercer los derechos ARCO, indicando la direcci&oacute;n electr&oacute;nica del sistema para presentar sus solicitudes.</h3>
+              <p>Los derechos de acceso, rectificaci&oacute;n, cancelaci&oacute;n y oposici&oacute;n se conocen como derechos ARCO.</p>
+              <p>Los derechos ARCO son independientes. El ejercicio de cualquiera de ellos no es requisito previo ni impide el ejercicio de otro.&nbsp;</p>
+              <p>La procedencia de estos derechos, en su caso, se har&aacute; efectiva una vez que el titular o su representante legal acrediten su identidad o representaci&oacute;n, respectivamente.&nbsp;</p>
+              <p>En ning&uacute;n caso el acceso a los datos personales de un titular podr&aacute; afectar los derechos y libertades de otros.</p>
+              <p>El ejercicio de cualquiera de los derechos ARCO, forma parte de las garant&iacute;as primarias del derecho a la protecci&oacute;n de datos personales.&nbsp;</p>
+              <p><u>Derecho de acceso</u>. El titular tiene derecho a acceder, solicitar y ser informado sobre sus datos personales en posesi&oacute;n de los sujetos obligados, as&iacute; como la informaci&oacute;n relacionada con las condiciones y generalidades de su tratamiento, tales como el origen de los datos, las condiciones del tratamiento del cual sean objeto, las cesiones realizadas o que se pretendan realizar, as&iacute; como tener acceso al aviso de privacidad al que est&aacute; sujeto el tratamiento y a cualquier otra generalidad del tratamiento, en los t&eacute;rminos previstos en la Ley.</p>
+              <p><u>Derecho de rectificaci&oacute;n</u>. El titular tendr&aacute; derecho a solicitar la rectificaci&oacute;n de sus datos personales cuando sean inexactos, incompletos, desactualizados, inadecuados o excesivos.</p>
+              <p><u>Derecho de cancelaci&oacute;n</u>. El titular tendr&aacute; derecho a solicitar la cancelaci&oacute;n de sus datos personales de los archivos, registros, expedientes y sistemas del responsable a fin de que los mismos ya no est&eacute;n en su posesi&oacute;n y dejen de ser tratados por este &uacute;ltimo.</p>
+              <p>&nbsp;</p>
+              <p>El responsable no estar&aacute; obligado a cancelar los datos personales cuando:&nbsp;</p>
+              <ol style="list-style-type: upper-roman;">
+              <li>Deban ser tratados por disposici&oacute;n</li>
+              <li>Se refieran a las partes de un contrato y sean necesarios para su desarrollo y cumplimiento.&nbsp;</li>
+              <li>Obstaculicen actuaciones judiciales o administrativas, la investigaci&oacute;n y persecuci&oacute;n de delitos o la actualizaci&oacute;n de sanciones administrativas, afecten la seguridad o salud p&uacute;blica, disposiciones de orden p&uacute;blico, o derechos de terceros.</li>
+              <li>Sean necesarios para proteger los intereses jur&iacute;dicamente tutelados del titular o de un tercero.</li>
+              <li>Sean necesarios para realizar una acci&oacute;n en funci&oacute;n del inter&eacute;s p&uacute;blico.</li>
+              <li>Se requieran para cumplir con una obligaci&oacute;n legalmente adquirida por el titular.&nbsp;</li>
+              </ol>
+              <p>Asimismo, no proceder&aacute; la cancelaci&oacute;n de los datos personales ni ser&aacute;n devueltos los documentos que los contienen y que fueron entregados con motivo de la Convocatoria, salvo que hayan transcurrido los plazos establecidos en los instrumentos archiv&iacute;sticos, de conformidad con lo establecido en la Ley de Archivos y Administraci&oacute;n de Documentos del Estado de M&eacute;xico y Municipios.&nbsp;</p>
+              <p><u>Derecho de oposici&oacute;n</u>. El titular tendr&aacute; derecho en todo momento y por razones leg&iacute;timas a oponerse al tratamiento de sus datos personales, para una o varias finalidades o exigir que cese el mismo, en los supuestos siguientes:</p>
+              <ol style="list-style-type: upper-roman;">
+              <li>Cuando los datos se hubiesen recabado sin su consentimiento y &eacute;ste resultara exigible en t&eacute;rminos de la Ley de Protecci&oacute;n de Datos Personales en Posesi&oacute;n de Sujetos Obligados del Estado de M&eacute;xico y Municipios y dem&aacute;s disposiciones aplicables.&nbsp;</li>
+              <li>Aun siendo l&iacute;cito el tratamiento, el mismo debe cesar para evitar que su persistencia cause un da&ntilde;o o perjuicio al titular.&nbsp;</li>
+              <li>Sus datos personales sean objeto de un tratamiento automatizado, el cual le produzca efectos jur&iacute;dicos no deseados o afecte de manera significativa sus intereses, derechos o libertades y est&eacute;n destinados a evaluar, sin intervenci&oacute;n humana, determinados aspectos personales del mismo o analizar o predecir, en particular, su rendimiento profesional, situaci&oacute;n econ&oacute;mica, estado de salud, preferencias sexuales, fiabilidad o comportamiento.&nbsp;</li>
+              <li>Cuando el titular identifique que se han asociado datos personales o se le ha identificado con un registro del cu&aacute;l no sea titular o se le incluya dentro de un sistema de datos personales en el cual no tenga correspondencia.</li>
+              <li>Cuando existan motivos fundados para ello y la Ley no disponga lo contrario.&nbsp;</li>
+              </ol>
+              <p>Dichos derechos se podr&aacute;n ejercer indistintamente a trav&eacute;s del Sistema de Acceso, Rectificaci&oacute;n, Cancelaci&oacute;n y Oposici&oacute;n de Datos Personales del Estado de M&eacute;xico (Sarcoem, <a href="http://www.sarcoem.org.mx/">www.sarcoem.org.mx</a> y/o <a href="http://www.plataformadetransparencia.org.mx/">www.plataformadetransparencia.org.mx</a>) o en la forma que m&aacute;s le convenga al titular, ya sea de manera escrita o verbal, directamente o a trav&eacute;s de apoderado o representante legal, por correo certificado o servicio de mensajer&iacute;a, ante la Secretar&iacute;a Ejecutiva de la JUCOPO o la Unidad de Informaci&oacute;n del Poder Legislativo.&nbsp;</p>
+              <h3>XI.&nbsp;&nbsp; La indicaci&oacute;n por la cual la o el titular podr&aacute;n revocar el consentimiento para el tratamiento de sus datos, detallando el procedimiento a seguir para tal efecto.<strong>&nbsp;</strong></h3>
+              <p>El titular de los datos personales, al momento de participar en el <strong>procedimiento para elegir o reelegir a la Presidenta o el Presidente de la Comisi&oacute;n de Derechos Humanos del Estado de M&eacute;xico </strong>y proporcionar alguno o todos los datos personales y documentos descritos en el numeral <strong>SEGUNDO, </strong>se&ntilde;alado en la Convocatoria y en el apartado IV del presente Aviso de Privacidad, otorga de manera t&aacute;cita el consentimiento para el tratamiento de sus datos personales. Asimismo, se entiende que otorga su consentimiento cuando habi&eacute;ndose puesto a su disposici&oacute;n el presente Aviso de Privacidad, no manifieste su voluntad en sentido contrario.</p>
+              <p>No obstante, la persona titular puede revocar el uso o tratamiento de sus datos personales, en caso de que identifique que los mismos son utilizando para un tratamiento distinto al establecido en las finalidades del presente aviso de privacidad, haciendo uso de los mecanismos y medios descritos en el apartado que antecede.&nbsp;</p>
+              <h3>XII. Cuando aplique, las opciones y medios que el responsable ofrezca a las o los titulares para limitar el uso o divulgaci&oacute;n, o la portabilidad de datos.<strong>&nbsp;</strong></h3>
+              <p>En congruencia con las finalidades para el tratamiento de sus datos personales, no se cuenta con medios para limitar su uso o divulgaci&oacute;n.&nbsp;</p>
+              <h3>XIII.&nbsp;&nbsp; Los medios a trav&eacute;s de los cuales el responsable comunicar&aacute; a los titulares los cambios al aviso de privacidad.</h3>
+              <p>El presente Aviso de Privacidad puede sufrir modificaciones, cambios o actualizaciones derivadas de nuevos requerimientos legales o de nuevas necesidades administrativas o de otra &iacute;ndole. Cualquier modificaci&oacute;n que sufra el presente documento, deber&aacute; ser reportada en el apartado identificado como "Control de Cambios", recuadro que aparece en la parte final del documento para otorgar mayor certeza.</p>
+              <p>Sin embargo, en caso de que sea de su inter&eacute;s identificar el tratamiento vigente a sus datos personales o ejercer alg&uacute;n derecho ARCO, se le invita a consultar el aviso de privacidad vigente en la p&aacute;gina de Internet de la Legislatura, a trav&eacute;s del siguiente enlace: https://legislacion.congresoedomex.gob.mx/avisosdeprivacidad</p>
+              <h3>XIV.&nbsp; El cargo y domicilio del encargado indicando su nombre o el medio por el cual se pueda conocer su identidad.</h3>
+              <p>Por la naturaleza de los datos personales que son recabados y tratados, no se cuenta con la figura de encargado para el manejo de los mismos, toda vez que son tratados directamente por personal adscrito a la Secretaria Ejecutiva de la Junta de Coordinaci&oacute;n Pol&iacute;tica de la LXII Legislatura del Estado de M&eacute;xico.&nbsp;</p>
+              <h3>XV. El domicilio del responsable, y en su caso, cargo y domicilio del encargado, indicando su nombre o el medio por el cual se puede conocer su identidad.<strong>&nbsp;</strong></h3>
+              <ul>
+              <li>Palacio Legislativo del Estado de M&eacute;xico, ubicado en Plaza Hidalgo s/n; Centro, Toluca de Lerdo, Estado de M&eacute;xico, C.P. 50000.&nbsp;</li>
+              </ul>
+              <h3>XVI. El fundamento legal que faculta al responsable para llevar a cabo el tratamiento.<strong>&nbsp;</strong></h3>
+              <ul>
+              <li>Art&iacute;culo 16 de la Constituci&oacute;n Pol&iacute;tica del Estado Libre y Soberano de M&eacute;xico; art&iacute;culos 15, 16, 17, 18, 19 de la Ley de la Comisi&oacute;n de Derechos Humanos del Estado de M&eacute;xico.</li>
+              </ul>
+              <h3>XVII. El procedimiento para que se ejerza el derecho a la portabilidad.<strong>&nbsp;</strong></h3>
+              <p>Por la naturaleza del tratamiento de los datos personales y tomando en consideraci&oacute;n que los documentos y datos personales no son tratados en un formato estructurado y com&uacute;nmente utilizado, no es aplicable el presente apartado.&nbsp;</p>
+              <h3>XVIII. El domicilio de la Unidad de Transparencia.<strong>&nbsp;</strong></h3>
+              <ul>
+              <li>Unidad de Informaci&oacute;n del Poder Legislativo, ubicada en Independencia Oriente n&uacute;mero 102; Col. Centro; Toluca de Lerdo; Estado de M&eacute;xico; planta baja; C.P. 50000.&nbsp;</li>
+              </ul>
+              <h3>XIX.&nbsp; Datos de contacto del Instituto, incluidos domicilio, direcci&oacute;n del portal informativo, correo electr&oacute;nico y Centro de Atenci&oacute;n Telef&oacute;nica, para que el titular pueda recibir asesor&iacute;a o presentar denuncias por violaciones a las disposiciones de la Ley.</h3>
+              <p>Datos de contacto del Instituto de Transparencia, Acceso a la Informaci&oacute;n P&uacute;blica y Protecci&oacute;n de Datos Personales del Estado de M&eacute;xico y Municipios (Infoem):&nbsp;</p>
+              <ul>
+              <li>Domicilio: Calle Pino Su&aacute;rez S/N, actualmente carretera Toluca-Ixtapan 111, Col. La Michoacana, Metepec, Estado de M&eacute;xico, C.P. 52166.</li>
+              <li>Direcci&oacute;n del Portal Informativo: <a href="http://www.infoem.org.mx/">http://www.infoem.org.mx</a></li>
+              <li>Correo Electr&oacute;nico del Centro de Atenci&oacute;n Telef&oacute;nica: <a href="mailto:cat&#64;infoem.org.mx">cat&#64;infoem.org.mx</a></li>
+              <li>Tel&eacute;fono del Centro de Atenci&oacute;n Telef&oacute;nica: 800 821 0441.</li>
+              </ul>
+              <p>Finalmente, en caso de que requiera asesor&iacute;a u orientaci&oacute;n en materia de protecci&oacute;n de datos personales o sobre los derechos previstos por la Ley de Protecci&oacute;n de Datos Personales en Posesi&oacute;n de Sujetos Obligados del Estado de M&eacute;xico y Municipios, se le sugiere dirigirse a la Direcci&oacute;n General de Protecci&oacute;n de Datos Personales del Infoem, a trav&eacute;s del tel&eacute;fono, (722) 2261980, extensiones 801 a 809 o enviar correo electr&oacute;nico a la direcci&oacute;n <a href="mailto:datospersonales&#64;infoem.org.mx"><strong>datospersonales&#64;infoem.org.mx</strong>.</a>&nbsp;</p>
+              <h3>CONTROL DE CAMBIOS<strong>&nbsp;</strong></h3>
+              <table>
+              <tbody>
+              <tr>
+              <td width="99">
+              <p><strong>N&uacute;mero de</strong></p>
+              <p><strong>revisi&oacute;n</strong></p>
+              </td>
+              <td width="99">
+              <p><strong>P&aacute;ginas</strong></p>
+              <p><strong>modificadas</strong></p>
+              </td>
+              <td width="292">
+              <p><strong>Descripci&oacute;n del cambio</strong></p>
+              </td>
+              <td width="99">
+              <p><strong>Fecha</strong></p>
+              </td>
+              </tr>
+              <tr>
+              <td width="99">
+              <p>0</p>
+              </td>
+              <td width="99">
+              <p>Todas</p>
+              </td>
+              <td width="292">
+              <p>Documento inicial</p>
+              </td>
+              <td width="99">
+              <p>26/06/2025</p>
+              </td>
+              </tr>
+              </tbody>
+              </table>
+              <p>&nbsp;</p>
+              <p><strong>Consentimiento para tratamiento de datos personales</strong><strong>&nbsp;</strong></p>
+              <p>Por&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; medio&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; de&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; la&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; presente,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; el&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (la)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; que&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; suscribe</p>
+              <p><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </u>, titular de los documentos y datos personales que se entregan a la Junta de Coordinaci&oacute;n Pol&iacute;tica de la LXII Legislatura del Estado de M&eacute;xico, con motivo del <strong>Proceso y la Convocatoria para elegir o reelegir a la Presidenta o el Presidente de la Comisi&oacute;n de Derechos Humanos del Estado de M&eacute;xico</strong>, de conformidad con los art&iacute;culos 18, 19, 20 de la Ley de Protecci&oacute;n de Datos Personales en Posesi&oacute;n de Sujetos Obligados del Estado de M&eacute;xico y Municipios y dem&aacute;s disposiciones relativas y aplicables en la materia, por medio de la presente otorgo <strong>CONSENTIMIENTO EXPRESO </strong>para el tratamiento de datos personales que proporciono, de conformidad con lo siguiente:</p>
+              <p>&nbsp;</p>
+              <table>
+              <tbody>
+              <tr>
+              <td width="132">
+              <p><strong>Denominaci&oacute;n </strong><strong>del responsable:</strong></p>
+              </td>
+              <td width="491">
+              <p>Poder Legislativo del Estado Libre y Soberano de M&eacute;xico</p>
+              </td>
+              </tr>
+              <tr>
+              <td width="132">
+              <p><strong>Finalidad del tratamiento:</strong></p>
+              </td>
+              <td width="491">
+              <p><strong><u>Finalidad principal</u></strong>: la descrita en el <strong>Acuerdo por el que se establece el Proceso y la Convocatoria para elegir o reelegir a la Presidenta o el Presidente de la Comisi&oacute;n de Derechos Humanos del Estado de M&eacute;xico</strong>, publicado en el peri&oacute;dico oficial &ldquo;Gaceta del Gobierno&rdquo; el 26 de junio de 2025.</p>
+              <p><strong><u>Finalidad secundaria</u></strong>: para efectos de transparencia y acceso a la informaci&oacute;n p&uacute;blica.</p>
+              </td>
+              </tr>
+              <tr>
+              <td width="132">
+              <p><strong>Datos personales </strong><strong>sujetos a tratamiento:</strong></p>
+              </td>
+              <td width="491">
+              <p>Los datos y documentos descritos en el <strong>Acuerdo por el que se establece el Proceso y la Convocatoria para elegir o reelegir a la Presidenta o el Presidente de la Comisi&oacute;n de Derechos Humanos del Estado de M&eacute;xico</strong>, publicado en el peri&oacute;dico oficial &ldquo;Gaceta del Gobierno&rdquo; el 26 de junio de 2025.</p>
+              <p>Asimismo, los datos personales y documentos descritos en el Aviso de Privacidad correspondiente al procedimiento referido en el p&aacute;rrafo anterior, el cual se encuentra disponible en la p&aacute;gina de Internet del Poder Legislativo,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; trav&eacute;s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; del&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; siguiente&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; enlace: <a href="https://legislacion.congresoedomex.gob.mx/avisosdeprivacidad">https://legislacion.congresoedomex.gob.mx/avisosdeprivacidad</a></p>
+              </td>
+              </tr>
+              </tbody>
+              </table>
+              <p>Por &uacute;ltimo, manifiesto que el presente consentimiento es otorgado de manera libre, inequ&iacute;voca, sin que medie error, mala fe, violencia o dolo que puedan afectar la manifestaci&oacute;n de mi voluntad. Asimismo, manifiesto que fui informado(a) sobre el tratamiento de los datos personales conforme al Aviso de Privacidad del Proceso y Convocatoria para elegir o reelegir a la Presidenta o el Presidente de la Comisi&oacute;n de Derechos Humanos del Estado de M&eacute;xico.</p>
+              <p>&nbsp;</p>
+              <p>Dado en la ciudad de Toluca de Lerdo, Estado de M&eacute;xico; a los <u>&nbsp;&nbsp;&nbsp;</u>d&iacute;as del mes de <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </u>del a&ntilde;o 2025.</p>
+              <p>&nbsp;</p>
+              <h3>Autorizo y otorgo consentimiento</h3>
+              <p><strong>&nbsp;</strong></p>
+              <p>Nombre y firma del titular de los datos personales</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" (click)="modal.close('by: save button')">Aceptar</button>
+            </div>
+          </ng-template>
         </div>
       </div>
     </div>

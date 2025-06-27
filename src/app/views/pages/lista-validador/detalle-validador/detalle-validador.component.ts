@@ -31,8 +31,10 @@ export class DetalleValidadorComponent {
   solicitante: any;
   validadorSol: any;
   estatusSoli: any;
+  idSolid:any;
   public currentUser: any;
   public esAdmin: boolean = false;
+  public esValidador: boolean = false;
   public usuariosValidador: any[] = [];
   validadorSeleccionado: string = '';
   documentosRequeridos: {
@@ -126,6 +128,7 @@ export class DetalleValidadorComponent {
     this.id = String(aRouter.snapshot.paramMap.get('id'));
     this.currentUser = this._userService.currentUserValue;
     this.esAdmin = this.currentUser.rol_users?.role?.name === 'Administrador';
+    this.esValidador = this.currentUser.rol_users?.role?.name === 'Validador';
   }
 
   ngOnInit(): void {
@@ -184,6 +187,7 @@ export class DetalleValidadorComponent {
       next: (response: any) => {
         this.validadorSol= response.validasolicitud.validador.datos_user.nombre + ' ' + response.validasolicitud.validador.datos_user.apaterno + ' ' + response.validasolicitud.validador.datos_user.amaterno;
         this.solicitante = response;
+        this.idSolid = response.id;
         this.documentos = response.documentos;
         this.estatusSoli = response.estatusId;
         this.documentos.forEach((doc: any) => { 
@@ -262,6 +266,11 @@ export class DetalleValidadorComponent {
       console.error('Error al enviar validación:', e.error?.msg || e);
     }
   });
+  }
+
+  exportarZip(): void{
+    console.log(this.idSolid);
+
   }
 
 }

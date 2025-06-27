@@ -11,12 +11,16 @@
                 <div class="col-md-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Datos del solicitante</h4>
+                            <h4 class="card-title">Datos del solicitante33</h4>
                             <p class="text">Nombre completo: {{ solicitante?.nombres }} {{ solicitante?.ap_paterno }} {{
                                 solicitante?.ap_materno }} <br>
                                 Curp: {{ solicitante?.curp }} <br>
                                 Cedula profesional: {{ solicitante?.cedula_profesional }} </p>
+                            <div *ngIf="this.esAdmin || this.esValidador && estatusSoli == 4" class="col text-end">
+                                <button class="btn btn-sm btn-primary" (click)="exportarZip()">Descargar Documentos</button>
+                            </div>
                         </div>
+                       
                         <div class="card-body" *ngIf="this.esAdmin">
                             <ngb-alert [dismissible]="false" [type]="'success'">
                                 <p style="color:black"><strong>Validador asignado:</strong> {{validadorSol}}</p>

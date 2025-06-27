@@ -42,21 +42,20 @@ export class DetalleValidadorComponent {
     estatus?: number;
     observaciones?: number;
   }[] = [
-      { clave: 'curp', label: 'Ser mexicano en pleno goce y ejercicio de sus derechos políticos y civiles.' , txt: 'Documento requerido: Clave Única de Registro de Población (CURP)*:'},
-      { clave: 'constancia_residencia', label: 'Tener residencia efectiva en el territorio del Estado de México no menor de cinco años anteriores al día de su elección.' , txt: 'Documento requerido Constancia de residencia en la entidad no menor de cinco años anteriores al día de su designación, que podrá acreditarse con manifestación bajo protesta de decir verdad sobre su residencia *:'},
+      { clave: 'acta_nacimiento', label: 'I. Tener treinta y cinco años cumplidos, el día de su elección.' , txt: 'Documento requerido: Acta de nacimiento en copia certificada o, en su caso, documento que acredite la nacionalidad mexicana *:'},
+      { clave: 'curp', label: 'II. Ser mexicano en pleno goce y ejercicio de sus derechos políticos y civiles.' , txt: 'Documento requerido: Clave Única de Registro de Población (CURP)*:'},
+      { clave: 'ine', label: 'III. Credencial para votar con fotografía vigente, expedida por el Instituto Nacional Electoral en copia legible, de preferencia ampliada al 200% y en original para su cotejo.' , txt: 'Documento requerido: Credencial para votar con fotografía vigente*:'},
+      { clave: 'constancia_residencia', label: 'IV. Tener residencia efectiva en el territorio del Estado de México no menor de cinco años anteriores al día de su elección.' , txt: 'Documento requerido Constancia de residencia en la entidad no menor de cinco años anteriores al día de su designación, que podrá acreditarse con manifestación bajo protesta de decir verdad sobre su residencia *:'},
+      { clave: 'curriculum', label: 'V. Currículum Vitae firmado autógrafamente por la persona aspirante, en el que se señale su experiencia laboral, formación académica; especialización en derechos humanos; experiencia profesional en el ámbito de la protección, observancia, promoción, estudio y divulgación de los derechos humanos; y, en su caso, publicaciones en materias relacionadas con los derechos humanos.' , txt: 'Documento requerido: Currículum Vitae*:'},
+      { clave: 'copia_certificada', label: 'VI. Copia certificada de los documentos con los que acredite su título(s) o grado(s) académico(s);' , txt: 'Documento requerido: Copias certificadas correspondientes*:'},
+      { clave: 'informe_no_penales', label: 'VII. Informe de no antecedentes penales, expedido por la Fiscalía General de Justicia del Estado de México, con fecha de expedición no mayor a treinta días anteriores a la fecha de su presentación.' , txt: 'Documento requerido: Informe de no antecedentes penales*:'},
+      { clave: 'carta_protesta5', label: 'VIII. Carta bajo protesta de decir verdad.' , txt: 'Documento requerido: Carta bajo protesta de decir verdad*:'},
+
       { clave: 'titulo_licenciatura', label: 'Tener preferentemente título de licenciado en derecho, así como experiencia o estudios en materia de derechos humanos.' , txt: 'Documento requerido: Título de Licenciatura en Derecho*:'},
-      { clave: 'acta_nacimiento', label: 'Tener treinta y cinco años cumplidos, el día de su elección.' , txt: 'Documento requerido: Acta de nacimiento en copia certificada o, en su caso, documento que acredite la nacionalidad mexicana *:'},
       { clave: 'carta_ant_no_penales', label: 'Gozar de buena fama pública y no haber sido condenado mediante sentencia ejecutoriada, por delito intencional.' , txt: 'Documento requerido: Carta bajo protesta de decir verdad y/o carta de antecedentes no penales*:'},
-      { clave: 'carta_protesta1', label: 'No ser ministro de culto, excepto que se haya separado de su ministerio con tres años de anticipación al día de su elección.' , txt: 'Documento requerido: Carta bajo protesta de decir verdad*:'},
-      { clave: 'carta_protesta2', label: 'No haber desempeñado cargo directivo en algún partido, asociación u organización política, en los tres años anteriores al día de su elección.' , txt: ''},
-      { clave: 'carta_protesta3', label: 'No haber sido sancionado en el desempeño de empleo, cargo o comisión en el servicio público federal, estatal o municipal, con motivo de alguna recomendación emitida por organismos públicos de derechos humanos.' , txt: 'Documento requerido: Carta bajo protesta de decir verdad*:'},
-      { clave: 'carta_protesta4', label: 'No haber sido objeto de sanción de inhabilitación o destitución administrativas para el desempeño de empleo, cargo o comisión en el servicio público, mediante resolución que haya causado estado.' , txt: 'Documento requerido: Carta bajo protesta de decir verdad*:'},
-      { clave: 'carta_protesta5', label: 'Carta firmada de manera autógrafa en donde manifieste su voluntad expresa de participar en el proceso de selección, así como su aceptación y conformidad con las bases, procedimientos y deliberaciones del proceso.' , txt: 'Documento requerido: Carta de manifestación de voluntad*:'},
-      { clave: 'curriculum', label: 'Currículum Vitae firmado autógrafamente por la persona aspirante, en el que se señale su experiencia laboral, formación académica; especialización en derechos humanos; experiencia profesional en el ámbito de la protección, observancia, promoción, estudio y divulgación de los derechos humanos; y, en su caso, publicaciones en materias relacionadas con los derechos humanos.' , txt: 'Documento requerido: Currículum Vitae*:'},
+      
       { clave: 'propuesta_programa', label: 'Documento impreso con la propuesta de programa de trabajo con una extensión máxima de diez cuartillas, con letra tipo Arial, tamaño número 12 e interlineado 1.5.' , txt: 'Documento requerido: propuesta de programa de trabajo*:'},
-      { clave: 'copia_certificada', label: 'Copia certificada de los documentos con los que acredite su título(s) o grado(s) académico(s);' , txt: 'Documento requerido: Copias certificadas correspondientes*:'},
-      { clave: 'ine', label: 'Credencial para votar con fotografía vigente, expedida por el Instituto Nacional Electoral en copia legible, de preferencia ampliada al 200% y en original para su cotejo.' , txt: 'Documento requerido: Credencial para votar con fotografía vigente*:'},
-      { clave: 'informe_no_penales', label: 'Informe de no antecedentes penales, expedido por la Fiscalía General de Justicia del Estado de México, con fecha de expedición no mayor a treinta días anteriores a la fecha de su presentación.' , txt: 'Documento requerido: Informe de no antecedentes penales*:'},
+      
       { clave: 'carta_motivos', label: 'Carta de exposición de motivos firmada por la persona aspirante y descripción de las razones que justifican su idoneidad, con una extensión no mayor a tres cuartillas.' , txt: 'Documento requerido: Carta de exposición de motivos*:'},
       { clave: 'escrito_consentimiento', label: 'Escrito de consentimiento para el tratamiento de datos personales, así como Aviso de Privacidad relativo al tratamiento de los datos personales descritos en la presente Convocatoria. Ambos documentos deberán descargarse de página https://legislacion.legislativoedomex.gob.mx/avisosdeprivacidad y deberán ser entregados debidamente firmados por la o el aspirante.' , txt: 'Documento requerido: Escrito de consentimiento*:'},
 
@@ -89,22 +88,6 @@ export class DetalleValidadorComponent {
         observaciones: ''
       },
       carta_ant_no_penales: {
-        estado: true,
-        observaciones: ''
-      },
-      carta_protesta1: {
-        estado: true,
-        observaciones: ''
-      },
-      carta_protesta2: {
-        estado: true,
-        observaciones: ''
-      },
-      carta_protesta3: {
-        estado: true,
-        observaciones: ''
-      },
-      carta_protesta4: {
         estado: true,
         observaciones: ''
       },

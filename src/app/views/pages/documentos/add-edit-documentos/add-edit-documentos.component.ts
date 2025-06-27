@@ -173,13 +173,12 @@ export class AddEditDocumentosComponent {
     this._documentoService.getDocumentosUser(this.id_user).subscribe({
       next: (response: any) => {
           this.data = response
-          console.log(response)
           this.documentos = response.documentos;
            this.estatusSoli = response.estatusId;
           this.documentos.forEach((doc: any) => {
             
             if (doc) {
-              console.log(doc.tipo?.valor);
+  
                 this.archivosRechazados[doc.tipo?.valor] = doc.estatus;
                 this.observac[doc.tipo?.valor] = doc.observaciones;
                 const archivoUrl = 'https://dev4.siasaf.gob.mx/' + doc.path;
@@ -200,7 +199,7 @@ export class AddEditDocumentosComponent {
         }
       },
     })
-    console.log(this.archivosSubidos)
+    
   }
 
   sendDoc() {

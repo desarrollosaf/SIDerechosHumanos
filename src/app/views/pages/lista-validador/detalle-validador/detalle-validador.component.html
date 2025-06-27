@@ -16,7 +16,7 @@
                                 solicitante?.ap_materno }} <br>
                                 Curp: {{ solicitante?.curp }} <br>
                                 Cedula profesional: {{ solicitante?.cedula_profesional }} </p>
-                            <div *ngIf="this.esAdmin || this.esValidador && estatusSoli == 4" class="col text-end">
+                            <div *ngIf="(this.esAdmin || this.esValidador) && estatusSoli == 3" class="col text-end">
                                 <button class="btn btn-sm btn-primary" (click)="exportarZip()">Descargar Documentos</button>
                             </div>
                         </div>

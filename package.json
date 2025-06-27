@@ -36,6 +36,7 @@
     "@sweetalert2/ngx-sweetalert2": "^12.4.0",
     "animate.css": "^4.1.1",
     "apexcharts": "^3.53.0",
+    "archiver": "^7.0.1",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.4",
     "feather-icons": "^4.29.2",

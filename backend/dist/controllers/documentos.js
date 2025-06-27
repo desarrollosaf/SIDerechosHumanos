@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.estatusDoc = exports.deleteDoc = exports.envSolicitud = exports.getDocumentos = exports.saveDocumentos = void 0;
+exports.getdocszip = exports.estatusDoc = exports.deleteDoc = exports.envSolicitud = exports.getDocumentos = exports.saveDocumentos = void 0;
 const solicitud_1 = __importDefault(require("../models/solicitud"));
 const documentos_1 = __importDefault(require("../models/documentos"));
 const tipodocumentos_1 = __importDefault(require("../models/tipodocumentos"));
@@ -28,6 +28,7 @@ const PDFDocument = require('pdfkit');
 const qrcode_1 = __importDefault(require("qrcode"));
 const validadoc_1 = __importDefault(require("../models/validadoc"));
 const crypto_1 = __importDefault(require("crypto"));
+const archiver = require('archiver');
 const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const archivo = req.file;
     const { tipo, usuario } = req.body;
@@ -558,3 +559,33 @@ function formatearFecha(fecha) {
     const pad = (n) => n.toString().padStart(2, '0');
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
 }
+const getdocszip = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const documentos = yield documentos_1.default.findAll({
+            where: { solicitudId: id }
+        });
+        if (!documentos || documentos.length === 0) {
+            return res.status(404).send('No se encontraron documentos');
+        }
+        res.setHeader('Content-Disposition', 'attachment; filename=documentos.zip');
+        res.setHeader('Content-Type', 'application/zip');
+        const archive = archiver('zip', { zlib: { level: 9 } });
+        archive.on('error', (err) => {
+            throw err;
+        });
+        archive.pipe(res);
+        // 'ruta/a/los/documentos'
+        documentos.forEach(doc => {
+            const filePath = path_1.default.join(__dirname, '..', doc.path); // ajusta según estructura
+            const fileName = path_1.default.basename(doc.path); // nombre original del archivo
+            archive.file(filePath, { name: fileName });
+        });
+        yield archive.finalize();
+    }
+    catch (error) {
+        console.error('Error al generar el ZIP:', error);
+        res.status(500).send('Error al generar el ZIP');
+    }
+});
+exports.getdocszip = getdocszip;

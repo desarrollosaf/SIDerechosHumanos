@@ -16,6 +16,8 @@ import QRCode from 'qrcode';
 import Validadoc from '../models/validadoc';
 import { create } from 'sortablejs';
 import crypto from 'crypto';
+const archiver = require('archiver');
+
 
 
 export const saveDocumentos = async (req: Request, res: Response): Promise<any> => {
@@ -638,6 +640,42 @@ function formatearFecha(fecha: Date): string {
   const d = new Date(fecha);
   const pad = (n: number) => n.toString().padStart(2, '0');
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+}
+
+export const getdocszip = async (req: Request, res: Response): Promise<any> => {
+    const { id } = req.params;
+    try {
+    const documentos = await Documentos.findAll({
+      where: { solicitudId: id }
+    });
+    
+    if (!documentos || documentos.length === 0) {
+      return res.status(404).send('No se encontraron documentos');
+    }
+
+    res.setHeader('Content-Disposition', 'attachment; filename=documentos.zip');
+    res.setHeader('Content-Type', 'application/zip');
+
+    const archive = archiver('zip', { zlib: { level: 9 } });
+
+    archive.on('error', (err: any) => {
+      throw err;
+    });
+
+    archive.pipe(res);
+    // 'ruta/a/los/documentos'
+    documentos.forEach(doc => {
+      const filePath = path.join(__dirname, '..', doc.path); // ajusta según estructura
+      const fileName = path.basename(doc.path); // nombre original del archivo
+      archive.file(filePath, { name: fileName });
+    });
+
+    await archive.finalize();
+  } catch (error) {
+    console.error('Error al generar el ZIP:', error);
+    res.status(500).send('Error al generar el ZIP');
+  }
+
 }
 
 

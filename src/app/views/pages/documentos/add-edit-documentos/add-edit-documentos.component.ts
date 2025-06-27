@@ -38,7 +38,7 @@ export class AddEditDocumentosComponent {
       curp: [null, Validators.required],
       constancia_residencia: [null, Validators.required],
       acta_nacimiento: [null, Validators.required],
-      carta_ant_no_penales: [null, Validators.required],
+      carta_ant_no_penales: [null],
       carta_protesta5: [null, Validators.required],
       curriculum: [null, Validators.required],
       propuesta_programa: [null, Validators.required],
@@ -179,7 +179,7 @@ export class AddEditDocumentosComponent {
           this.documentos.forEach((doc: any) => {
             
             if (doc) {
-              
+              console.log(doc.tipo?.valor);
                 this.archivosRechazados[doc.tipo?.valor] = doc.estatus;
                 this.observac[doc.tipo?.valor] = doc.observaciones;
                 const archivoUrl = 'https://dev4.siasaf.gob.mx/' + doc.path;
@@ -187,6 +187,8 @@ export class AddEditDocumentosComponent {
                 this.archivosSubidos[doc.tipo?.valor] = archivoUrl;
                 this.formDoc.get(doc.tipo?.valor)?.clearValidators();
                 this.formDoc.get(doc.tipo?.valor)?.updateValueAndValidity();
+            }else{
+              this.archivosRechazados[doc.tipo?.valor] = 0;
             }
           });  
       },

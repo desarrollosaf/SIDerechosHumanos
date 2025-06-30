@@ -49,7 +49,7 @@ export class ListaValidadorComponent {
     }
     else if(this.rutaActual.includes('registradas')){
       this.titulo='Solicitudes registradas'
-      this.tipoEstatus = 1;
+      this.tipoEstatus = 5;
     }
 
     const payload: any = {};
@@ -127,6 +127,13 @@ getEstatusNombre(estatusId: number): string {
     case 4: return 'Rechazado';
     default: return 'Desconocido';
   }
+}
+
+getLink(row: any): string[] {
+  if (this._userService.currentUserValue?.rol_users?.role?.name == 'Administrador' && this.rutaActual.includes('registradas')) {
+    return ['/registro/add-documentos', row.userId];
+  }
+    return ['/solicitud/validacion', row.userId]; 
 }
 
 

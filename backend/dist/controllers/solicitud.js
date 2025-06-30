@@ -176,11 +176,20 @@ const getSolicitudes = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const roleId = user.rol_users.role_id;
     let listSolicitudes = [];
     if (user && roleId == 1) {
-        listSolicitudes = yield solicitud_1.default.findAll({
-            where: {
-                estatusId: id
-            }
-        });
+        if (id == 5) {
+            listSolicitudes = yield solicitud_1.default.findAll({
+                where: {
+                    estatusId: [1, 2]
+                }
+            });
+        }
+        else {
+            listSolicitudes = yield solicitud_1.default.findAll({
+                where: {
+                    estatusId: id
+                }
+            });
+        }
     }
     else {
         listSolicitudes = yield solicitud_1.default.findAll({

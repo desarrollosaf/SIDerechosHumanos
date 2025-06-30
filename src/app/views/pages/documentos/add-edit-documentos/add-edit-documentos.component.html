@@ -48,7 +48,7 @@
                     </div>
                 </div>
             </div>
-            @if(estatusSoli === 1 || estatusSoli === 4){
+            @if(estatusSoli === 1 || estatusSoli === 4 || estatusSoli === 2){
             <div class="card">
                 <form [formGroup]="formDoc" (ngSubmit)="sendDoc()">
                     <div class="row">
@@ -279,13 +279,13 @@
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="copia_certificada"
-                                            accept="application/pdf" (change)="onFile7($event, 'copia_certificada',50)">
+                                            accept="application/pdf" (change)="onFile7($event, 'copia_certificada',100)">
                                     </div>
                                     <div *ngIf="formDoc.get('copia_certificada')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
                                     </div>
                                     <div *ngIf="formDoc.get('copia_certificada')?.hasError('fileSize')">
-                                        <small class="text-danger">El archivo no debe exceder los 50 MB.</small>
+                                        <small class="text-danger">El archivo no debe exceder los 100 MB.</small>
                                     </div>
                                     <div *ngIf="archivosSubidos['copia_certificada']" class="mt-2">
                                         <div class="d-flex justify-content-center align-items-center gap-3">
@@ -398,9 +398,8 @@
                         </div>
 
                         <div class="col-md-6 grid-margin stretch-card" 
-                        *ngIf="(estatusSoli === 4  && archivosRechazados['titulo_licenciatura'] === 3) || (estatusSoli === 1 && !archivosRechazados['titulo_licenciatura']) ">
+                        *ngIf="(estatusSoli === 4  && archivosRechazados['titulo_licenciatura'] === 3) || (estatusSoli === 1 && !archivosRechazados['titulo_licenciatura']) || (estatusSoli === 2 && (!archivosRechazados['titulo_licenciatura'] ||  archivosRechazados['titulo_licenciatura'] == 1))">
 
-                            
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
                                     <label class="form-label" for="formFile" style="text-align: justify;">
@@ -875,14 +874,14 @@
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="copia_certificada"
-                                            accept="application/pdf" (change)="onFile7($event, 'copia_certificada',50)"
+                                            accept="application/pdf" (change)="onFile7($event, 'copia_certificada',100)"
                                             [disabled]="true">
                                     </div>
                                     <div *ngIf="formDoc.get('copia_certificada')?.hasError('required')">
                                         <small class="text-danger">Este campo es obligatorio.</small>
                                     </div>
                                     <div *ngIf="formDoc.get('copia_certificada')?.hasError('fileSize')">
-                                        <small class="text-danger">El archivo no debe exceder los 50 MB.</small>
+                                        <small class="text-danger">El archivo no debe exceder los 100 MB.</small>
                                     </div>
                                     <div *ngIf="archivosSubidos['copia_certificada']" class="mt-2">
                                         <div class="d-flex justify-content-center align-items-center gap-3">

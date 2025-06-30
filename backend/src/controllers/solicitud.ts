@@ -185,11 +185,20 @@ export const saveRegistro = async (req: Request, res: Response): Promise<any> =>
       
       let listSolicitudes: any[] = [];
       if(user && roleId == 1){
-        listSolicitudes = await Solicitudes.findAll({
+        if(id == 5){
+          listSolicitudes = await Solicitudes.findAll({
+                where: {
+                    estatusId: [1,2] 
+                }
+            });
+        }else{
+          listSolicitudes = await Solicitudes.findAll({
             where: {
                 estatusId: id 
             }
         });
+        }
+        
         
       }else{
           listSolicitudes = await Solicitudes.findAll({

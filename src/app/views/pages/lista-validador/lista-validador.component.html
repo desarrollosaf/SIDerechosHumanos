@@ -24,6 +24,7 @@
                     </div>
 
                     <ngx-datatable #table class="bootstrap" [rows]="rows" [columnMode]="'force'" [headerHeight]="50"  *ngIf="rows.length > 0"
+                        [externalSorting]="true" (sort)="onSort($event)" 
                         [externalPaging]="true" [footerHeight]="50" [rowHeight]="'auto'" [limit]="pageSize" [count]="filteredCount"
                         [offset]="page" (page)="setPage($event)" [loadingIndicator]="loading" >
                         <ngx-datatable-column [headerClass]="'text-center'" [cellClass]="'text-center'" name="#">
@@ -31,7 +32,7 @@
                             {{ (page * pageSize) + rowIndex + 1 }}
                         </ng-template>
                         </ngx-datatable-column>
-                         <ngx-datatable-column [headerClass]="'text-center'" [cellClass]="'text-center'" name="Fecha solicitud">
+                         <ngx-datatable-column prop="fecha_envio"  [headerClass]="'text-center'" [cellClass]="'text-center'" name="Fecha solicitud">
                             <ng-template let-row="row" ngx-datatable-cell-template>
                                 {{ row.fecha_envio | date:'dd/MM/yyyy' }}
                             </ng-template>
@@ -41,7 +42,7 @@
                                 {{ row.id | slice:0:8 }}
                             </ng-template>
                         </ngx-datatable-column>
-                        <ngx-datatable-column [headerClass]="'text-center'" [cellClass]="'text-center'" name="Nombre">
+                        <ngx-datatable-column prop="nombreCompleto" [headerClass]="'text-center'" [cellClass]="'text-center'" name="Nombre">
                             <ng-template let-row="row" ngx-datatable-cell-template>
                                 {{ row.ap_paterno }} {{ row.ap_materno }} {{ row.nombres }}
                             </ng-template>

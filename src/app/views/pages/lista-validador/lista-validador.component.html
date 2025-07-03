@@ -24,11 +24,11 @@
                     </div>
 
                     <ngx-datatable #table class="bootstrap" [rows]="rows" [columnMode]="'force'" [headerHeight]="50"  *ngIf="rows.length > 0"
-                        [footerHeight]="50" [rowHeight]="'auto'" [limit]="pageSize" [count]="filteredCount"
+                        [externalPaging]="true" [footerHeight]="50" [rowHeight]="'auto'" [limit]="pageSize" [count]="filteredCount"
                         [offset]="page" (page)="setPage($event)" [loadingIndicator]="loading" >
                         <ngx-datatable-column [headerClass]="'text-center'" [cellClass]="'text-center'" name="#">
                         <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-                            {{ rowIndex + 1 }}
+                            {{ (page * pageSize) + rowIndex + 1 }}
                         </ng-template>
                         </ngx-datatable-column>
                          <ngx-datatable-column [headerClass]="'text-center'" [cellClass]="'text-center'" name="Fecha solicitud">

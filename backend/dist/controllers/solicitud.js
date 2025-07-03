@@ -120,7 +120,7 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
               <strong>Usuario:</strong> ${body.correo} <br>
             <strong>Contraseña:</strong> <a href="${enlace}">Establecer mi contraseña</a>
             </div>
-            <p>Podrá iniciar su proceso de registro a través del siguiente enlace durante el periodo comprendido del <strong>XXXXX al XXXXX de XXXXX de 2025</strong>:</p>
+            <p>Podrá iniciar su proceso de registro a través del siguiente enlace durante el periodo comprendido del <strong>27 junio al 03 de julio de 2025</strong>:</p>
             <a href="https://dev5.siasaf.gob.mx/auth/login" class="button" target="_blank">Iniciar registro</a>
             <p class="footer">
               Si tiene problemas para hacer clic en el botón, copie y pegue esta URL en su navegador:<br>
@@ -176,11 +176,20 @@ const getSolicitudes = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const roleId = user.rol_users.role_id;
     let listSolicitudes = [];
     if (user && roleId == 1) {
-        listSolicitudes = yield solicitud_1.default.findAll({
-            where: {
-                estatusId: id
-            }
-        });
+        if (id == 5) {
+            listSolicitudes = yield solicitud_1.default.findAll({
+                where: {
+                    estatusId: [1, 2]
+                }
+            });
+        }
+        else {
+            listSolicitudes = yield solicitud_1.default.findAll({
+                where: {
+                    estatusId: id
+                }
+            });
+        }
     }
     else {
         listSolicitudes = yield solicitud_1.default.findAll({

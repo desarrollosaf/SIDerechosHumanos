@@ -46,10 +46,9 @@ export class ListaValidadorComponent {
     } else if (this.rutaActual.includes('rechazados')) {
       this.titulo = 'Solicitudes rechazadas'
       this.tipoEstatus = 4;
-    }
-    else if (this.rutaActual.includes('registradas')) {
-      this.titulo = 'Solicitudes registradas'
-      this.tipoEstatus = 1;
+    }else if(this.rutaActual.includes('registradas')){
+      this.titulo='Solicitudes registradas'
+      this.tipoEstatus = 5;
     }
 
     const payload: any = {};
@@ -161,6 +160,13 @@ export class ListaValidadorComponent {
       default: return 'Desconocido';
     }
   }
+
+getLink(row: any): string[] {
+  if (this._userService.currentUserValue?.rol_users?.role?.name == 'Administrador' && this.rutaActual.includes('registradas')) {
+    return ['/registro/add-documentos', row.userId];
+  }
+    return ['/solicitud/validacion', row.userId]; 
+}
 
 
   formatDate(fecha: string | Date): string {

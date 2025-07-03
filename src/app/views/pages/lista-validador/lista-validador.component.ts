@@ -96,7 +96,7 @@ export class ListaValidadorComponent {
   }
 
   exportToExcel(): void {
-  const exportData = this.rows.map((row, index) => ({
+  const exportData = this.temp.map((row, index) => ({
     N: index + 1,
     'Fecha Solicitud': this.formatDate(row.fecha_envio),
     Folio: row.id?.substring(0, 8),

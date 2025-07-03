@@ -28,7 +28,7 @@
                         [offset]="page" (page)="setPage($event)" [loadingIndicator]="loading" >
                         <ngx-datatable-column [headerClass]="'text-center'" [cellClass]="'text-center'" name="#">
                         <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
-                            {{ rowIndex + 1 }}
+                            {{ (page * pageSize) + rowIndex + 1 }}
                         </ng-template>
                         </ngx-datatable-column>
                          <ngx-datatable-column [headerClass]="'text-center'" [cellClass]="'text-center'" name="Fecha solicitud">

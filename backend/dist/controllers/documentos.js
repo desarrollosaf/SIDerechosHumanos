@@ -277,7 +277,8 @@ const deleteDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         else {
             yield documentos_1.default.destroy({
                 where: {
-                    tipoDocumento: documentoExistente.tipoDocumento
+                    tipoDocumento: documentoExistente.tipoDocumento,
+                    solicitudId: solicitud.id
                 }
             });
         }

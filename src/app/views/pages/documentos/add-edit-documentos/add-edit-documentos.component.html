@@ -917,7 +917,7 @@
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="informe_no_penales"
-                                            accept="application/pdf" (change)="onFile7($event, 'ine',50)"
+                                            accept="application/pdf" (change)="onFile7($event, 'informe_no_penales',50)"
                                             [disabled]="true">
                                     </div>
                                     <div *ngIf="formDoc.get('informe_no_penales')?.hasError('required')">
@@ -1136,7 +1136,7 @@
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="carta_motivos"
-                                            accept="application/pdf" (change)="onFile7($event, 'ine',15)"
+                                            accept="application/pdf" (change)="onFile7($event, 'carta_motivos',15)"
                                             [disabled]="true">
                                     </div>
                                     <div *ngIf="formDoc.get('carta_motivos')?.hasError('required')">
@@ -1182,7 +1182,7 @@
                                     </label>
                                     <div class="mt-auto">
                                         <input class="form-control" type="file" id="escrito_consentimiento"
-                                            accept="application/pdf" (change)="onFile7($event, 'ine',15)"
+                                            accept="application/pdf" (change)="onFile7($event, 'escrito_consentimiento',15)"
                                             [disabled]="true">
                                     </div>
                                     <div *ngIf="formDoc.get('escrito_consentimiento')?.hasError('required')">

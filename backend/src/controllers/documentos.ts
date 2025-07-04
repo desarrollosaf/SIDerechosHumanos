@@ -305,7 +305,8 @@ export const deleteDoc = async (req: Request, res: Response): Promise<any> => {
       }else{
         await Documentos.destroy({
           where: {
-            tipoDocumento: documentoExistente.tipoDocumento  
+            tipoDocumento: documentoExistente.tipoDocumento,
+            solicitudId: solicitud.id
           }
         });
       }

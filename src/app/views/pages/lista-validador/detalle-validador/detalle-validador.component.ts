@@ -32,6 +32,8 @@ export class DetalleValidadorComponent {
   validadorSol: any;
   estatusSoli: any;
   idSolid: any;
+  esValidador2 = false;
+  validEm: any;
   public currentUser: any;
   public esAdmin: boolean = false;
   public esValidador: boolean = false;
@@ -133,6 +135,10 @@ export class DetalleValidadorComponent {
 
   ngOnInit(): void {
     this.getDocumUsuario();
+    this.validEm = this._userService.currentUserValue?.email;
+    if(this.validEm == 'validador2@congresoedomex.gob.mx'){
+      this.esValidador2 = true;
+    }
   }
 
   obtenerValidadores() {
@@ -147,6 +153,7 @@ export class DetalleValidadorComponent {
   }
 
   reasignarValidador(usuario: any) {
+
     const idSolicitud = this.solicitante.documentos[0]?.solicitudId;
     const id = usuario?.id;
     if (id) {

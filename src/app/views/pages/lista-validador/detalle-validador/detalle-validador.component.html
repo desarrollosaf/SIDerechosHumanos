@@ -21,7 +21,7 @@
                             </div>
                         </div>
                        
-                        <div class="card-body" *ngIf="this.esAdmin">
+                        <div class="card-body" *ngIf="this.esAdmin && validEm !== 'validador2@congresoedomex.gob.mx'">
                             <ngb-alert [dismissible]="false" [type]="'success'">
                                 <p style="color:black"><strong>Validador asignado:</strong> {{validadorSol}}</p>
                             </ngb-alert>
@@ -87,7 +87,7 @@
                                                     <div class="col-md-4 text-center">
                                                         <p class="text-center"><strong>VALIDACIÓN</strong></p>
                                                         <br>
-                                                        <mat-slide-toggle [ngModelOptions]="{ standalone: true }"
+                                                        <mat-slide-toggle [disabled]="esValidador2" [ngModelOptions]="{ standalone: true }"
                                                             [(ngModel)]="validarrechazar[doc.clave].estado"
                                                             (ngModelChange)="onToggleChange(doc.clave)">
                                                         </mat-slide-toggle>
@@ -164,7 +164,7 @@
                         <div class="row mt-2">
                             <div class="col text-center">
                                 <div class="d-flex justify-content-center gap-2">
-                                    <button type="submit" class="btn btn-primary submit" (click)="enviarValidacion()"  [disabled]="(estatusSoli === 3)">
+                                    <button type="submit" class="btn btn-primary submit" (click)="enviarValidacion()"  [disabled]="(estatusSoli === 3 || esValidador2)">
                                         Enviar
                                     </button>
                                     <a routerLink="/solicitud/tramite" class="btn btn-secondary">

@@ -48,10 +48,11 @@ export class NavbarComponent implements OnInit {
     });
 
     const role = this._userService.currentUserValue?.rol_users?.role?.name;
+    const email = this._userService.currentUserValue?.email;
     this.menuItems = MENU;
     this.usuario = this._userService.currentUserValue?.email;
     if (role) {
-      this.menuItems = this.filterMenuByRole(MENU, role);
+      this.menuItems = this.filterMenuByRole(MENU, role, email);
     } else {
       this.menuItems = []; 
     }
@@ -71,10 +72,31 @@ export class NavbarComponent implements OnInit {
     // }
   }
 
-  private filterMenuByRole(menu: MenuItem[], role: string): MenuItem[] {
+  private filterMenuByRole(menu: MenuItem[], role: string, email: string | undefined): MenuItem[] {
     return menu
-      .filter(item => !item.roles || item.roles.includes(role))
-      .map(item => ({
+    .filter(item => {
+      if (email === 'validador2@congresoedomex.gob.mx' && item.label === 'Validadores') {
+        return false;
+      }
+
+      return !item.roles || item.roles.includes(role);
+    })
+    .map(item => {
+      if (email === 'validador2@congresoedomex.gob.mx' && item.label === 'Bandeja de entrada') {
+        const filteredSubMenus = item.subMenus?.map(sub => ({
+          ...sub,
+          subMenuItems: (sub.subMenuItems ?? []).filter(subItem =>
+            subItem.label === 'Solicitudes' || subItem.label === 'En tramite'
+          )
+        }));
+
+        return {
+          ...item,
+          subMenus: filteredSubMenus
+        };
+      }
+
+      return {
         ...item,
         subMenus: item.subMenus?.map((sub: SubMenus) => ({
           ...sub,
@@ -82,7 +104,8 @@ export class NavbarComponent implements OnInit {
             !subItem.roles || subItem.roles.includes(role)
           )
         }))
-      }));
+      };
+    });
   }
 
   showActiveTheme(theme: string) {

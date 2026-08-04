@@ -1,0 +1,52 @@
+<div class="container-fluid auth-background">
+  <div class="row justify-content-center">
+    <div class="col-md-10 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="fw-bold mb-4 text-center" style="color: #96134b; font-size: 1.2rem;">
+            Convocatorias vigentes
+          </h6>
+
+          <div *ngIf="cargando" class="text-center my-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+
+          <div *ngIf="!cargando && convocatorias.length === 0" class="alert alert-info text-center" role="alert">
+            En este momento no hay convocatorias con registro abierto.
+          </div>
+
+          <div class="row" *ngIf="!cargando">
+            <div class="col-md-6 grid-margin stretch-card" *ngFor="let convocatoria of convocatorias">
+              <div class="card convocatoria-card">
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title">{{ convocatoria.nombre }}</h5>
+                  <p class="text-muted" style="text-align: justify;">{{ convocatoria.titulo }}</p>
+
+                  <p class="mb-1" *ngIf="convocatoria.periodo_texto">
+                    <strong>Periodo de registro:</strong> {{ convocatoria.periodo_texto }}
+                  </p>
+                  <p class="mb-3" *ngIf="convocatoria.sede">
+                    <strong>Entrega de documentación:</strong> {{ convocatoria.sede }}
+                  </p>
+
+                  <div class="mt-auto text-center">
+                    <a *ngIf="convocatoria.abierta" [routerLink]="['/registrate', convocatoria.slug]"
+                      class="btn btn-primary px-4">
+                      Registrarme
+                    </a>
+                    <span *ngIf="!convocatoria.abierta" class="badge bg-secondary">
+                      Registro cerrado
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

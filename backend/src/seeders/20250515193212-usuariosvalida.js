@@ -6,6 +6,14 @@ const { v4: uuidv4 } = require('uuid');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+    // users.email es único: si las cuentas de validador ya existen, no se resiembran.
+    const [existentes] = await queryInterface.sequelize.query(
+      "SELECT id FROM users WHERE email = 'nahum.jimenez@congresoedomex.gob.mx' LIMIT 1"
+    );
+    if (existentes.length > 0) {
+      return;
+    }
+
     const hashedPassword = await bcrypt.hash('password', 10);
 
     const users = [

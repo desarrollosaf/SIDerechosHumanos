@@ -1,0 +1,52 @@
+.documento-card {
+    border-left: 4px solid #adb5bd;
+    transition: border-color .15s ease-in-out;
+
+    &--pendiente {
+        border-left-color: #adb5bd;
+    }
+
+    &--cargado {
+        border-left-color: #198754;
+    }
+
+    &--rechazado {
+        border-left-color: #dc3545;
+    }
+}
+
+.estado-badge {
+    white-space: nowrap;
+
+    .documento-card--pendiente & {
+        background-color: #e9ecef;
+        color: #495057;
+    }
+
+    .documento-card--cargado & {
+        background-color: #d1e7dd;
+        color: #0f5132;
+    }
+
+    .documento-card--rechazado & {
+        background-color: #f8d7da;
+        color: #842029;
+    }
+}
+
+.documento-requisito {
+    summary {
+        cursor: pointer;
+        color: #96134b;
+        font-size: .875rem;
+
+        &::marker {
+            color: #96134b;
+        }
+    }
+
+    p {
+        font-size: .875rem;
+        color: #495057;
+    }
+}

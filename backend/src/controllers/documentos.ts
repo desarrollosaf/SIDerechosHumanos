@@ -14,6 +14,7 @@ const PDFDocument = require('pdfkit');
 import jwt from 'jsonwebtoken';
 import QRCode from 'qrcode';
 import Validadoc from '../models/validadoc';
+import Convocatoria from '../models/convocatoria';
 import { create } from 'sortablejs';
 import crypto from 'crypto';
 const archiver = require('archiver');
@@ -34,24 +35,19 @@ export const saveDocumentos = async (req: Request, res: Response): Promise<any> 
         return res.status(404).json({ message: 'Solicitud no encontrada' });
     }
 
-    const documentoExistente = await Documentos.findOne({
-        where: { solicitudId: solicitud.id },
-        include: [
-            {
-                model: TipoDocumentos,
-                as: 'tipo',
-                where: { valor: tipo },
-                attributes: [] 
-            }
-        ]
-    });
-    let documentoGuardado;
+    // El mismo identificador (curp, ine, curriculum...) existe en varias
+    // convocatorias, así que siempre se resuelve dentro de la del solicitante.
     const tipo1 = await TipoDocumentos.findOne({
-        where: { valor: tipo } 
+        where: { valor: tipo, convocatoria_id: solicitud.convocatoria_id }
     });
     if (!tipo1) {
         return res.status(404).json({ message: 'Tipo de documento no encontrado' });
     }
+
+    const documentoExistente = await Documentos.findOne({
+        where: { solicitudId: solicitud.id, tipoDocumento: tipo1.id }
+    });
+    let documentoGuardado;
     if (documentoExistente) {
         const documentoPath = path.resolve(documentoExistente.path);
         if(documentoExistente.path != ''){
@@ -89,6 +85,18 @@ export const getDocumentos = async (req: Request, res: Response): Promise<any> =
       where: { userId: id },
       include: [
         {
+          // El formulario de carga se construye a partir de los tipos de
+          // documento que pide la convocatoria de esta solicitud.
+          model: Convocatoria,
+          as: 'convocatoria',
+          include: [
+            {
+              model: TipoDocumentos,
+              as: 'tipos_documento',
+            },
+          ],
+        },
+        {
           model: Documentos,
           as: 'documentos',
           include: [
@@ -116,7 +124,7 @@ export const getDocumentos = async (req: Request, res: Response): Promise<any> =
           ],
         },
       ],
-      logging: console.log,
+      order: [[{ model: Convocatoria, as: 'convocatoria' }, { model: TipoDocumentos, as: 'tipos_documento' }, 'orden', 'ASC']],
     });
 
     if(solicitudConDocumentos){
@@ -131,7 +139,7 @@ export const getDocumentos = async (req: Request, res: Response): Promise<any> =
 export const envSolicitud = async (req: Request, res: Response): Promise<any> => {
     const { id } = req.params;
 
-    const solicitud: any = await Solicitudes.findOne({ 
+    const solicitud: any = await Solicitudes.findOne({
       where: { userId: id },
       include: [
         {
@@ -139,12 +147,21 @@ export const envSolicitud = async (req: Request, res: Response): Promise<any> =>
           as: 'usuario',
           attributes: ['email'],
         },
-      ], 
+        {
+          model: Convocatoria,
+          as: 'convocatoria',
+        },
+      ],
     });
-    
+
 
     if (!solicitud) {
         return res.status(404).json({ msg: `No existe el id ${id}` });
+    }
+
+    const convocatoria: Convocatoria = solicitud.convocatoria;
+    if (!convocatoria) {
+        return res.status(404).json({ msg: `La solicitud ${solicitud.id} no tiene convocatoria asociada` });
     }
 
     const validadores: any[] = await RolUsers.findAll({ where: { role_id: 2 } });
@@ -206,12 +223,12 @@ export const envSolicitud = async (req: Request, res: Response): Promise<any> =>
                   <div class="container">
                   <p  class="pderecha" >${fechaFormateada}</p>
                   <h3><trong>C.</strong> ${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno},</h3>
-                  <p>Por este medio le informamos que su registro electrónico ha sido concluido
+                  <p>Por este medio le informamos que su registro electrónico para la convocatoria
+                   <strong>${convocatoria.nombre}</strong> ha sido concluido
                    de manera satisfactoria. Es importante señalar que este correo únicamente
                     confirma la recepción de su registro y documentación en el sistema, pero
                      no constituye una garantía de que los documentos cargados cumplan con
-                      los requisitos establecidos en el artículo 17 de la Ley de la Comisión
-                       de Derechos Humanos del Estado de México.
+                      ${convocatoria.fundamento || 'los requisitos establecidos en la convocatoria'}.
                         Tampoco se emite pronunciamiento alguno sobre el contenido o idoneidad
                          de los archivos recibidos.
                   </p>
@@ -237,11 +254,7 @@ export const envSolicitud = async (req: Request, res: Response): Promise<any> =>
               };
               const fechaRegistroFormateada = fecha.toLocaleString('en-US', options);
               const fechaEnvioFormateada = formatearFecha(solicitud.fecha_envio);
-              const curp = solicitud.curp;
-              const sexo = curp.charAt(10);
-              const cargo = sexo === 'M'
-                ? 'Presidenta de la Comisión de Derechos Humanos del Estado de México'
-                : 'Presidente de la Comisión de Derechos Humanos del Estado de México';
+              const cargo = convocatoria.cargoSegunCurp(solicitud.curp);
               await sendEmail(
                 solicitud.usuario.email,
                 'Registro Electronico Satisfactorio',
@@ -257,8 +270,8 @@ export const envSolicitud = async (req: Request, res: Response): Promise<any> =>
                     fecha: fechaEnvioFormateada,
                     sello: valida.sello,
                     cadena: valida.cadena,
-                    cargo: cargo
-            
+                    cargo: cargo,
+                    convocatoria: convocatoria.titulo
                   }),
                   contentType: 'application/pdf',
                 }]
@@ -279,14 +292,18 @@ export const deleteDoc = async (req: Request, res: Response): Promise<any> => {
     const { tipo, usuario } = req.body;
     
     const solicitud: any = await Solicitudes.findOne({ where: { userId: usuario } });
+    if (!solicitud) {
+        return res.status(404).json({ msg: `No existe la solicitud del usuario ${usuario}` });
+    }
+
     const documentoExistente = await Documentos.findOne({
         where: { solicitudId: solicitud.id },
         include: [
             {
                 model: TipoDocumentos,
                 as: 'tipo',
-                where: { valor: tipo },
-                attributes: [] 
+                where: { valor: tipo, convocatoria_id: solicitud.convocatoria_id },
+                attributes: []
             }
         ]
     });
@@ -350,7 +367,7 @@ export const estatusDoc = async (req: Request, res: Response): Promise<any> => {
     for (const documentoExistente of documentosExistentes) {
       const tipo1 = documentoExistente.tipo as TipoDocumentos;
       const tipoValor = tipo1?.valor;
-      const doc = tipo1?.valor_real;
+      const doc = tipo1?.documento_requerido || tipo1?.valor_real;
       const documentoEntrada = Documentos2.find((doc: any) => doc.nombre === tipoValor);
 
       if (documentoEntrada && tipoValor) {
@@ -554,6 +571,7 @@ function generarPDFBuffer(data: {
   cadena: string;
   fecha: string;
   cargo: string;
+  convocatoria: string;
 }): Promise<Buffer> {
   return new Promise(async (resolve, reject) => {
     const doc = new PDFDocument({ size: 'LETTER', margin: 50 });
@@ -583,10 +601,7 @@ function generarPDFBuffer(data: {
     doc.moveDown();
     doc.moveDown();
     doc.moveDown();
-    doc.fontSize(12).text(
-      'Proceso y Convocatoria para elegir o reelegir a la Presidenta o el Presidente de la Comisión de Derechos Humanos del Estado de México.',
-      { align: 'justify' }
-    );
+    doc.fontSize(12).text(data.convocatoria, { align: 'justify' });
 
     doc.moveDown();
 

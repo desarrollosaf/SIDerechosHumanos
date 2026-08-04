@@ -2,6 +2,9 @@
     <div class="row w-100 mx-0 auth-page">
         <div class="mx-auto">
             <div class="card">
+                <div class="card-body" *ngIf="convocatoria">
+                    <h4 class="card-title">{{ convocatoria.nombre }}</h4>
+                </div>
                 <div class="row">
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">

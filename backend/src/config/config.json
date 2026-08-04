@@ -1,9 +1,10 @@
 {
   "development": {
     "username": "root",
-    "password": "",
-    "database": "derechos_humanos",
-    "host": "localhost",
-    "dialect": "mysql"
+    "password": "root",
+    "database": "adminplem_derechos",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "seederStorage": "sequelize"
   }
 }

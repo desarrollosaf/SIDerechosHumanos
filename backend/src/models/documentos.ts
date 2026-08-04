@@ -22,9 +22,7 @@ class Documentos extends Model<
   declare observaciones: string | null;
 
   // Relación tipo, que es opcional
-  declare tipo?: {
-    valor: string;
-  };
+  declare tipo?: TipoDocumentos;
 }
 
 Documentos.init(

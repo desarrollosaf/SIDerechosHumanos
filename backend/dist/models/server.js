@@ -20,6 +20,7 @@ const solicitud_1 = __importDefault(require("./solicitud"));
 const user_2 = __importDefault(require("../routes/user"));
 const solicitud_2 = __importDefault(require("../routes/solicitud"));
 const documentos_1 = __importDefault(require("../routes/documentos"));
+const convocatoria_1 = __importDefault(require("../routes/convocatoria"));
 class Server {
     constructor() {
         this.app = (0, express_1.default)();
@@ -38,6 +39,7 @@ class Server {
         this.app.use(user_2.default);
         this.app.use(solicitud_2.default);
         this.app.use(documentos_1.default);
+        this.app.use(convocatoria_1.default);
     }
     midlewares() {
         //Parseo BOdy

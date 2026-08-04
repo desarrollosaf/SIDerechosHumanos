@@ -27,6 +27,7 @@ const detalle_fecha_1 = __importDefault(require("../models/detalle_fecha"));
 const PDFDocument = require('pdfkit');
 const qrcode_1 = __importDefault(require("qrcode"));
 const validadoc_1 = __importDefault(require("../models/validadoc"));
+const convocatoria_1 = __importDefault(require("../models/convocatoria"));
 const crypto_1 = __importDefault(require("crypto"));
 const archiver = require('archiver');
 const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -39,24 +40,18 @@ const saveDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function*
     if (!solicitud) {
         return res.status(404).json({ message: 'Solicitud no encontrada' });
     }
-    const documentoExistente = yield documentos_1.default.findOne({
-        where: { solicitudId: solicitud.id },
-        include: [
-            {
-                model: tipodocumentos_1.default,
-                as: 'tipo',
-                where: { valor: tipo },
-                attributes: []
-            }
-        ]
-    });
-    let documentoGuardado;
+    // El mismo identificador (curp, ine, curriculum...) existe en varias
+    // convocatorias, así que siempre se resuelve dentro de la del solicitante.
     const tipo1 = yield tipodocumentos_1.default.findOne({
-        where: { valor: tipo }
+        where: { valor: tipo, convocatoria_id: solicitud.convocatoria_id }
     });
     if (!tipo1) {
         return res.status(404).json({ message: 'Tipo de documento no encontrado' });
     }
+    const documentoExistente = yield documentos_1.default.findOne({
+        where: { solicitudId: solicitud.id, tipoDocumento: tipo1.id }
+    });
+    let documentoGuardado;
     if (documentoExistente) {
         const documentoPath = path_1.default.resolve(documentoExistente.path);
         if (documentoExistente.path != '') {
@@ -89,6 +84,18 @@ const getDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         where: { userId: id },
         include: [
             {
+                // El formulario de carga se construye a partir de los tipos de
+                // documento que pide la convocatoria de esta solicitud.
+                model: convocatoria_1.default,
+                as: 'convocatoria',
+                include: [
+                    {
+                        model: tipodocumentos_1.default,
+                        as: 'tipos_documento',
+                    },
+                ],
+            },
+            {
                 model: documentos_1.default,
                 as: 'documentos',
                 include: [
@@ -116,7 +123,7 @@ const getDocumentos = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 ],
             },
         ],
-        logging: console.log,
+        order: [[{ model: convocatoria_1.default, as: 'convocatoria' }, { model: tipodocumentos_1.default, as: 'tipos_documento' }, 'orden', 'ASC']],
     });
     if (solicitudConDocumentos) {
         return res.json(solicitudConDocumentos);
@@ -138,10 +145,18 @@ const envSolicitud = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 as: 'usuario',
                 attributes: ['email'],
             },
+            {
+                model: convocatoria_1.default,
+                as: 'convocatoria',
+            },
         ],
     });
     if (!solicitud) {
         return res.status(404).json({ msg: `No existe el id ${id}` });
+    }
+    const convocatoria = solicitud.convocatoria;
+    if (!convocatoria) {
+        return res.status(404).json({ msg: `La solicitud ${solicitud.id} no tiene convocatoria asociada` });
     }
     const validadores = yield role_users_1.default.findAll({ where: { role_id: 2 } });
     if (validadores.length === 0) {
@@ -187,12 +202,12 @@ const envSolicitud = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                   <div class="container">
                   <p  class="pderecha" >${fechaFormateada}</p>
                   <h3><trong>C.</strong> ${solicitud.nombres} ${solicitud.ap_paterno} ${solicitud.ap_materno},</h3>
-                  <p>Por este medio le informamos que su registro electrónico ha sido concluido
+                  <p>Por este medio le informamos que su registro electrónico para la convocatoria
+                   <strong>${convocatoria.nombre}</strong> ha sido concluido
                    de manera satisfactoria. Es importante señalar que este correo únicamente
                     confirma la recepción de su registro y documentación en el sistema, pero
                      no constituye una garantía de que los documentos cargados cumplan con
-                      los requisitos establecidos en el artículo 17 de la Ley de la Comisión
-                       de Derechos Humanos del Estado de México.
+                      ${convocatoria.fundamento || 'los requisitos establecidos en la convocatoria'}.
                         Tampoco se emite pronunciamiento alguno sobre el contenido o idoneidad
                          de los archivos recibidos.
                   </p>
@@ -218,11 +233,7 @@ const envSolicitud = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 };
                 const fechaRegistroFormateada = fecha.toLocaleString('en-US', options);
                 const fechaEnvioFormateada = formatearFecha(solicitud.fecha_envio);
-                const curp = solicitud.curp;
-                const sexo = curp.charAt(10);
-                const cargo = sexo === 'M'
-                    ? 'Presidenta de la Comisión de Derechos Humanos del Estado de México'
-                    : 'Presidente de la Comisión de Derechos Humanos del Estado de México';
+                const cargo = convocatoria.cargoSegunCurp(solicitud.curp);
                 yield (0, mailer_1.sendEmail)(solicitud.usuario.email, 'Registro Electronico Satisfactorio', htmlContent, [{
                         filename: 'oficio.pdf',
                         content: yield generarPDFBuffer({
@@ -234,7 +245,8 @@ const envSolicitud = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                             fecha: fechaEnvioFormateada,
                             sello: valida.sello,
                             cadena: valida.cadena,
-                            cargo: cargo
+                            cargo: cargo,
+                            convocatoria: convocatoria.titulo
                         }),
                         contentType: 'application/pdf',
                     }]);
@@ -253,13 +265,16 @@ exports.envSolicitud = envSolicitud;
 const deleteDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { tipo, usuario } = req.body;
     const solicitud = yield solicitud_1.default.findOne({ where: { userId: usuario } });
+    if (!solicitud) {
+        return res.status(404).json({ msg: `No existe la solicitud del usuario ${usuario}` });
+    }
     const documentoExistente = yield documentos_1.default.findOne({
         where: { solicitudId: solicitud.id },
         include: [
             {
                 model: tipodocumentos_1.default,
                 as: 'tipo',
-                where: { valor: tipo },
+                where: { valor: tipo, convocatoria_id: solicitud.convocatoria_id },
                 attributes: []
             }
         ]
@@ -316,7 +331,7 @@ const estatusDoc = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         for (const documentoExistente of documentosExistentes) {
             const tipo1 = documentoExistente.tipo;
             const tipoValor = tipo1 === null || tipo1 === void 0 ? void 0 : tipo1.valor;
-            const doc = tipo1 === null || tipo1 === void 0 ? void 0 : tipo1.valor_real;
+            const doc = (tipo1 === null || tipo1 === void 0 ? void 0 : tipo1.documento_requerido) || (tipo1 === null || tipo1 === void 0 ? void 0 : tipo1.valor_real);
             const documentoEntrada = Documentos2.find((doc) => doc.nombre === tipoValor);
             if (documentoEntrada && tipoValor) {
                 documentoExistente.estatus = 3;
@@ -521,7 +536,7 @@ function generarPDFBuffer(data) {
         doc.moveDown();
         doc.moveDown();
         doc.moveDown();
-        doc.fontSize(12).text('Proceso y Convocatoria para elegir o reelegir a la Presidenta o el Presidente de la Comisión de Derechos Humanos del Estado de México.', { align: 'justify' });
+        doc.fontSize(12).text(data.convocatoria, { align: 'justify' });
         doc.moveDown();
         // ✅ Generar URL del PDF
         const qrUrl = `https://dev4.siasaf.gob.mx/pdfs/${fileName}`;

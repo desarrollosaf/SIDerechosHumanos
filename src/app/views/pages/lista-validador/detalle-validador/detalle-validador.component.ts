@@ -12,6 +12,7 @@ import { RouterModule } from '@angular/router';
 import { UserService } from '../../../../service/user.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { Convocatoria } from '../../../../interfaces/convocatoria';
 @Component({
   selector: 'app-detalle-validador',
   imports: [CommonModule, FormsModule, ReactiveFormsModule, MatSlideToggleModule, MatIconModule, RouterModule, NgSelectModule, NgbAlertModule],
@@ -39,31 +40,17 @@ export class DetalleValidadorComponent {
   public esValidador: boolean = false;
   public usuariosValidador: any[] = [];
   validadorSeleccionado: string = '';
+  /** Convocatoria de la solicitud que se está revisando. */
+  convocatoria: Convocatoria | null = null;
+
+  /** Documentos a revisar; se arman con los que pide la convocatoria. */
   documentosRequeridos: {
     clave: string;
     label: string;
     txt: string;
     estatus?: number;
     observaciones?: number;
-  }[] = [
-      { clave: 'acta_nacimiento', label: 'I. Tener treinta y cinco años cumplidos, el día de su elección.', txt: 'Documento requerido: Acta de nacimiento en copia certificada o, en su caso, documento que acredite la nacionalidad mexicana *:' },
-      { clave: 'curp', label: 'II. Ser mexicano en pleno goce y ejercicio de sus derechos políticos y civiles.', txt: 'Documento requerido: Clave Única de Registro de Población (CURP)*:' },
-      { clave: 'ine', label: 'III. Credencial para votar con fotografía vigente, expedida por el Instituto Nacional Electoral en copia legible, de preferencia ampliada al 200% y en original para su cotejo.', txt: 'Documento requerido: Credencial para votar con fotografía vigente*:' },
-      { clave: 'constancia_residencia', label: 'IV. Tener residencia efectiva en el territorio del Estado de México no menor de cinco años anteriores al día de su elección.', txt: 'Documento requerido Constancia de residencia en la entidad no menor de cinco años anteriores al día de su designación, que podrá acreditarse con manifestación bajo protesta de decir verdad sobre su residencia *:' },
-      { clave: 'curriculum', label: 'V. Currículum Vitae firmado autógrafamente por la persona aspirante, en el que se señale su experiencia laboral, formación académica; especialización en derechos humanos; experiencia profesional en el ámbito de la protección, observancia, promoción, estudio y divulgación de los derechos humanos; y, en su caso, publicaciones en materias relacionadas con los derechos humanos.', txt: 'Documento requerido: Currículum Vitae*:' },
-      { clave: 'copia_certificada', label: 'VI. Copia certificada de los documentos con los que acredite su título(s) o grado(s) académico(s);', txt: 'Documento requerido: Copias certificadas correspondientes*:' },
-      { clave: 'informe_no_penales', label: 'VII. Informe de no antecedentes penales, expedido por la Fiscalía General de Justicia del Estado de México, con fecha de expedición no mayor a treinta días anteriores a la fecha de su presentación.', txt: 'Documento requerido: Informe de no antecedentes penales*:' },
-      { clave: 'carta_protesta5', label: 'VIII. Carta bajo protesta de decir verdad.', txt: 'Documento requerido: Carta bajo protesta de decir verdad*:' },
-      { clave: 'titulo_licenciatura', label: 'Otros documentos probatorios o que considere de relevancia para su postulación.', txt: 'Documento requerido: Otro:' },
-      // { clave: 'carta_ant_no_penales', label: 'Gozar de buena fama pública y no haber sido condenado mediante sentencia ejecutoriada, por delito intencional.', txt: 'Documento requerido: Carta bajo protesta de decir verdad y/o carta de antecedentes no penales*:' },
-      { clave: 'propuesta_programa', label: 'Documento impreso con la propuesta de programa de trabajo con una extensión máxima de diez cuartillas, con letra tipo Arial, tamaño número 12 e interlineado 1.5.', txt: 'Documento requerido: propuesta de programa de trabajo*:' },
-      { clave: 'carta_motivos', label: 'Carta de exposición de motivos firmada por la persona aspirante y descripción de las razones que justifican su idoneidad, con una extensión no mayor a tres cuartillas.', txt: 'Documento requerido: Carta de exposición de motivos*:' },
-      { clave: 'escrito_consentimiento', label: 'Escrito de consentimiento para el tratamiento de datos personales, así como Aviso de Privacidad relativo al tratamiento de los datos personales descritos en la presente Convocatoria. Ambos documentos deberán descargarse de página https://legislacion.legislativoedomex.gob.mx/avisosdeprivacidad y deberán ser entregados debidamente firmados por la o el aspirante.', txt: 'Documento requerido: Escrito de consentimiento*:' },
-
-    ];
-
-
-
+  }[] = [];
 
   validarrechazar: {
     [key: string]: {
@@ -71,60 +58,7 @@ export class DetalleValidadorComponent {
       observaciones: string
       estadoOriginal?: boolean;
     }
-  } = {
-      curp: {
-        estado: true,
-        observaciones: ''
-      },
-      constancia_residencia: {
-        estado: true,
-        observaciones: ''
-      },
-      titulo_licenciatura: {
-        estado: true,
-        observaciones: ''
-      },
-      acta_nacimiento: {
-        estado: true,
-        observaciones: ''
-      },
-      carta_ant_no_penales: {
-        estado: true,
-        observaciones: ''
-      },
-      carta_protesta5: {
-        estado: true,
-        observaciones: ''
-      },
-      curriculum: {
-        estado: true,
-        observaciones: ''
-      },
-      propuesta_programa: {
-        estado: true,
-        observaciones: ''
-      },
-      copia_certificada: {
-        estado: true,
-        observaciones: ''
-      },
-      ine: {
-        estado: true,
-        observaciones: ''
-      },
-      informe_no_penales: {
-        estado: true,
-        observaciones: ''
-      },
-      carta_motivos: {
-        estado: true,
-        observaciones: ''
-      },
-      escrito_consentimiento: {
-        estado: true,
-        observaciones: ''
-      }
-    };
+  } = {};
 
   constructor(private aRouter: ActivatedRoute, private router: Router) {
     this.id = String(aRouter.snapshot.paramMap.get('id'));
@@ -198,6 +132,10 @@ export class DetalleValidadorComponent {
         this.idSolid = response.id;
         this.documentos = response.documentos;
         this.estatusSoli = response.estatusId;
+
+        this.convocatoria = response.convocatoria ?? null;
+        this.armarDocumentosRequeridos();
+
         this.documentos.forEach((doc: any) => {
           const clave = doc.tipo?.valor;
           const archivoUrl = 'https://dev4.siasaf.gob.mx/' + doc.path;
@@ -232,6 +170,27 @@ export class DetalleValidadorComponent {
     });
   }
 
+
+  /** Cada convocatoria pide sus propios documentos, así que la lista a revisar
+   *  se construye con los tipos que trae la solicitud. */
+  private armarDocumentosRequeridos(): void {
+    const tipos = (this.convocatoria?.tipos_documento ?? [])
+      .slice()
+      .sort((a, b) => a.orden - b.orden);
+
+    this.documentosRequeridos = tipos.map((tipo) => ({
+      clave: tipo.valor,
+      label: tipo.requisito ?? '',
+      txt: tipo.documento_requerido
+        ? `Documento requerido: ${tipo.documento_requerido}${tipo.obligatorio ? '*' : ''}:`
+        : '',
+    }));
+
+    this.validarrechazar = {};
+    tipos.forEach((tipo) => {
+      this.validarrechazar[tipo.valor] = { estado: true, observaciones: '' };
+    });
+  }
 
   onToggleChange(clave: string) {
     const estadoActual = this.validarrechazar[clave].estado;

@@ -4,6 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { UserService } from '../../../service/user.service';
 import { CommonModule } from '@angular/common';
 import { Documento } from '../../../interfaces/documento';
+import { Convocatoria } from '../../../interfaces/convocatoria';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 @Component({
@@ -18,6 +19,8 @@ export class DocumentosComponent {
   public _userService = inject(UserService);
 
   persona: {  id:string, nombre: string, correo: string, telefono: string, curp: string, estatus: number } | null = null;
+  /** Convocatoria en la que participa la persona. */
+  convocatoria: Convocatoria | null = null;
   constructor(){}
 
   ngOnInit(): void {
@@ -28,6 +31,7 @@ export class DocumentosComponent {
       const id_user = String(this._userService.currentUserValue?.id);
       this._documentoService.getDocumentosUser(id_user).subscribe({
       next: (response: any) => {
+        this.convocatoria = response.convocatoria ?? null;
         this.persona = {
           id: response.id,
           nombre: response.ap_paterno + ' ' + response.ap_materno + ' ' + response.nombres,

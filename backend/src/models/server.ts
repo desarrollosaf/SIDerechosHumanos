@@ -6,6 +6,7 @@ import Solicitudes from './solicitud'
 import routesUser from '../routes/user'
 import routesSolicitud from '../routes/solicitud'
 import routesDocumentos from '../routes/documentos'
+import routesConvocatorias from '../routes/convocatoria'
 
 
 class Server {
@@ -33,6 +34,7 @@ class Server {
         this.app.use(routesUser);
         this.app.use(routesSolicitud);
         this.app.use(routesDocumentos);
+        this.app.use(routesConvocatorias);
     }
 
 

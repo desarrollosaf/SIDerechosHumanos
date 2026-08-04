@@ -8,6 +8,7 @@ const connection_1 = __importDefault(require("../database/connection"));
 const documentos_1 = __importDefault(require("./documentos"));
 const validadorsolicitud_1 = __importDefault(require("./validadorsolicitud"));
 const user_1 = __importDefault(require("./user"));
+const convocatoria_1 = __importDefault(require("./convocatoria"));
 class Solicitudes extends sequelize_1.Model {
 }
 Solicitudes.init({
@@ -24,6 +25,11 @@ Solicitudes.init({
     estatusId: {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false,
+    },
+    convocatoria_id: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
     },
     ap_paterno: sequelize_1.DataTypes.STRING,
     ap_materno: sequelize_1.DataTypes.STRING,
@@ -46,4 +52,6 @@ Solicitudes.init({
 Solicitudes.hasMany(documentos_1.default, { foreignKey: 'solicitudId', as: 'documentos' });
 Solicitudes.hasOne(validadorsolicitud_1.default, { foreignKey: 'solicitudId', as: 'validasolicitud' });
 Solicitudes.belongsTo(user_1.default, { foreignKey: 'userId', as: 'usuario' });
+Solicitudes.belongsTo(convocatoria_1.default, { foreignKey: 'convocatoria_id', as: 'convocatoria' });
+convocatoria_1.default.hasMany(Solicitudes, { foreignKey: 'convocatoria_id', as: 'solicitudes' });
 exports.default = Solicitudes;

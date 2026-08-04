@@ -10,6 +10,7 @@ import sequelize from '../database/connection';
 import Documentos from './documentos';
 import ValidadorSolicitud from './validadorsolicitud';
 import User from './user';
+import Convocatoria from './convocatoria';
 
 class Solicitudes extends Model<
   InferAttributes<Solicitudes>,
@@ -18,6 +19,7 @@ class Solicitudes extends Model<
   declare id: CreationOptional<string>;
   declare userId: ForeignKey<string>;
   declare estatusId: ForeignKey<number>;
+  declare convocatoria_id: ForeignKey<number>;
   declare ap_paterno: string | null;
   declare ap_materno: string | null;
   declare nombres: string | null;
@@ -32,6 +34,7 @@ class Solicitudes extends Model<
 
   // Relaciones
   declare documentos?: Documentos[];
+  declare convocatoria?: Convocatoria;
 }
 
 Solicitudes.init(
@@ -49,6 +52,11 @@ Solicitudes.init(
     estatusId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+    },
+    convocatoria_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1,
     },
     ap_paterno: DataTypes.STRING,
     ap_materno: DataTypes.STRING,
@@ -74,5 +82,7 @@ Solicitudes.init(
 Solicitudes.hasMany(Documentos, { foreignKey: 'solicitudId', as: 'documentos' });
 Solicitudes.hasOne(ValidadorSolicitud, { foreignKey: 'solicitudId', as: 'validasolicitud' });
 Solicitudes.belongsTo(User, { foreignKey: 'userId', as: 'usuario' });
+Solicitudes.belongsTo(Convocatoria, { foreignKey: 'convocatoria_id', as: 'convocatoria' });
+Convocatoria.hasMany(Solicitudes, { foreignKey: 'convocatoria_id', as: 'solicitudes' });
 
 export default Solicitudes;

@@ -1,12 +1,15 @@
 import { Component, inject, TemplateRef } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormControl} from '@angular/forms'
 import { CommonModule } from '@angular/common';
 import {Registro} from '../../../interfaces/registro'
-import { HttpErrorResponse } from '@angular/common/http';
+import { Convocatoria } from '../../../interfaces/convocatoria'
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import {RegistroService} from '../../../service/registro.service'
+import { ConvocatoriaService } from '../../../service/convocatoria.service'
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';  
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-registro',
@@ -19,8 +22,18 @@ export class RegistroComponent {
   formReg: FormGroup;
   miControl = new FormControl('');
   public _registroService  =  inject( RegistroService )
+  public _convocatoriaService = inject( ConvocatoriaService )
+  private http = inject( HttpClient )
+  private sanitizer = inject( DomSanitizer )
 
-  constructor(private fb: FormBuilder,private router: Router, private modalService: NgbModal){
+  /** Convocatoria a la que corresponde esta liga de registro. */
+  convocatoria: Convocatoria | null = null;
+  /** Aviso de privacidad de la convocatoria (public/assets/avisos/<slug>.html). */
+  avisoPrivacidad: SafeHtml | null = null;
+  cargando = true;
+  errorConvocatoria = '';
+
+  constructor(private fb: FormBuilder,private router: Router, private route: ActivatedRoute, private modalService: NgbModal){
     this.formReg = this.fb.group({
       ap_paterno:['', Validators.required],
       ap_materno:['', Validators.required],
@@ -42,6 +55,41 @@ export class RegistroComponent {
   }
 
   ngOnInit(): void {
+    const slug = this.route.snapshot.paramMap.get('slug');
+
+    if (!slug) {
+      this.cargando = false;
+      this.errorConvocatoria = 'No se indicó la convocatoria.';
+      return;
+    }
+
+    this._convocatoriaService.getConvocatoria(slug).subscribe({
+      next: (convocatoria: Convocatoria) => {
+        this.convocatoria = convocatoria;
+        this.cargando = false;
+        if (!convocatoria.abierta) {
+          this.errorConvocatoria = 'El periodo de registro de esta convocatoria no se encuentra abierto.';
+        }
+        this.cargarAviso(slug);
+      },
+      error: () => {
+        this.cargando = false;
+        this.errorConvocatoria = 'La convocatoria solicitada no existe o no está disponible.';
+      },
+    });
+  }
+
+  /** El aviso de privacidad vive como archivo por convocatoria para que el
+   *  área jurídica pueda actualizarlo sin tocar el código. */
+  private cargarAviso(slug: string): void {
+    this.http.get(`assets/avisos/${slug}.html`, { responseType: 'text' }).subscribe({
+      next: (html: string) => {
+        this.avisoPrivacidad = this.sanitizer.bypassSecurityTrustHtml(html);
+      },
+      error: () => {
+        this.avisoPrivacidad = null;
+      },
+    });
   }
 
   validadorTelefono(formGroup: FormGroup): { [key: string]: boolean } | null {
@@ -75,13 +123,16 @@ export class RegistroComponent {
   }
 
   openLgModal(content: TemplateRef<any>) {
-    console.log('modal')
     this.modalService.open(content, {size: 'lg'}).result.then((result) => {
       console.log("Modal closed" + result);
     }).catch((res) => {});
   }
-  
+
   sendReg(){
+
+    if (!this.convocatoria) {
+      return;
+    }
 
     const registroval: Registro = {
       ap_paterno: this.formReg.value.ap_paterno,
@@ -91,6 +142,7 @@ export class RegistroComponent {
       celular: this.formReg.value.celular,
       curp: this.formReg.value.curp,
       aviso_privacidad: this.formReg.value.aviso_privacidad,
+      convocatoria: this.convocatoria.slug,
     }
 
     this._registroService.saveRegistro(registroval).subscribe({
@@ -101,15 +153,15 @@ export class RegistroComponent {
               position: "center",
               icon: "error",
               title: "¡Atención!",
-              text: `Ya existe un registro con el correo: ${correo}.`,
+              text: response.mensaje || `Ya existe un registro con el correo: ${correo}.`,
               showConfirmButton: false,
-              timer: 3000
+              timer: 5000
             });
             this.formReg.get('confirmEmail')?.reset('');
             this.formReg.get('confirmEmail')?.markAsTouched();
             this.formReg.get('correo')?.reset('');
             this.formReg.get('correo')?.markAsTouched();
-            
+
         }else{
           Swal.fire({
             position: "center",
@@ -120,21 +172,22 @@ export class RegistroComponent {
             timer: 10000
           });
           this.router.navigate(['/']);
-        }        
+        }
       },
       error: (e: HttpErrorResponse) => {
-        if (e.error && e.error.msg) {
+        // El backend responde 400 cuando la persona ya está inscrita en otra
+        // convocatoria y 404 cuando la convocatoria no existe.
+        const mensaje = e.error?.mensaje || e.error?.msg;
+        if (mensaje) {
           Swal.fire({
-            position: "center", 
+            position: "center",
             icon: "error",
-            title: e.error.msg+': '+e.error.correo,
-            showConfirmButton: false,
-            timer: 3000
+            title: "¡Atención!",
+            text: mensaje,
+            showConfirmButton: true,
           });
-          this.router.navigate(['/']);
-
         } else {
-          Swal.fire({ 
+          Swal.fire({
             position: "center",
             icon: "error",
             title: 'Error desconocido: '+e,
@@ -144,14 +197,7 @@ export class RegistroComponent {
           this.router.navigate(['/']);
         }
       },
-    }) 
-
-
-    // if (this.formReg.valid) {
-    //   console.log('Formulario enviado:', this.formReg.value);
-    // } else {
-    //   console.log('Formulario no válido');
-    // }
+    })
 
   }
 

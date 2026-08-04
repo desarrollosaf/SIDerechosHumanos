@@ -1,0 +1,14 @@
+.nav-pills {
+    .nav-link {
+        color: #96134b;
+        background-color: transparent;
+        border: 1px solid #96134b;
+        margin-right: .5rem;
+        margin-bottom: .5rem;
+
+        &.active {
+            color: #fff;
+            background-color: #96134b;
+        }
+    }
+}

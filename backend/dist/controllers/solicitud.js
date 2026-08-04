@@ -20,12 +20,24 @@ const role_users_1 = __importDefault(require("../models/role_users"));
 const nodemailer = require('nodemailer');
 const dotenv_1 = __importDefault(require("dotenv"));
 const validadorsolicitud_1 = __importDefault(require("../models/validadorsolicitud"));
+const convocatoria_1 = __importDefault(require("../models/convocatoria"));
 dotenv_1.default.config();
 const mailer_1 = require("../utils/mailer");
 const PDFDocument = require('pdfkit');
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const sequelize_1 = require("sequelize");
+/** Convocatoria a la que ya pertenece la persona, o null si no está registrada. */
+const convocatoriaPrevia = (correo, curp) => __awaiter(void 0, void 0, void 0, function* () {
+    const solicitud = yield solicitud_1.default.findOne({
+        where: { [sequelize_1.Op.or]: [{ correo }, { curp }] },
+        include: [{ model: convocatoria_1.default, as: 'convocatoria' }],
+    });
+    return solicitud ? solicitud.convocatoria : null;
+});
 const getRegistros = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const listSolicitudes = yield solicitud_1.default.findAll();
+    const listSolicitudes = yield solicitud_1.default.findAll({
+        include: [{ model: convocatoria_1.default, as: 'convocatoria', attributes: ['id', 'slug', 'nombre'] }],
+    });
     return res.json({
         msg: `List de exitosamente`,
         data: listSolicitudes
@@ -71,6 +83,35 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
         return password;
     }
+    // La convocatoria llega como slug desde la liga pública (/registrate/:slug).
+    const convocatoria = yield convocatoria_1.default.findOne({
+        where: { slug: body.convocatoria }
+    });
+    if (!convocatoria) {
+        return res.status(404).json({
+            estatus: 404,
+            mensaje: 'La convocatoria indicada no existe',
+        });
+    }
+    if (!convocatoria.estaAbierta()) {
+        return res.status(400).json({
+            estatus: 400,
+            mensaje: `El periodo de registro de la convocatoria "${convocatoria.nombre}" no se encuentra abierto`,
+        });
+    }
+    // Una persona solo puede participar en una convocatoria: se busca su correo
+    // y su CURP en todas las convocatorias, no solo en la que intenta registrarse.
+    const previa = yield convocatoriaPrevia(body.correo, body.curp);
+    if (previa) {
+        return res.status(400).json({
+            estatus: 400,
+            mensaje: previa.id === convocatoria.id
+                ? 'Ya existe un registro con el mismo correo o CURP en esta convocatoria'
+                : `Ya existe un registro con el mismo correo o CURP en la convocatoria "${previa.nombre}". Solo es posible participar en una convocatoria.`,
+            correo: body.correo,
+            convocatoria: previa.nombre,
+        });
+    }
     const solicitud = yield user_1.default.findOne({
         where: { email: body.correo }
     });
@@ -102,6 +143,7 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         //  https://dev5.siasaf.gob.mx             
         body.userId = newUser.id;
         body.estatusId = 1;
+        body.convocatoria_id = convocatoria.id;
         yield solicitud_1.default.create(body);
         (() => __awaiter(void 0, void 0, void 0, function* () {
             try {
@@ -115,12 +157,12 @@ const saveRegistro = (req, res) => __awaiter(void 0, void 0, void 0, function* (
            <div class="container">
             <p  class="pderecha" >${fechaFormateada}</p>
             <p>C. ${body.nombres} ${body.ap_paterno} ${body.ap_materno},</p>
-            <p>Por este medio le informamos que su cuenta de usuario ha sido generada exitosamente para el proceso de registro. A continuación, se proporcionan sus credenciales de acceso:</p>
+            <p>Por este medio le informamos que su cuenta de usuario ha sido generada exitosamente para el proceso de registro de la convocatoria <strong>${convocatoria.nombre}</strong>. A continuación, se proporcionan sus credenciales de acceso:</p>
             <div class="credentials">
               <strong>Usuario:</strong> ${body.correo} <br>
             <strong>Contraseña:</strong> <a href="${enlace}">Establecer mi contraseña</a>
             </div>
-            <p>Podrá iniciar su proceso de registro a través del siguiente enlace durante el periodo comprendido del <strong>27 junio al 03 de julio de 2025</strong>:</p>
+            <p>Podrá iniciar su proceso de registro a través del siguiente enlace${convocatoria.periodo_texto ? ` durante el periodo comprendido del <strong>${convocatoria.periodo_texto}</strong>` : ''}:</p>
             <a href="https://dev5.siasaf.gob.mx/auth/login" class="button" target="_blank">Iniciar registro</a>
             <p class="footer">
               Si tiene problemas para hacer clic en el botón, copie y pegue esta URL en su navegador:<br>
@@ -174,22 +216,21 @@ const getSolicitudes = (req, res) => __awaiter(void 0, void 0, void 0, function*
         ]
     });
     const roleId = user.rol_users.role_id;
+    // Los validadores y administradores atienden todas las convocatorias; el
+    // dato solo se incluye para poder mostrarlo como columna en los listados.
+    const convocatoriaInclude = {
+        model: convocatoria_1.default,
+        as: "convocatoria",
+        attributes: ['id', 'slug', 'nombre'],
+    };
     let listSolicitudes = [];
     if (user && roleId == 1) {
-        if (id == 5) {
-            listSolicitudes = yield solicitud_1.default.findAll({
-                where: {
-                    estatusId: [1, 2]
-                }
-            });
-        }
-        else {
-            listSolicitudes = yield solicitud_1.default.findAll({
-                where: {
-                    estatusId: id
-                }
-            });
-        }
+        listSolicitudes = yield solicitud_1.default.findAll({
+            where: {
+                estatusId: id == 5 ? [1, 2] : id
+            },
+            include: [convocatoriaInclude],
+        });
     }
     else {
         listSolicitudes = yield solicitud_1.default.findAll({
@@ -197,6 +238,7 @@ const getSolicitudes = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 estatusId: id,
             },
             include: [
+                convocatoriaInclude,
                 {
                     model: validadorsolicitud_1.default,
                     as: "validasolicitud",

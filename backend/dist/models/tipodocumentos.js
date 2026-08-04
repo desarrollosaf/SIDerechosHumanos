@@ -14,6 +14,11 @@ TipoDocumentos.init({
         allowNull: false,
         primaryKey: true,
     },
+    convocatoria_id: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
+    },
     valor: {
         type: sequelize_1.DataTypes.STRING(255),
         allowNull: true,
@@ -21,6 +26,25 @@ TipoDocumentos.init({
     valor_real: {
         type: sequelize_1.DataTypes.TEXT('long'),
         allowNull: true,
+    },
+    documento_requerido: {
+        type: sequelize_1.DataTypes.TEXT('long'),
+        allowNull: true,
+    },
+    orden: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+    },
+    obligatorio: {
+        type: sequelize_1.DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+    },
+    max_mb: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 15,
     },
 }, {
     sequelize: connection_1.default,

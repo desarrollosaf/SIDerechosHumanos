@@ -78,7 +78,13 @@ export const routes: Routes = [
     loadComponent: () => import('./views/pages/error/error.component').then(c => c.ErrorComponent)
   },
   {
+    // Listado público de convocatorias vigentes.
     path: 'registrate',
+    loadComponent: () => import('./views/pages/convocatorias/convocatorias.component').then(c => c.ConvocatoriasComponent)
+  },
+  {
+    // Liga pública de cada convocatoria, p. ej. /registrate/contraloria-teem
+    path: 'registrate/:slug',
     loadComponent: () => import('./views/pages/registro/registro.component').then(c => c.RegistroComponent)
   },
   
